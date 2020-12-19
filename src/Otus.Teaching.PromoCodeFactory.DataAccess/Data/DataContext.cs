@@ -15,7 +15,18 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
         public DbSet<Preference> Preferences { get; set; }
         
         public DbSet<PromoCode> PromoCodes { get; set; }
+        
+        public DataContext()
+        {
+            
+        }
+        
+        public DataContext(DbContextOptions<DataContext> options)
+            : base(options)
+        {
 
+        }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //create composite key
