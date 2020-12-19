@@ -25,7 +25,7 @@ namespace Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement
 
         public virtual Preference Preference { get; set; }
         
-        public Guid? CustomerId { get; set; }
+        public Guid CustomerId { get; set; }
         
         public virtual Customer Customer { get; set; }
     }

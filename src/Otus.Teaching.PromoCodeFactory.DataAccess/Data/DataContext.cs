@@ -28,12 +28,17 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                 .WithMany(c => c.CustomerPreferences)
                 .HasForeignKey(cp => cp.CustomerId);
 
-            //one-to-many CustomerPreference -Preference
+            //one-to-many CustomerPreference-Preference
             modelBuilder.Entity<Preference>()
                 .HasMany(p => p.CustomerPreferences)
                 .WithOne(cp => cp.Preference)
                 .HasForeignKey(cp => cp.PreferenceId);
-            
+
+            //каскадное удаление промокодов при удалении кастомера
+            modelBuilder.Entity<PromoCode>()
+                .HasOne(p => p.Customer)
+                .WithMany(c => c.PromoCodes)
+                .OnDelete(DeleteBehavior.Cascade);
             
             base.OnModelCreating(modelBuilder);
         }
