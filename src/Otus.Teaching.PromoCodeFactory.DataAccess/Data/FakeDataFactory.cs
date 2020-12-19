@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.Administration;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement;
+using Otus.Teaching.PromoCodeFactory.DataAccess.Data.DbInitializer;
 
 namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
 {
@@ -79,11 +80,27 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                         FirstName = "Иван",
                         LastName = "Петров",
                         //TODO: Добавить предзаполненный список предпочтений
+                        CustomerPreferences = new List<CustomerPreference>()
+                        {
+                            new CustomerPreference()
+                            {
+                                Id = Guid.Parse("e6be5657-6c5e-4d00-895f-7df1d3cd396a"),
+                                CustomerId = customerId,
+                                PreferenceId = Preferences.First(pref => pref.Name == "Семья").Id
+                            },
+                            new CustomerPreference()
+                            {
+                                Id = Guid.Parse("86c8e1ce-ea4b-4bbc-b59b-2470331cc851"),
+                                CustomerId = customerId,
+                                PreferenceId = Preferences.First(pref => pref.Name == "Театр").Id
+                            }
+                        }
                     }
                 };
 
                 return customers;
             }
         }
+        
     }
 }
