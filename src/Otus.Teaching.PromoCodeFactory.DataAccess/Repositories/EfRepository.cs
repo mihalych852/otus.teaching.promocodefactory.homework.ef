@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Otus.Teaching.PromoCodeFactory.Core.Abstractions.Repositories;
 using Otus.Teaching.PromoCodeFactory.Core.Domain;
+using Otus.Teaching.PromoCodeFactory.DataAccess.Data;
 
 namespace Otus.Teaching.PromoCodeFactory.DataAccess.Repositories
 {
@@ -10,6 +11,14 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Repositories
         IRepository<T>
         where T: BaseEntity
     {
+
+        private readonly DataContext _dataContext;
+
+        public EfRepository(DataContext dataContext)
+        {
+            _dataContext = dataContext;
+        }
+        
         public async Task<IEnumerable<T>> GetAllAsync()
         {
             throw new NotImplementedException();
