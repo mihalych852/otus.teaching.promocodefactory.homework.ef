@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Otus.Teaching.PromoCodeFactory.Core.Abstractions.Repositories;
 using Otus.Teaching.PromoCodeFactory.Core.Domain;
 using Otus.Teaching.PromoCodeFactory.DataAccess.Data;
@@ -21,27 +22,32 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Repositories
         
         public async Task<IEnumerable<T>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var entities = await _dataContext.Set<T>().ToListAsync();
+            return entities;
         }
 
         public async Task<T> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var entity = await _dataContext.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
+            return entity;
         }
 
         public async Task AddAsync(T entity)
         {
-            throw new NotImplementedException();
+            _dataContext.Set<T>().Add(entity);
+            await _dataContext.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(T entity)
         {
-            throw new NotImplementedException();
+            _dataContext.Set<T>().Update(entity);
+            await _dataContext.SaveChangesAsync();
         }
 
-        public async Task DeleteByIdAsync(Guid id)
+        public async Task DeleteAsync(T entity)
         {
-            throw new NotImplementedException();
+            _dataContext.Set<T>().Remove(entity);
+            await _dataContext.SaveChangesAsync();
         }
     }
 }
