@@ -4,8 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Otus.Teaching.PromoCodeFactory.Core.Abstractions.Repositories;
-using Otus.Teaching.PromoCodeFactory.Core.Domain.Administration;
-using Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement;
 using Otus.Teaching.PromoCodeFactory.DataAccess.Data;
 using Otus.Teaching.PromoCodeFactory.DataAccess.Data.DbInitializer;
 using Otus.Teaching.PromoCodeFactory.DataAccess.Repositories;
@@ -19,15 +17,17 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             
-            services.AddScoped(typeof(IRepository<Employee>), (x) => 
-                new InMemoryRepository<Employee>(FakeDataFactory.Employees));
-            services.AddScoped(typeof(IRepository<Role>), (x) => 
-                new InMemoryRepository<Role>(FakeDataFactory.Roles));
-            services.AddScoped(typeof(IRepository<Preference>), (x) => 
-                new InMemoryRepository<Preference>(FakeDataFactory.Preferences));
-            services.AddScoped(typeof(IRepository<Customer>), (x) => 
-                new InMemoryRepository<Customer>(FakeDataFactory.Customers));
+            // services.AddScoped(typeof(IRepository<Employee>), (x) => 
+            //     new InMemoryRepository<Employee>(FakeDataFactory.Employees));
+            // services.AddScoped(typeof(IRepository<Role>), (x) => 
+            //     new InMemoryRepository<Role>(FakeDataFactory.Roles));
+            // services.AddScoped(typeof(IRepository<Preference>), (x) => 
+            //     new InMemoryRepository<Preference>(FakeDataFactory.Preferences));
+            // services.AddScoped(typeof(IRepository<Customer>), (x) => 
+            //     new InMemoryRepository<Customer>(FakeDataFactory.Customers));
 
             services.AddScoped(typeof(IDbInitializer), typeof(EfDbInitializer));
 
