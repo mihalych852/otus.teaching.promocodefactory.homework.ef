@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement
@@ -8,5 +9,7 @@ namespace Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement
     {
         [MaxLength(100)]
         public string Name { get; set; }
+        
+        public virtual ICollection<CustomerPreference> CustomerPreferences { get; set; }
     }
 }

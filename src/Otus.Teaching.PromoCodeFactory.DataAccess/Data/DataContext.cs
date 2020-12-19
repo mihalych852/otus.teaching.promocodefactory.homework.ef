@@ -15,5 +15,27 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
         public DbSet<Preference> Preferences { get; set; }
         
         public DbSet<PromoCode> PromoCodes { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            //create composite key
+            modelBuilder.Entity<CustomerPreference>()
+                .HasKey(cp => new {cp.CustomerId, cp.PreferenceId});
+            
+            //one-to-many CustomerPreference-Customer
+            modelBuilder.Entity<CustomerPreference>()
+                .HasOne(cp => cp.Customer)
+                .WithMany(c => c.CustomerPreferences)
+                .HasForeignKey(cp => cp.CustomerId);
+
+            //one-to-many CustomerPreference -Preference
+            modelBuilder.Entity<Preference>()
+                .HasMany(p => p.CustomerPreferences)
+                .WithOne(cp => cp.Preference)
+                .HasForeignKey(cp => cp.PreferenceId);
+            
+            
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }
