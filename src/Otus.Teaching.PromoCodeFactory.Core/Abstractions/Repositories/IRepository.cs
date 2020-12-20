@@ -16,6 +16,8 @@ namespace Otus.Teaching.PromoCodeFactory.Core.Abstractions.Repositories
 
         Task UpdateAsync(T entity);
 
+        Task DeleteRangeAsync(IEnumerable<T> entities);
+        
         Task DeleteAsync(T entity);
     }
 }

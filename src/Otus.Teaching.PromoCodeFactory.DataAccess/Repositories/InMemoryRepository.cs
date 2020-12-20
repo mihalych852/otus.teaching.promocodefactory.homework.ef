@@ -38,6 +38,11 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Repositories
             throw new NotImplementedException();
         }
 
+        public Task DeleteRangeAsync(IEnumerable<T> entities)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task DeleteAsync(T entity)
         {
             throw new NotImplementedException();
