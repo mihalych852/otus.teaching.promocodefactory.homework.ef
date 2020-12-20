@@ -8,6 +8,7 @@ using Otus.Teaching.PromoCodeFactory.DataAccess.Data;
 using Otus.Teaching.PromoCodeFactory.DataAccess.Data.DbInitializer;
 using Otus.Teaching.PromoCodeFactory.DataAccess.Repositories;
 using Otus.Teaching.PromoCodeFactory.WebHost.Mappers;
+using Otus.Teaching.PromoCodeFactory.WebHost.Mappers.CustomerMapper;
 
 namespace Otus.Teaching.PromoCodeFactory.WebHost
 {
@@ -20,7 +21,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
             services.AddControllers();
 
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
-            services.AddScoped(typeof(IMapper), typeof(ManualMapper));
+            services.AddScoped(typeof(ICustomerMapper), typeof(ManualCustomerMapper));
 
             services.AddScoped(typeof(IDbInitializer), typeof(EfDbInitializer));
 
