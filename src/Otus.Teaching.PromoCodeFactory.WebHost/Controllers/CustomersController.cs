@@ -139,11 +139,23 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
             return Ok();
         }
         
-        [HttpDelete]
-        public Task<IActionResult> DeleteCustomer(Guid id)
+        /// <summary>
+        /// Удаление клиента по id. Также удаляются все выданные клиенту промокоды.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> DeleteCustomerByIdAsync(Guid id)
         {
-            //TODO: Удаление клиента вместе с выданными ему промокодами
-            throw new NotImplementedException();
+            var customer = await _customersRepository.GetByIdAsync(id);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+
+            await _customersRepository.DeleteAsync(customer);
+
+            return NoContent();
         }
     }
 }
