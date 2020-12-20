@@ -24,6 +24,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
 
         private readonly IRepository<Customer> _customersRepository;
         private readonly IRepository<Preference> _preferenceRepository;
+        private readonly IRepository<CustomerPreference> _customerPreferenceRepository;
         private readonly ICustomerMapper _customerMapper;
         private readonly IPreferenceMapper _preferenceMapper;
         private readonly IPromoCodeMapper _promoCodeMapper;
@@ -31,12 +32,14 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         public CustomersController(
             IRepository<Customer> customersRepository,
             IRepository<Preference> preferenceRepository,
+            IRepository<CustomerPreference> customerPreferenceRepository,
             ICustomerMapper customerMapper,
             IPreferenceMapper preferenceMapper,
             IPromoCodeMapper promoCodeMapper)
         {
             _customersRepository = customersRepository;
             _preferenceRepository = preferenceRepository;
+            _customerPreferenceRepository = customerPreferenceRepository;
             _customerMapper = customerMapper;
             _preferenceMapper = preferenceMapper;
             _promoCodeMapper = promoCodeMapper;
@@ -60,7 +63,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("{id}")]
+        [HttpGet("{id:guid}")]
         public async Task<ActionResult<CustomerResponse>> GetCustomerByIdAsync(Guid id)
         {
             var customer = await _customersRepository.GetByIdAsync(id);
@@ -91,7 +94,6 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
         [HttpPost]
         public async Task<IActionResult> CreateCustomerAsync(CreateOrEditCustomerRequest request)
         {
@@ -104,12 +106,37 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
             
             return CreatedAtAction(nameof(GetCustomerByIdAsync), new {Id = customer.Id}, customer.Id);
         }
-        
-        [HttpPut("{id}")]
-        public Task<IActionResult> EditCustomersAsync(Guid id, CreateOrEditCustomerRequest request)
+        /// <summary>
+        /// Редактировать клиента по Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        [HttpPut("{id:guid}")]
+        public async Task<IActionResult> EditCustomerByIdAsync(Guid id, CreateOrEditCustomerRequest request)
         {
-            //TODO: Обновить данные клиента вместе с его предпочтениями
-            throw new NotImplementedException();
+            var customer = await _customersRepository.GetByIdAsync(id);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+            
+            var preferences = await _preferenceRepository.GetAllAsync();
+            
+            //удаляем старые предпочтения пользователя
+            var customerPreference = await _customerPreferenceRepository.GetAllAsync();
+            await _customerPreferenceRepository.DeleteRangeAsync(
+                customerPreference.Where(cp => cp.CustomerId == customer.Id));
+            
+            _customerMapper.FromRequestModel(
+                request,
+                preferences.Where(p => request.PreferenceIds.Contains(p.Id)),
+                customer);
+
+            await _customersRepository.UpdateAsync(customer);
+
+            return Ok();
         }
         
         [HttpDelete]
