@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement;
 using Otus.Teaching.PromoCodeFactory.WebHost.Models;
 
@@ -30,6 +32,28 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Mappers.CustomerMapper
                 Preferences = new List<PreferenceShortResponse>(preferences),
                 PromoCodes = new List<PromoCodeShortResponse>(promocodes)
             };
+        }
+
+        public Customer FromRequestModel(CreateOrEditCustomerRequest model, IEnumerable<Preference> preferences, Customer customer = null)
+        {
+            if (customer == null)
+            {
+                customer = new Customer();
+                customer.Id = Guid.NewGuid();
+            }
+            
+            customer.FirstName = model.FirstName;
+            customer.LastName = model.LastName;
+            customer.Email = model.Email;
+            customer.CustomerPreferences = new List<CustomerPreference>(
+                preferences
+                    .Select(p=> new CustomerPreference()
+                    {
+                        CustomerId = customer.Id,
+                        PreferenceId = p.Id
+                    }));
+            
+            return customer;
         }
     }
 }

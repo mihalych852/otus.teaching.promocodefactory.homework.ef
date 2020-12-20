@@ -43,7 +43,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         }
         
         /// <summary>
-        /// Список всех клиентов
+        /// Получить список всех клиентов
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -55,15 +55,20 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
             return Ok(response);
         }
         
+        /// <summary>
+        /// Получить клиента по Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<CustomerResponse>> GetCustomerAsync(Guid id)
+        public async Task<ActionResult<CustomerResponse>> GetCustomerByIdAsync(Guid id)
         {
-            //TODO: Добавить получение клиента вместе с выданными ему промомкодами
             var customer = await _customersRepository.GetByIdAsync(id);
             if (customer == null)
             {
                 return NotFound();
             }
+            
             //Получаем список id предпочтений пользователя
             var customerPrefIds = customer.CustomerPreferences
                 .Where(cp => cp.CustomerId == customer.Id).Select(cp => cp.PreferenceId);
@@ -81,11 +86,23 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
             return Ok(responce);
         }
         
+        /// <summary>
+        /// Создать нового клиента
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         [HttpPost]
-        public Task<IActionResult> CreateCustomerAsync(CreateOrEditCustomerRequest request)
+        public async Task<IActionResult> CreateCustomerAsync(CreateOrEditCustomerRequest request)
         {
-            //TODO: Добавить создание нового клиента вместе с его предпочтениями
-            throw new NotImplementedException();
+            var preferences = await _preferenceRepository.GetAllAsync();
+            
+            var customer = _customerMapper.FromRequestModel(
+                request, preferences.Where(p => request.PreferenceIds.Contains(p.Id)));
+            
+            await _customersRepository.AddAsync(customer);
+            
+            return CreatedAtAction(nameof(GetCustomerByIdAsync), new {Id = customer.Id}, customer.Id);
         }
         
         [HttpPut("{id}")]
