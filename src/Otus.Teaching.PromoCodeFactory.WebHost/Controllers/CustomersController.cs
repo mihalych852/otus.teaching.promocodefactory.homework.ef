@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Otus.Teaching.PromoCodeFactory.Core.Abstractions.Repositories;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement;
 using Otus.Teaching.PromoCodeFactory.WebHost.Mappers;
+using Otus.Teaching.PromoCodeFactory.WebHost.Mappers.CustomerMapper;
+using Otus.Teaching.PromoCodeFactory.WebHost.Mappers.PreferenceMapper;
+using Otus.Teaching.PromoCodeFactory.WebHost.Mappers.PromoCodeMapper;
 using Otus.Teaching.PromoCodeFactory.WebHost.Models;
 
 namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
@@ -20,14 +23,23 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
     {
 
         private readonly IRepository<Customer> _customersRepository;
-        private readonly IMapper _mapper;
+        private readonly IRepository<Preference> _preferenceRepository;
+        private readonly ICustomerMapper _customerMapper;
+        private readonly IPreferenceMapper _preferenceMapper;
+        private readonly IPromoCodeMapper _promoCodeMapper;
 
         public CustomersController(
             IRepository<Customer> customersRepository,
-            IMapper mapper)
+            IRepository<Preference> preferenceRepository,
+            ICustomerMapper customerMapper,
+            IPreferenceMapper preferenceMapper,
+            IPromoCodeMapper promoCodeMapper)
         {
             _customersRepository = customersRepository;
-            _mapper = mapper;
+            _preferenceRepository = preferenceRepository;
+            _customerMapper = customerMapper;
+            _preferenceMapper = preferenceMapper;
+            _promoCodeMapper = promoCodeMapper;
         }
         
         /// <summary>
@@ -39,15 +51,34 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         {
             var customers = await _customersRepository.GetAllAsync();
             var response = customers
-                .Select(item => _mapper.MapFromCustomer(item));
+                .Select(item => _customerMapper.ToShortResponse(item));
             return Ok(response);
         }
         
         [HttpGet("{id}")]
-        public Task<ActionResult<CustomerResponse>> GetCustomerAsync(Guid id)
+        public async Task<ActionResult<CustomerResponse>> GetCustomerAsync(Guid id)
         {
             //TODO: Добавить получение клиента вместе с выданными ему промомкодами
-            throw new NotImplementedException();
+            var customer = await _customersRepository.GetByIdAsync(id);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+            //Получаем список id предпочтений пользователя
+            var customerPrefIds = customer.CustomerPreferences
+                .Where(cp => cp.CustomerId == customer.Id).Select(cp => cp.PreferenceId);
+            
+            //Получаем список всех предпочтений
+            var preferences = await _preferenceRepository.GetAllAsync();
+
+            var responce = _customerMapper.ToResponse(
+                customer,
+                preferences
+                    .Where(p => customerPrefIds.Contains(p.Id))
+                    .Select(_preferenceMapper.ToShortResponse),
+                customer.PromoCodes.Select(_promoCodeMapper.ToShortResponse));
+            
+            return Ok(responce);
         }
         
         [HttpPost]
