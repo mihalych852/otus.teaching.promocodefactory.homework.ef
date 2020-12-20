@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Otus.Teaching.PromoCodeFactory.Core.Abstractions.Repositories;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement;
+using Otus.Teaching.PromoCodeFactory.WebHost.Mappers;
 using Otus.Teaching.PromoCodeFactory.WebHost.Models;
 
 namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
@@ -19,11 +20,14 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
     {
 
         private readonly IRepository<Customer> _customersRepository;
+        private readonly IMapper _mapper;
 
-
-        public CustomersController(IRepository<Customer> customersRepository)
+        public CustomersController(
+            IRepository<Customer> customersRepository,
+            IMapper mapper)
         {
             _customersRepository = customersRepository;
+            _mapper = mapper;
         }
         
         /// <summary>
@@ -34,14 +38,8 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         public async Task<ActionResult<IEnumerable<CustomerShortResponse>>> GetAllCustomersAsync()
         {
             var customers = await _customersRepository.GetAllAsync();
-            var response = customers.Select(item => 
-                new CustomerShortResponse()
-                {
-                    Id = item.Id,
-                    Email = item.Email,
-                    FirstName = item.FirstName,
-                    LastName = item.LastName
-                });
+            var response = customers
+                .Select(item => _mapper.MapFromCustomer(item));
             return Ok(response);
         }
         
