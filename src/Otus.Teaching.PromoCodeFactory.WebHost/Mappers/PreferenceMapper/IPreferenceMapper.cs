@@ -6,6 +6,8 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Mappers.PreferenceMapper
 {
     public interface IPreferenceMapper
     {
-        public PreferenceResponse MapFromPreference(Preference preference, IEnumerable<CustomerShortResponse> customers);
+        public PreferenceResponse ToResponse(Preference preference, IEnumerable<CustomerShortResponse> customers);
+
+        public PreferenceShortResponse ToShortResponse(Preference preference);
     }
 }

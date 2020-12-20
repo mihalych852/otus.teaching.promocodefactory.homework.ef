@@ -6,7 +6,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Mappers.CustomerMapper
 {
     public class ManualCustomerMapper: ICustomerMapper
     {
-        public CustomerShortResponse MapFromCustomer(Customer customer)
+        public CustomerShortResponse ToShortResponse(Customer customer)
         {
             return new CustomerShortResponse()
             {
@@ -17,8 +17,9 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Mappers.CustomerMapper
             };
         }
 
-        public CustomerResponse MapFromCustomer(
-            Customer customer, IEnumerable<PreferenceShortResponse> preferences, IEnumerable<PromoCodeShortResponse> promocodes)
+        public CustomerResponse ToResponse(
+            Customer customer, 
+            IEnumerable<PreferenceShortResponse> preferences, IEnumerable<PromoCodeShortResponse> promocodes)
         {
             return new CustomerResponse()
             {
