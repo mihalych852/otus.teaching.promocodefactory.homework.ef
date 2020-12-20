@@ -9,7 +9,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Mappers.CustomerMapper
         public CustomerShortResponse MapFromCustomer(Customer customer);
 
         public CustomerResponse MapFromCustomer(
-            Customer customer, IEnumerable<PreferenceResponse> preferences, 
+            Customer customer, IEnumerable<PreferenceShortResponse> preferences, 
             IEnumerable<PromoCodeShortResponse> promocodes);
     }
 }

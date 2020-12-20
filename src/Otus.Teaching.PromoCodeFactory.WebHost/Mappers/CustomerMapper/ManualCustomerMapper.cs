@@ -18,7 +18,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Mappers.CustomerMapper
         }
 
         public CustomerResponse MapFromCustomer(
-            Customer customer, IEnumerable<PreferenceResponse> preferences, IEnumerable<PromoCodeShortResponse> promocodes)
+            Customer customer, IEnumerable<PreferenceShortResponse> preferences, IEnumerable<PromoCodeShortResponse> promocodes)
         {
             return new CustomerResponse()
             {
@@ -26,7 +26,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Mappers.CustomerMapper
                 Email = customer.Email,
                 FirstName = customer.FirstName,
                 LastName = customer.LastName,
-                Preferences = new List<PreferenceResponse>(preferences),
+                Preferences = new List<PreferenceShortResponse>(preferences),
                 PromoCodes = new List<PromoCodeShortResponse>(promocodes)
             };
         }
