@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,13 +22,16 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         private readonly IRepository<Preference> _preferencesRepository;
 
         private readonly IPreferenceMapper _preferenceMapper;
+        private readonly ICustomerMapper _customerMapper;
 
         public PreferencesController(
             IRepository<Preference> preferencesRepository,
-            IPreferenceMapper preferenceMapper)
+            IPreferenceMapper preferenceMapper,
+            ICustomerMapper customerMapper)
         {
             _preferencesRepository = preferencesRepository;
             _preferenceMapper = preferenceMapper;
+            _customerMapper = customerMapper;
         }
         
         /// <summary>
@@ -42,7 +46,27 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
             var responce = preferences.Select(_preferenceMapper.ToShortResponse);
 
             return Ok(responce);
+        }
 
+        /// <summary>
+        /// Получить предпочтение по Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id:guid}")]
+        public async Task<ActionResult<PreferenceResponse>> GetPreferenceByIdAsync(Guid id)
+        {
+            var preference = await _preferencesRepository.GetByIdAsync(id);
+            if (preference == null)
+            {
+                return NotFound();
+            }
+
+            var customersShortResponse = preference.CustomerPreferences
+                .Select(cp => _customerMapper.ToShortResponse(cp.Customer));
+
+            var response = _preferenceMapper.ToResponse(preference, customersShortResponse);
+            return Ok(response);
         }
     }
 }
