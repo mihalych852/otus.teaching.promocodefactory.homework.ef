@@ -53,10 +53,27 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public Task<IActionResult> GivePromoCodesToCustomersWithPreferenceAsync(GivePromoCodeRequest request)
+        public async Task<IActionResult> GivePromoCodesToCustomersWithPreferenceAsync(GivePromoCodeRequest request)
         {
-            //TODO: Создать промокод и выдать его клиентам с указанным предпочтением
-            throw new NotImplementedException();
+            //получаем объект предпочтения
+            var preference = (await _preferenceRepository.GetAllAsync())
+                .FirstOrDefault(p=> p.Name == request.Preference);
+            
+            if (preference == null)
+            {
+                return NotFound();
+            }
+
+            //Список пользователей с полученным предпочтением
+            var customers = preference.CustomerPreferences.Select(cp => cp.Customer);
+            
+            foreach (var customer in customers)
+            {
+                var promocode = _promoCodeMapper.FromRequestModel(request, customer, preference);
+                await _promocodeRepository.AddAsync(promocode);
+            }
+
+            return Ok();
         }
     }
 }
