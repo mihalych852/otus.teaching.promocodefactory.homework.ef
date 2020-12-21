@@ -24,7 +24,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
 
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped(typeof(ICustomerMapper), typeof(CustomerAutoMapper));
-            services.AddScoped(typeof(IPreferenceMapper), typeof(ManualPreferenceMapper));
+            services.AddScoped(typeof(IPreferenceMapper), typeof(PreferenceAutoMapper));
             services.AddScoped(typeof(IPromoCodeMapper), typeof(PromoCodeAutoMapper));
 
             services.AddScoped(typeof(IDbInitializer), typeof(EfDbInitializer));
