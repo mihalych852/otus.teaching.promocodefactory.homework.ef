@@ -20,17 +20,31 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Mappers.CustomerMapper
         public CustomerResponse ToResponse(Customer customer, IEnumerable<PreferenceShortResponse> preferences, IEnumerable<PromoCodeShortResponse> promocodes)
         {
            var config = new MapperConfiguration(cfg =>
-               cfg.CreateMap<PreferenceShortResponse, CustomerResponse>()
-                   .ForMember(dest => dest.Preferences,
-                       opt => 
-                           opt.MapFrom(src => new List<PreferenceShortResponse>(preferences)))
-                   .ForMember(dest => dest.PromoCodes,
-                       opt =>
-                           opt.MapFrom(src => new List<PromoCodeShortResponse>(promocodes))));
-           
+               {
+                   cfg.CreateMap<Customer, CustomerResponse>()
+                       .ForMember(dst => dst.Preferences,
+                           opt => opt.Ignore())
+                       .ForMember(dst => dst.PromoCodes,
+                           opt => opt.Ignore());
+                   cfg.CreateMap<IEnumerable<PreferenceShortResponse>, CustomerResponse>()
+                       .ForMember(dst => dst.Preferences,
+                           opt =>
+                               opt.MapFrom(src =>
+                                   new List<PreferenceShortResponse>(preferences)))
+                       .ForAllOtherMembers(opt => opt.Ignore());
+                   cfg.CreateMap<IEnumerable<PromoCodeShortResponse>, CustomerResponse>()
+                       .ForMember(dst => dst.PromoCodes,
+                           opt =>
+                               opt.MapFrom(src => new List<PromoCodeShortResponse>(promocodes)))
+                       .ForAllOtherMembers(opt => opt.Ignore());
+               });
+
            var mapper = config.CreateMapper();
+           var response = mapper.Map<CustomerResponse>(customer);
+           mapper.Map(preferences, response);
+           mapper.Map(promocodes, response);
            
-           return mapper.Map<CustomerResponse>(customer);
+           return response;
         }
 
         public Customer FromRequestModel(CreateOrEditCustomerRequest model, IEnumerable<Preference> preferences, Customer customer = null)
