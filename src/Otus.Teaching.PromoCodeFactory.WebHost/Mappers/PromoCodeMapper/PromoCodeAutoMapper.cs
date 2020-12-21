@@ -17,15 +17,32 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Mappers.PromoCodeMapper
         public PromoCode FromRequestModel(GivePromoCodeRequest request, Customer customer, Preference preference)
         {
             var config = new MapperConfiguration(cfg =>
-                cfg.CreateMap<GivePromoCodeRequest, PromoCode>()
-                    .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.PromoCode))
-                    .ForMember(dest => dest.Customer, 
-                        opt => opt.MapFrom(src => customer))
-                    .ForMember(dest => dest.Preference,
-                        opt => opt.MapFrom(src => preference))
-                );
+                {
+                    cfg.CreateMap<GivePromoCodeRequest, PromoCode>()
+                        .ForMember(dest => dest.Code,
+                            opt =>
+                                opt.MapFrom(src => src.PromoCode))
+                        .ForMember(dst => dst.Customer,
+                            opt => opt.Ignore())
+                        .ForMember(dst => dst.Preference,
+                            opt => opt.Ignore());
+                    cfg.CreateMap<Customer, PromoCode>()
+                        .ForMember(dst => dst.Customer,
+                            opt =>
+                                opt.MapFrom(src => src))
+                        .ForAllOtherMembers(opt => opt.Ignore());
+                    cfg.CreateMap<Preference, PromoCode>()
+                        .ForMember(dst => dst.Preference,
+                            opt =>
+                                opt.MapFrom(src => src))
+                        .ForAllOtherMembers(opt => opt.Ignore());
+                });
+            
             var mapper = config.CreateMapper();
-            return mapper.Map<GivePromoCodeRequest, PromoCode>(request);
+            var promoCode = mapper.Map<PromoCode>(request);
+            mapper.Map(customer, promoCode);
+            mapper.Map(preference, promoCode);
+            return promoCode;
         }
     }
 }
