@@ -17,5 +17,17 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Mappers.PromoCodeMapper
                 ServiceInfo = promoCode.ServiceInfo
             };
         }
+
+        public PromoCode FromRequestModel(GivePromoCodeRequest request, Customer customer, Preference preference)
+        {
+            return new PromoCode()
+            {
+                ServiceInfo = request.ServiceInfo,
+                PartnerName = request.PartnerName,
+                Code = request.PromoCode,
+                Preference = preference,
+                Customer = customer
+            };
+        }
     }
 }
