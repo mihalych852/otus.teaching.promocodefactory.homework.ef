@@ -71,19 +71,14 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
             {
                 return NotFound();
             }
-            
-            //Получаем список id предпочтений пользователя
-            var customerPrefIds = customer.CustomerPreferences
-                .Where(cp => cp.CustomerId == customer.Id).Select(cp => cp.PreferenceId);
-            
-            //Получаем список всех предпочтений
-            var preferences = await _preferenceRepository.GetAllAsync();
+
+            //Получаем список предпочтений клиента
+            var preferencesShortResponses = customer.CustomerPreferences
+                .Select(cp => _preferenceMapper.ToShortResponse(cp.Preference));
 
             var responce = _customerMapper.ToResponse(
                 customer,
-                preferences
-                    .Where(p => customerPrefIds.Contains(p.Id))
-                    .Select(_preferenceMapper.ToShortResponse),
+                preferencesShortResponses,
                 customer.PromoCodes.Select(_promoCodeMapper.ToShortResponse));
             
             return Ok(responce);
