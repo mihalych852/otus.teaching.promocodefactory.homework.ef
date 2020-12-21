@@ -120,9 +120,8 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
             var preferences = await _preferenceRepository.GetAllAsync();
             
             //удаляем старые предпочтения пользователя
-            var customerPreference = await _customerPreferenceRepository.GetAllAsync();
             await _customerPreferenceRepository.DeleteRangeAsync(
-                customerPreference.Where(cp => cp.CustomerId == customer.Id));
+                customer.CustomerPreferences);
             
             _customerMapper.FromRequestModel(
                 request,
