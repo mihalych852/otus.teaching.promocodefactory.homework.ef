@@ -16,7 +16,16 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Mappers.PromoCodeMapper
 
         public PromoCode FromRequestModel(GivePromoCodeRequest request, Customer customer, Preference preference)
         {
-            throw new System.NotImplementedException();
+            var config = new MapperConfiguration(cfg =>
+                cfg.CreateMap<GivePromoCodeRequest, PromoCode>()
+                    .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.PromoCode))
+                    .ForMember(dest => dest.Customer, 
+                        opt => opt.MapFrom(src => customer))
+                    .ForMember(dest => dest.Preference,
+                        opt => opt.MapFrom(src => preference))
+                );
+            var mapper = config.CreateMapper();
+            return mapper.Map<GivePromoCodeRequest, PromoCode>(request);
         }
     }
 }
