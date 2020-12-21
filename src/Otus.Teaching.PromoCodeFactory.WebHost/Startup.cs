@@ -29,10 +29,10 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
 
             services.AddScoped(typeof(IDbInitializer), typeof(EfDbInitializer));
 
-            services.AddDbContext<DataContext>(builder =>
+            services.AddDbContext<DataContext>(options =>
             {
-                builder.UseSqlite("Filename=PromoCodeFactoryDb.sqlite");
-                builder.UseLazyLoadingProxies();
+                options.UseSqlite("Filename=PromoCodeFactoryDb.sqlite");
+                options.UseLazyLoadingProxies();
             });
             
             services.AddOpenApiDocument(options =>
