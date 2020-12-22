@@ -17,7 +17,7 @@ namespace Otus.Teaching.PromoCodeFactory.Core.Domain.Administration
         [MaxLength(100)]
         public string Email { get; set; }
         
-        public string PhoneNumber { get; set; }
+        public string tst { get; set; }
 
         public virtual Role Role { get; set; }
 

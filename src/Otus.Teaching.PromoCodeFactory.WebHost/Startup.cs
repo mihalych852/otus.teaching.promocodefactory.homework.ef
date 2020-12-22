@@ -7,7 +7,6 @@ using Otus.Teaching.PromoCodeFactory.Core.Abstractions.Repositories;
 using Otus.Teaching.PromoCodeFactory.DataAccess.Data;
 using Otus.Teaching.PromoCodeFactory.DataAccess.Data.DbInitializer;
 using Otus.Teaching.PromoCodeFactory.DataAccess.Repositories;
-using Otus.Teaching.PromoCodeFactory.WebHost.Mappers;
 using Otus.Teaching.PromoCodeFactory.WebHost.Mappers.CustomerMapper;
 using Otus.Teaching.PromoCodeFactory.WebHost.Mappers.PreferenceMapper;
 using Otus.Teaching.PromoCodeFactory.WebHost.Mappers.PromoCodeMapper;

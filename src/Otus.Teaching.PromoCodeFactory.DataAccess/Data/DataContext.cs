@@ -27,14 +27,14 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
 
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            { 
-                optionsBuilder.UseSqlite("Filename=PromoCodeFactoryDb.sqlite");
-            }
-            //base.OnConfiguring(optionsBuilder);
-        }
+        // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        // {
+        //     if (!optionsBuilder.IsConfigured)
+        //     { 
+        //         optionsBuilder.UseSqlite("Filename=PromoCodeFactoryDb.sqlite");
+        //     }
+        //     //base.OnConfiguring(optionsBuilder);
+        // }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
