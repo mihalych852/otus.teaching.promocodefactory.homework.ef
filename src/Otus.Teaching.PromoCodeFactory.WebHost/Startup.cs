@@ -1,17 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Otus.Teaching.PromoCodeFactory.Core.Abstractions.Repositories;
-using Otus.Teaching.PromoCodeFactory.Core.Domain.Administration;
-using Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement;
 using Otus.Teaching.PromoCodeFactory.DataAccess.Data;
+using Otus.Teaching.PromoCodeFactory.DataAccess.Data.DbInitializer;
 using Otus.Teaching.PromoCodeFactory.DataAccess.Repositories;
+using Otus.Teaching.PromoCodeFactory.WebHost.Mappers.CustomerMapper;
+using Otus.Teaching.PromoCodeFactory.WebHost.Mappers.PreferenceMapper;
+using Otus.Teaching.PromoCodeFactory.WebHost.Mappers.PromoCodeMapper;
 
 namespace Otus.Teaching.PromoCodeFactory.WebHost
 {
@@ -21,16 +19,21 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            services.AddScoped(typeof(IRepository<Employee>), (x) => 
-                new InMemoryRepository<Employee>(FakeDataFactory.Employees));
-            services.AddScoped(typeof(IRepository<Role>), (x) => 
-                new InMemoryRepository<Role>(FakeDataFactory.Roles));
-            services.AddScoped(typeof(IRepository<Preference>), (x) => 
-                new InMemoryRepository<Preference>(FakeDataFactory.Preferences));
-            services.AddScoped(typeof(IRepository<Customer>), (x) => 
-                new InMemoryRepository<Customer>(FakeDataFactory.Customers));
+            services.AddControllers().AddMvcOptions(options => options.SuppressAsyncSuffixInActionNames = false);
 
+            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+            services.AddScoped(typeof(ICustomerMapper), typeof(CustomerAutoMapper));
+            services.AddScoped(typeof(IPreferenceMapper), typeof(PreferenceAutoMapper));
+            services.AddScoped(typeof(IPromoCodeMapper), typeof(PromoCodeAutoMapper));
+
+            services.AddScoped(typeof(IDbInitializer), typeof(EfDbInitializer));
+
+            services.AddDbContext<DataContext>(options =>
+            {
+                options.UseSqlite("Filename=PromoCodeFactoryDb.sqlite");
+                options.UseLazyLoadingProxies();
+            });
+            
             services.AddOpenApiDocument(options =>
             {
                 options.Title = "PromoCode Factory API Doc";
@@ -39,7 +42,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IDbInitializer dbInitializer)
         {
             if (env.IsDevelopment())
             {
@@ -64,6 +67,8 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
             {
                 endpoints.MapControllers();
             });
+            
+            dbInitializer.InitializeDb();
         }
     }
 }

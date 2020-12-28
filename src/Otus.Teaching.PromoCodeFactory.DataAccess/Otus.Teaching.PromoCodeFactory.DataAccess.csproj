@@ -8,4 +8,21 @@
       <ProjectReference Include="..\Otus.Teaching.PromoCodeFactory.Core\Otus.Teaching.PromoCodeFactory.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.10" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.10">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.10" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.10" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.10">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.1.10" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.10" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="3.1.10" />
+    </ItemGroup>
+
 </Project>

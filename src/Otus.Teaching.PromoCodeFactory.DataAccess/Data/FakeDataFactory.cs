@@ -65,6 +65,31 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
             }
         };
 
+        public static IEnumerable<PromoCode> PromoCodes 
+        {
+            get
+            {
+                var employee = Employees.First(e => e.Id == Guid.Parse("451533d5-d8d5-4a11-9c7b-eb9f14e1a32f"));
+                var preference = Preferences.First(p => p.Name == "Театр");
+                var promoCodes = new List<PromoCode>()
+                {
+                    new PromoCode()
+                    {
+                        Id = Guid.Parse("131c9e73-9a71-449b-8e8e-07c3069559a9"),
+                        BeginDate = new DateTime(2020, 12, 12),
+                        EndDate = new DateTime(2020, 12, 31),
+                        Code = "Code1",
+                        CustomerId = Guid.Parse("a6c8c6b1-4349-45b0-ab31-244740aaf0f0"),
+                        //PartnerManager = employee,
+                        PartnerName = employee.FullName,
+                        //Preference = preference,
+                        ServiceInfo = "info"
+                    }
+                };
+                return promoCodes;
+            }
+        }
+        
         public static IEnumerable<Customer> Customers
         {
             get
@@ -78,12 +103,28 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                         Email = "ivan_sergeev@mail.ru",
                         FirstName = "Иван",
                         LastName = "Петров",
-                        //TODO: Добавить предзаполненный список предпочтений
-                    }
+                        CustomerPreferences = new List<CustomerPreference>()
+                        {
+                            new CustomerPreference()
+                            {
+                                Id = Guid.Parse("e6be5657-6c5e-4d00-895f-7df1d3cd396a"),
+                                CustomerId = customerId,
+                                PreferenceId = Preferences.First(pref => pref.Name == "Семья").Id
+                            },
+                            new CustomerPreference()
+                            {
+                                Id = Guid.Parse("86c8e1ce-ea4b-4bbc-b59b-2470331cc851"),
+                                CustomerId = customerId,
+                                PreferenceId = Preferences.First(pref => pref.Name == "Театр").Id
+                            }
+                        },
+                        PromoCodes = new List<PromoCode>(
+                            PromoCodes.Where(pc => pc.Id == Guid.Parse("131c9e73-9a71-449b-8e8e-07c3069559a9")))
+                        }
                 };
-
                 return customers;
             }
         }
+        
     }
 }
