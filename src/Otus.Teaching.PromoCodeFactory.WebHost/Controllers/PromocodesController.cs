@@ -75,7 +75,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
 
                 await _promoRepository.AddAsync(code);
 
-                var custs = await _custRepository.FilterAsync(x => x.Preferences.Any(y => y.Preference.Id == preference.Id));
+                var custs = await _custRepository.FilterAsync(x => x.Preferences?.Any(y => y.Preference.Id == preference.Id));
 
                 foreach (var cust in custs)
                 {

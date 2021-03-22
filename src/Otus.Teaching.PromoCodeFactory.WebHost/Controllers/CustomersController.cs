@@ -116,10 +116,12 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
             customer.LastName = request.LastName;
             customer.Preferences?.Clear();
 
-            customer.Preferences = preferences?.Select(x => new CustomerPreference()
+            customer.Preferences = preferences.Select(x => new CustomerPreference()
             {
                 Customer = customer,
-                Preference = x
+                CustomerId = customer.Id,
+                Preference = x,
+                PreferenceId = x.Id
             }).ToList();
 
             await _custRepository.UpdateAsync(customer);

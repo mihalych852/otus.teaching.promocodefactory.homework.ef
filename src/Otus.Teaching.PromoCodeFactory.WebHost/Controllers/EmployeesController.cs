@@ -63,8 +63,8 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
                 Role = new RoleItemDTO()
                 {
                     Id = employee.Id,
-                    Name = employee.Role.Name,
-                    Description = employee.Role.Description
+                    Name = employee.Role?.Name,
+                    Description = employee.Role?.Description
                 },
                 FullName = employee.FullName,
                 AppliedPromocodesCount = employee.AppliedPromocodesCount
