@@ -11,7 +11,7 @@
         
         public void Init()
         {
-            _context.Database.EnsureDeleted();
+            //_context.Database.EnsureDeleted();
             _context.Database.EnsureCreated();
             
             _context.AddRange(FakeDataFactory.Employees);
