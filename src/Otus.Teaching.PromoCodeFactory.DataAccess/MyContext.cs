@@ -68,11 +68,11 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
             modelBuilder.Entity<Employee>()
                .Property(c => c.AppliedPromocodesCount);
 
-            modelBuilder.Entity<Employee>()
-                .HasOne(bc => bc.Role)
-                .WithMany()
-                .HasForeignKey(bc => bc.RoleId)
-                .OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<Employee>()
+            //    .HasOne(bc => bc.Role)
+            //    .WithMany()
+            //    .HasForeignKey(bc => bc.RoleId)
+            //    .OnDelete(DeleteBehavior.Cascade);
 
             // Customer
             modelBuilder.Entity<Customer>()
@@ -133,33 +133,31 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
                .HasMaxLength(256)
                .IsRequired();
 
-            modelBuilder.Entity<PromoCode>()
-                .HasOne(bc => bc.PartnerManager)
-                .WithMany()
-                .HasForeignKey(bc => bc.PartnerManagerId)
-                .OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<PromoCode>()
+            //    .HasOne(bc => bc.PartnerManager)
+            //    .WithMany()
+            //    .HasForeignKey(bc => bc.PartnerManagerId)
+            //    .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<PromoCode>()
-                .HasOne(bc => bc.Preference)
-                .WithMany()
-                .HasForeignKey(bc => bc.PreferenceId)
-                .OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<PromoCode>()
+            //    .HasOne(bc => bc.Preference)
+            //    .WithMany()
+            //    .HasForeignKey(bc => bc.PreferenceId)
+            //    .OnDelete(DeleteBehavior.Cascade);
 
             // CustomerPreference
             modelBuilder.Entity<CustomerPreference>()
                 .HasKey(bc => new { bc.CustomerId, bc.PreferenceId });
 
-            modelBuilder.Entity<CustomerPreference>()
-                .HasOne(bc => bc.Customer)
-                .WithMany(b => b.Preferences)
-                .HasForeignKey(bc => bc.CustomerId)
-                .OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<CustomerPreference>()
+            //    .HasOne(bc => bc.Customer)
+            //    .WithMany(b => b.Preferences)
+            //    .HasForeignKey(bc => bc.CustomerId);
 
-            modelBuilder.Entity<CustomerPreference>()
-                .HasOne(bc => bc.Preference)
-                .WithMany()
-                .HasForeignKey(bc => bc.PreferenceId)
-                .OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<CustomerPreference>()
+            //    .HasOne(bc => bc.Preference)
+            //    .WithMany()
+            //    .HasForeignKey(bc => bc.PreferenceId);
         }
     }
 }

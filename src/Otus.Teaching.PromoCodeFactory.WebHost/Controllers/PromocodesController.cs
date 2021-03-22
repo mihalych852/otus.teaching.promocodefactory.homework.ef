@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Otus.Teaching.PromoCodeFactory.Core.Abstractions.Repositories;
+using Otus.Teaching.PromoCodeFactory.Core.Domain.Administration;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement;
 using Otus.Teaching.PromoCodeFactory.WebHost.Models;
 
@@ -19,12 +20,14 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         private readonly IRepository<PromoCode> _promoRepository;
         private readonly IRepository<Preference> _prefRepository;
         private readonly IRepository<Customer> _custRepository;
+        private readonly IRepository<Employee> _empRepository;
 
-        public PromocodesController(IRepository<PromoCode> promoRepository, IRepository<Preference> prefRepository, IRepository<Customer> custRepository)
+        public PromocodesController(IRepository<PromoCode> promoRepository, IRepository<Preference> prefRepository, IRepository<Customer> custRepository, IRepository<Employee> empRepository)
         {
             _promoRepository = promoRepository;
             _prefRepository = prefRepository;
             _custRepository = custRepository;
+            _empRepository = empRepository;
         }
         
         /// <summary>
@@ -64,19 +67,28 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
 
             if (preference != null)
             {
+
+                var employees = await _empRepository.GetAllAsync();
+
+                var employee = employees.FirstOrDefault();
+
+                if (employee == null)
+                    return NotFound();
+
                 var code = new PromoCode()
                 {
                     Code = request.PromoCode,
                     ServiceInfo = request.ServiceInfo,
                     PartnerName = request.PartnerName,
-                    PreferenceId = preference.Id
+                    Preference = preference,
+                    PartnerManager = employee
                 };
 
                 await _promoRepository.AddAsync(code);
 
                 var custs = await _custRepository.GetAllAsync();
 
-                var cc = custs.Where(x => x.Preferences.Any(y => y.Preference.Id == preference.Id));
+                var cc = custs.Where(x => x.Preferences != null && x.Preferences.Any(y => y.Preference.Id == preference.Id)).ToList();
 
                 foreach (var cust in cc)
                 {
