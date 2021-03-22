@@ -69,10 +69,10 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
             {
                 var employees = await _empRepository.GetAllAsync();
 
-                var employee = employees.FirstOrDefault();
+                var employee = employees.Where(x => x.FullName == request.PartnerName).FirstOrDefault();
 
                 if (employee == null)
-                    return NotFound();
+                    throw new ApplicationException("Partner not found");
 
                 var code = new PromoCode()
                 {
