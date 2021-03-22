@@ -136,14 +136,12 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
             //modelBuilder.Entity<PromoCode>()
             //    .HasOne(bc => bc.PartnerManager)
             //    .WithMany()
-            //    .HasForeignKey(bc => bc.PartnerManagerId)
-            //    .OnDelete(DeleteBehavior.Cascade);
+            //    .HasForeignKey(bc => bc.PartnerManagerId);
 
             //modelBuilder.Entity<PromoCode>()
             //    .HasOne(bc => bc.Preference)
             //    .WithMany()
-            //    .HasForeignKey(bc => bc.PreferenceId)
-            //    .OnDelete(DeleteBehavior.Cascade);
+            //    .HasForeignKey(bc => bc.PreferenceId);
 
             // CustomerPreference
             modelBuilder.Entity<CustomerPreference>()

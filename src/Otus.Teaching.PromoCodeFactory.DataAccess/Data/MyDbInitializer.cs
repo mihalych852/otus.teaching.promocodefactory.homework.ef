@@ -14,6 +14,9 @@
             //_context.Database.EnsureDeleted();
             if (_context.Database.EnsureCreated())
             {
+                _context.AddRange(FakeDataFactory.Roles);
+                _context.SaveChanges();
+
                 _context.AddRange(FakeDataFactory.Employees);
                 _context.SaveChanges();
 

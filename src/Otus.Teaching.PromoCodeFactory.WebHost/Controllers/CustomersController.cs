@@ -62,6 +62,14 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
                 {
                     Id = x.PreferenceId,
                     Name = x.Preference.Name
+                }).ToList(),
+
+                PromoCodes = customer.PromoCodes?.Select(x => new PromoCodeShortDTO()
+                {
+                    Id = x.Id,
+                    Code = x.Code,
+                    PartnerName = x.PartnerName,
+                    ServiceInfo = x.ServiceInfo
                 }).ToList()
             };
 

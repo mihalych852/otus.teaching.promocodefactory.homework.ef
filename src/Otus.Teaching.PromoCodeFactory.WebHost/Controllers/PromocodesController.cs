@@ -67,7 +67,6 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
 
             if (preference != null)
             {
-
                 var employees = await _empRepository.GetAllAsync();
 
                 var employee = employees.FirstOrDefault();
@@ -93,10 +92,11 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
                 foreach (var cust in cc)
                 {
                     cust.PromoCodes.Add(code);
+                    await _custRepository.UpdateAsync(cust);
                 }
             }
             else {
-                NoContent();
+                throw new ApplicationException("Preference not found");
             }
 
             return Ok();
