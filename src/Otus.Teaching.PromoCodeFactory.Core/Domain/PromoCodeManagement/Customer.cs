@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement
 {
@@ -13,5 +12,7 @@ namespace Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement
         public string Email { get; set; }
 
         public virtual ICollection<CustomerPreference> Preferences { get; set; }
+
+        public virtual ICollection<PromoCode> PromoCodes { get; set; }
     }
 }

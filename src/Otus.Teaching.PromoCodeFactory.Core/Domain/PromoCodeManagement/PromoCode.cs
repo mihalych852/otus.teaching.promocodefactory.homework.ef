@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.Administration;
 
 namespace Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement
@@ -11,7 +10,11 @@ namespace Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement
         public DateTime BeginDate { get; set; }
         public DateTime EndDate { get; set; }
         public string PartnerName { get; set; }
+
+        public Guid PartnerManagerId { get; set; }
         public virtual Employee PartnerManager { get; set; }
+
+        public Guid PreferenceId { get; set; }
         public virtual Preference Preference { get; set; }
     }
 }

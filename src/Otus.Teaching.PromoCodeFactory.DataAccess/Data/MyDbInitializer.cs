@@ -22,6 +22,9 @@
             
             _context.AddRange(FakeDataFactory.Customers);
             _context.SaveChanges();
+
+            _context.AddRange(FakeDataFactory.PromoCodes);
+            _context.SaveChanges();
         }
     }
 }

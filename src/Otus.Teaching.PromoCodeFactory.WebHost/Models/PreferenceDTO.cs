@@ -2,11 +2,10 @@
 
 namespace Otus.Teaching.PromoCodeFactory.WebHost.Models
 {
-    public class RoleItemResponse
+    public class PreferenceDTO
     {
         public Guid Id { get; set; }
+        
         public string Name { get; set; }
-
-        public string Description { get; set; }
     }
 }

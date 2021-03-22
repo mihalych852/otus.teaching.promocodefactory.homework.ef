@@ -65,6 +65,23 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
             }
         };
 
+
+        public static List<PromoCode> PromoCodes => new List<PromoCode>()
+        {
+            new PromoCode()
+            {
+                Id = Guid.Parse("ef7f299f-92d7-459f-896e-078ed53ef99c"),
+                Code = "Театр",
+                ServiceInfo = "Театр",
+                BeginDate = DateTime.MinValue,
+                EndDate = DateTime.MaxValue,
+                PartnerName = "Театр",
+                PartnerManagerId =  Guid.Parse("f766e2bf-340a-46ea-bff3-f1700b435895"),
+                PreferenceId =  Guid.Parse("ef7f299f-92d7-459f-896e-078ed53ef99c")
+            }
+        };
+
+
         public static List<Customer> Customers
         {
             get
@@ -83,12 +100,12 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                             new CustomerPreference()
                             {
                                 CustomerId = customerId,
-                                PreferenceId = Guid.Parse("62722f0f-e43d-4c52-80b5-546b3c27b990")
+                                PreferenceId = Guid.Parse("ef7f299f-92d7-459f-896e-078ed53ef99c")
                             },
                             new CustomerPreference()
                             {
                                 CustomerId = customerId,
-                                PreferenceId = Guid.Parse("97b14e9a-7629-4e29-92d3-d703a9c945cc")
+                                PreferenceId = Guid.Parse("c4bda62e-fc74-4256-a956-4760b3858cbd")
                             }
                         }
                     }
