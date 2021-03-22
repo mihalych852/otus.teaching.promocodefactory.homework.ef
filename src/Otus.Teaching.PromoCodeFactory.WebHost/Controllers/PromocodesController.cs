@@ -59,9 +59,8 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
             if (request == null)
                 NotFound();
 
-            var preferences = await _prefRepository.FilterAsync(x => x.Name == request.Preference);
-
-            var preference = preferences.FirstOrDefault();
+            var preferences = await _prefRepository.GetAllAsync();
+            var preference = preferences.Where(x => x.Name == request.Preference).FirstOrDefault();
 
             if (preference != null)
             {
@@ -75,9 +74,11 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
 
                 await _promoRepository.AddAsync(code);
 
-                var custs = await _custRepository.FilterAsync(x => x.Preferences?.Any(y => y.Preference.Id == preference.Id));
+                var custs = await _custRepository.GetAllAsync();
 
-                foreach (var cust in custs)
+                var cc = custs.Where(x => x.Preferences.Any(y => y.Preference.Id == preference.Id));
+
+                foreach (var cust in cc)
                 {
                     cust.PromoCodes.Add(code);
                 }
