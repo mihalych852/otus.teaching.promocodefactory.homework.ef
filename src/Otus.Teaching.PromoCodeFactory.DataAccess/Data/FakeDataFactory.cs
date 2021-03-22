@@ -8,7 +8,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
 {
     public static class FakeDataFactory
     {
-        public static IEnumerable<Employee> Employees => new List<Employee>()
+        public static List<Employee> Employees => new List<Employee>()
         {
             new Employee()
             {
@@ -30,7 +30,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
             },
         };
 
-        public static IEnumerable<Role> Roles => new List<Role>()
+        public static List<Role> Roles => new List<Role>()
         {
             new Role()
             {
@@ -46,7 +46,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
             }
         };
         
-        public static IEnumerable<Preference> Preferences => new List<Preference>()
+        public static List<Preference> Preferences => new List<Preference>()
         {
             new Preference()
             {
@@ -65,7 +65,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
             }
         };
 
-        public static IEnumerable<Customer> Customers
+        public static List<Customer> Customers
         {
             get
             {
@@ -78,7 +78,19 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                         Email = "ivan_sergeev@mail.ru",
                         FirstName = "Иван",
                         LastName = "Петров",
-                        //TODO: Добавить предзаполненный список предпочтений
+                        Preferences = new List<CustomerPreference>()
+                        {
+                            new CustomerPreference()
+                            {
+                                CustomerId = customerId,
+                                PreferenceId = Guid.Parse("62722f0f-e43d-4c52-80b5-546b3c27b990")
+                            },
+                            new CustomerPreference()
+                            {
+                                CustomerId = customerId,
+                                PreferenceId = Guid.Parse("97b14e9a-7629-4e29-92d3-d703a9c945cc")
+                            }
+                        }
                     }
                 };
 
