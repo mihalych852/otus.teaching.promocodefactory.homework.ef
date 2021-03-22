@@ -12,19 +12,20 @@
         public void Init()
         {
             //_context.Database.EnsureDeleted();
-            _context.Database.EnsureCreated();
-            
-            _context.AddRange(FakeDataFactory.Employees);
-            _context.SaveChanges();
-            
-            _context.AddRange(FakeDataFactory.Preferences);
-            _context.SaveChanges();
-            
-            _context.AddRange(FakeDataFactory.Customers);
-            _context.SaveChanges();
+            if (_context.Database.EnsureCreated())
+            {
+                _context.AddRange(FakeDataFactory.Employees);
+                _context.SaveChanges();
 
-            _context.AddRange(FakeDataFactory.PromoCodes);
-            _context.SaveChanges();
+                _context.AddRange(FakeDataFactory.Preferences);
+                _context.SaveChanges();
+
+                _context.AddRange(FakeDataFactory.Customers);
+                _context.SaveChanges();
+
+                _context.AddRange(FakeDataFactory.PromoCodes);
+                _context.SaveChanges();
+            }
         }
     }
 }

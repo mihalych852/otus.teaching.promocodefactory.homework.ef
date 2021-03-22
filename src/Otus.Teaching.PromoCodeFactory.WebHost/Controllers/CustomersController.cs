@@ -47,6 +47,10 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         public async Task<ActionResult<CustomerDTO>> GetCustomerAsync(Guid id)
         {
             var customer =  await _custRepository.GetByIdAsync(id);
+
+            if (customer == null)
+                NotFound();
+
             var response = new CustomerDTO()
             {
                 Id = customer.Id,
@@ -54,7 +58,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
                 FirstName = customer.FirstName,
                 LastName = customer.LastName,
 
-                Preferences = customer.Preferences.Select(x => new PreferenceDTO()
+                Preferences = customer.Preferences?.Select(x => new PreferenceDTO()
                 {
                     Id = x.PreferenceId,
                     Name = x.Preference.Name
@@ -81,7 +85,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
                 LastName = request.LastName,
             };
 
-            customer.Preferences = preferences.Select(x => new CustomerPreference()
+            customer.Preferences = preferences?.Select(x => new CustomerPreference()
             {
                 Customer = customer,
                 Preference = x
@@ -110,9 +114,9 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
             customer.Email = request.Email;
             customer.FirstName = request.FirstName;
             customer.LastName = request.LastName;
-            customer.Preferences.Clear();
+            customer.Preferences?.Clear();
 
-            customer.Preferences = preferences.Select(x => new CustomerPreference()
+            customer.Preferences = preferences?.Select(x => new CustomerPreference()
             {
                 Customer = customer,
                 Preference = x
@@ -136,8 +140,8 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
             if (customer == null)
                 return NotFound();
 
-            customer.Preferences.Clear();
-            customer.PromoCodes.Clear();
+            customer.Preferences?.Clear();
+            customer.PromoCodes?.Clear();
 
             await _custRepository.DeleteAsync(customer);
 
