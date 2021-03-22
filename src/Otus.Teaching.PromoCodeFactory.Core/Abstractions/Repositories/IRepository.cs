@@ -12,7 +12,7 @@ namespace Otus.Teaching.PromoCodeFactory.Core.Abstractions.Repositories
         
         Task<T> GetByIdAsync(Guid id);
         
-        Task<IEnumerable<T>> GetRangeByIdsAsync(List<Guid> ids);
+        Task<IEnumerable<T>> FilterByIdsAsync(List<Guid> ids);
 
         Task<IEnumerable<T>> FilterAsync(Expression<Func<T, bool>> predicate);
 

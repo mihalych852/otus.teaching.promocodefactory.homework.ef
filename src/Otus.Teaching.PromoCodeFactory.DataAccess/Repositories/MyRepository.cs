@@ -32,7 +32,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Repositories
             return entity;
         }
 
-        public async Task<IEnumerable<T>> GetRangeByIdsAsync(List<Guid> ids)
+        public async Task<IEnumerable<T>> FilterByIdsAsync(List<Guid> ids)
         {
             var entities = await _context.Set<T>().Where(x => ids.Contains(x.Id)).ToListAsync();
             return entities;

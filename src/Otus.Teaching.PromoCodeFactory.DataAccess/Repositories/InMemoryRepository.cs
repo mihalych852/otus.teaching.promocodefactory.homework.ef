@@ -27,7 +27,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Repositories
             return Task.FromResult(Data.FirstOrDefault(x => x.Id == id));
         }
 
-        public Task<IEnumerable<T>> GetRangeByIdsAsync(List<Guid> ids)
+        public Task<IEnumerable<T>> FilterByIdsAsync(List<Guid> ids)
         {
             return Task.FromResult(Data.Where(x => ids.Contains(x.Id)).AsEnumerable());
         }
