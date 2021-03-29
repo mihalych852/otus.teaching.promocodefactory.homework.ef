@@ -17,11 +17,11 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
     public class EmployeesController
         : ControllerBase
     {
-        private readonly IRepository<Employee> _employeeRepository;
+        private readonly IRepository<Employee> _empRepository;
 
-        public EmployeesController(IRepository<Employee> employeeRepository)
+        public EmployeesController(IRepository<Employee> empRepository)
         {
-            _employeeRepository = employeeRepository;
+            _empRepository = empRepository;
         }
         
         /// <summary>
@@ -29,12 +29,12 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<List<EmployeeShortResponse>> GetEmployeesAsync()
+        public async Task<List<EmployeeShortDTO>> GetEmployeesAsync()
         {
-            var employees = await _employeeRepository.GetAllAsync();
+            var employees = await _empRepository.GetAllAsync();
 
             var employeesModelList = employees.Select(x => 
-                new EmployeeShortResponse()
+                new EmployeeShortDTO()
                     {
                         Id = x.Id,
                         Email = x.Email,
@@ -45,31 +45,68 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         }
         
         /// <summary>
-        /// Получить данные сотрудника по id
+        /// Получить данные сотрудника по Id
         /// </summary>
         /// <returns></returns>
         [HttpGet("{id:guid}")]
-        public async Task<ActionResult<EmployeeResponse>> GetEmployeeByIdAsync(Guid id)
+        public async Task<ActionResult<EmployeeDTO>> GetEmployeeByIdAsync(Guid id)
         {
-            var employee = await _employeeRepository.GetByIdAsync(id);
+            var employee = await _empRepository.GetByIdAsync(id);
 
             if (employee == null)
                 return NotFound();
 
-            var employeeModel = new EmployeeResponse()
+            var employeeModel = new EmployeeDTO()
             {
                 Id = employee.Id,
                 Email = employee.Email,
-                Role = new RoleItemResponse()
+                Role = new RoleItemDTO()
                 {
-                    Name = employee.Role.Name,
-                    Description = employee.Role.Description
+                    Id = employee.Id,
+                    Name = employee.Role?.Name,
+                    Description = employee.Role?.Description
                 },
                 FullName = employee.FullName,
                 AppliedPromocodesCount = employee.AppliedPromocodesCount
             };
 
             return employeeModel;
+        }
+
+        /// <summary>
+        /// Создать сотрудника
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("add")]
+        public async Task<ActionResult> AddEmployeeAsync(Employee emp)
+        {
+            await _empRepository.AddAsync(emp);
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// Удалить сотрудника
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("delete")]
+        public async Task<ActionResult> DeleteEmployeeAsync(Employee emp)
+        {
+            await _empRepository.DeleteAsync(emp);
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// Обновить сотрудника
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("edit")]
+        public async Task<ActionResult> UpdateEmployeeAsync(Employee emp)
+        {
+            await _empRepository.UpdateAsync(emp);
+
+            return Ok();
         }
     }
 }

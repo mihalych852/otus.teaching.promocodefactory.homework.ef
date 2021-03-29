@@ -8,29 +8,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
 {
     public static class FakeDataFactory
     {
-        public static IEnumerable<Employee> Employees => new List<Employee>()
-        {
-            new Employee()
-            {
-                Id = Guid.Parse("451533d5-d8d5-4a11-9c7b-eb9f14e1a32f"),
-                Email = "owner@somemail.ru",
-                FirstName = "Иван",
-                LastName = "Сергеев",
-                Role = Roles.FirstOrDefault(x => x.Name == "Admin"),
-                AppliedPromocodesCount = 5
-            },
-            new Employee()
-            {
-                Id = Guid.Parse("f766e2bf-340a-46ea-bff3-f1700b435895"),
-                Email = "andreev@somemail.ru",
-                FirstName = "Петр",
-                LastName = "Андреев",
-                Role = Roles.FirstOrDefault(x => x.Name == "PartnerManager"),
-                AppliedPromocodesCount = 10
-            },
-        };
-
-        public static IEnumerable<Role> Roles => new List<Role>()
+        public static List<Role> Roles => new List<Role>()
         {
             new Role()
             {
@@ -45,8 +23,30 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                 Description = "Партнерский менеджер"
             }
         };
+
+        public static List<Employee> Employees => new List<Employee>()
+        {
+            new Employee()
+            {
+                Id = Guid.Parse("451533d5-d8d5-4a11-9c7b-eb9f14e1a32f"),
+                Email = "owner@somemail.ru",
+                FirstName = "Иван",
+                LastName = "Сергеев",
+                RoleId = Guid.Parse("53729686-a368-4eeb-8bfa-cc69b6050d02"),
+                AppliedPromocodesCount = 5
+            },
+            new Employee()
+            {
+                Id = Guid.Parse("f766e2bf-340a-46ea-bff3-f1700b435895"),
+                Email = "andreev@somemail.ru",
+                FirstName = "Петр",
+                LastName = "Андреев",
+                RoleId = Guid.Parse("b0ae7aac-5493-45cd-ad16-87426a5e7665"),
+                AppliedPromocodesCount = 10
+            },
+        };
         
-        public static IEnumerable<Preference> Preferences => new List<Preference>()
+        public static List<Preference> Preferences => new List<Preference>()
         {
             new Preference()
             {
@@ -65,7 +65,24 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
             }
         };
 
-        public static IEnumerable<Customer> Customers
+
+        public static List<PromoCode> PromoCodes => new List<PromoCode>()
+        {
+            new PromoCode()
+            {
+                Id = Guid.Parse("ef7f299f-92d7-459f-896e-078ed53ef99c"),
+                Code = "Театр",
+                ServiceInfo = "Театр",
+                BeginDate = DateTime.MinValue,
+                EndDate = DateTime.MaxValue,
+                PartnerName = "Театр",
+                PartnerManagerId =  Guid.Parse("f766e2bf-340a-46ea-bff3-f1700b435895"),
+                PreferenceId =  Guid.Parse("ef7f299f-92d7-459f-896e-078ed53ef99c")
+            }
+        };
+
+
+        public static List<Customer> Customers
         {
             get
             {
@@ -78,7 +95,19 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                         Email = "ivan_sergeev@mail.ru",
                         FirstName = "Иван",
                         LastName = "Петров",
-                        //TODO: Добавить предзаполненный список предпочтений
+                        Preferences = new List<CustomerPreference>()
+                        {
+                            new CustomerPreference()
+                            {
+                                CustomerId = customerId,
+                                PreferenceId = Guid.Parse("ef7f299f-92d7-459f-896e-078ed53ef99c")
+                            },
+                            new CustomerPreference()
+                            {
+                                CustomerId = customerId,
+                                PreferenceId = Guid.Parse("c4bda62e-fc74-4256-a956-4760b3858cbd")
+                            }
+                        }
                     }
                 };
 
