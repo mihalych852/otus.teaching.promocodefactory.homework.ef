@@ -10,7 +10,11 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-        //TODO: Добавить список предпочтений
+
+        public bool IsVerified { get; set; }
+
+        public List<PreferenceResponse> Preferences { get; set; }
+
         public List<PromoCodeShortResponse> PromoCodes { get; set; }
     }
 }
