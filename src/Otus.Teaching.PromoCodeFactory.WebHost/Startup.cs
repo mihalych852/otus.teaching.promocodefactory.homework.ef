@@ -1,16 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Otus.Teaching.PromoCodeFactory.Core.Abstractions.Repositories;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.Administration;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement;
-using Otus.Teaching.PromoCodeFactory.DataAccess.Data;
+using Otus.Teaching.PromoCodeFactory.DataAccess.Database;
 using Otus.Teaching.PromoCodeFactory.DataAccess.Repositories;
 
 namespace Otus.Teaching.PromoCodeFactory.WebHost
@@ -22,14 +20,27 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddScoped(typeof(IRepository<Employee>), (x) => 
-                new InMemoryRepository<Employee>(FakeDataFactory.Employees));
-            services.AddScoped(typeof(IRepository<Role>), (x) => 
-                new InMemoryRepository<Role>(FakeDataFactory.Roles));
-            services.AddScoped(typeof(IRepository<Preference>), (x) => 
-                new InMemoryRepository<Preference>(FakeDataFactory.Preferences));
-            services.AddScoped(typeof(IRepository<Customer>), (x) => 
-                new InMemoryRepository<Customer>(FakeDataFactory.Customers));
+            
+            services.AddDbContext<PromoCodesDbContext>(options =>
+            {
+                options.UseSqlite(@"Data Source=promocodes.db", b => 
+                    b.MigrationsAssembly(typeof(Startup).Assembly.FullName));
+                options.UseLoggerFactory(LoggerFactory.Create(builder => { builder.AddConsole(); }));
+            });
+            
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddMaps(typeof(Startup).Assembly);
+            });
+
+            var mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
+            services.AddScoped<IRepository<Employee>, EfRepository<Employee>>();
+            services.AddScoped<IRepository<Role>, EfRepository<Role>>();
+            services.AddScoped<IRepository<Customer>, EfRepository<Customer>>();
+            services.AddScoped<IRepository<Preference>, EfRepository<Preference>>();
+            services.AddScoped<IRepository<PromoCode>, EfRepository<PromoCode>>();
 
             services.AddOpenApiDocument(options =>
             {
@@ -50,6 +61,8 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
                 app.UseHsts();
             }
 
+            MigrateOnStartup(app);
+
             app.UseOpenApi();
             app.UseSwaggerUi3(x =>
             {
@@ -64,6 +77,13 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private static void MigrateOnStartup(IApplicationBuilder app)
+        {
+            using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
+            using var context = serviceScope.ServiceProvider.GetRequiredService<PromoCodesDbContext>();
+            context.Database.Migrate();
         }
     }
 }

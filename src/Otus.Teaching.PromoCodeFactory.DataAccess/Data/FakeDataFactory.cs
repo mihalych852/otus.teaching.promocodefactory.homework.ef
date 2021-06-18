@@ -69,16 +69,23 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
         {
             get
             {
-                var customerId = Guid.Parse("a6c8c6b1-4349-45b0-ab31-244740aaf0f0");
                 var customers = new List<Customer>()
                 {
                     new Customer()
                     {
-                        Id = customerId,
+                        Id = Guid.Parse("a6c8c6b1-4349-45b0-ab31-244740aaf0f0"),
                         Email = "ivan_sergeev@mail.ru",
                         FirstName = "Иван",
                         LastName = "Петров",
-                        //TODO: Добавить предзаполненный список предпочтений
+                        Preferences = Preferences.ToList()
+                    },
+                    new Customer()
+                    {
+                        Id = Guid.Parse("a8878695-c513-4f74-9834-d0f4f8416dc7"),
+                        Email = "uasya_puplin@mail.ru",
+                        FirstName = "Вася",
+                        LastName = "Пупкин",
+                        Preferences = Preferences.Where(p => p.Name == "Театр").ToList()
                     }
                 };
 

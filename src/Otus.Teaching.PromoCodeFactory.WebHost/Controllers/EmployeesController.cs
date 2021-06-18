@@ -51,7 +51,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<EmployeeResponse>> GetEmployeeByIdAsync(Guid id)
         {
-            var employee = await _employeeRepository.GetByIdAsync(id);
+            var employee = await _employeeRepository.GetByIdAsync(id, nameof(Employee.Role));
 
             if (employee == null)
                 return NotFound();
@@ -62,6 +62,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
                 Email = employee.Email,
                 Role = new RoleItemResponse()
                 {
+                    Id = employee.Role.Id,
                     Name = employee.Role.Name,
                     Description = employee.Role.Description
                 },
