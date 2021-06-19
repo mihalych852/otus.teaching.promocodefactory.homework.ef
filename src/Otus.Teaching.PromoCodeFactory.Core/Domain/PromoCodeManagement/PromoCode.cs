@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.Administration;
 
 namespace Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement
@@ -20,5 +19,7 @@ namespace Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement
         public Employee PartnerManager { get; set; }
 
         public Preference Preference { get; set; }
+        
+        public Customer Customer { get; set; }
     }
 }

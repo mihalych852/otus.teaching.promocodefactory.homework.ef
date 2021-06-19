@@ -15,8 +15,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Configuration.Automapper
             CreateMap<Customer, CustomerResponse>();
 
             CreateMap<CreateOrEditCustomerRequest, Customer>()
-                .ForMember(m => m.Preferences,
-                    opt =>
+                .ForMember(m => m.Preferences,  opt =>
                         opt.MapFrom(d =>
                             (d.PreferenceIds ?? new List<Guid>()).Select(p => new Preference {Id = p}).ToList()));
         }

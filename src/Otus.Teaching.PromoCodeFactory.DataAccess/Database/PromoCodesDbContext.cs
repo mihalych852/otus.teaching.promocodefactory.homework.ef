@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -74,9 +73,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Database
                 .UsingEntity(j => j.ToTable("CustomerPreference"));
 
             modelBuilder.Entity<Customer>()
-                .HasMany(c => c.PromoCodes)
-                .WithOne()
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasMany(c => c.PromoCodes);
             
             modelBuilder.Entity<Customer>()
                 .Property(c => c.Email)
@@ -118,6 +115,9 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Database
             modelBuilder.Entity<PromoCode>()
                 .HasOne(p => p.PartnerManager)
                 .WithMany();
+            
+            modelBuilder.Entity<PromoCode>()
+                .HasOne(p => p.Customer);
 
             modelBuilder.Entity<PromoCode>()
                 .Property(p => p.Code)

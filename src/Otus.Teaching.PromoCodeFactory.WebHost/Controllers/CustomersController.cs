@@ -53,7 +53,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<CustomerResponse>> GetCustomerAsync([Required] Guid id)
         {
-            var customer = await _customerRepository.GetByIdAsync(id, nameof(Customer.Preferences));
+            var customer = await _customerRepository.GetByIdAsync(id, nameof(Customer.Preferences), nameof(Customer.PromoCodes));
             if (customer == null)
                 return NotFound();
 

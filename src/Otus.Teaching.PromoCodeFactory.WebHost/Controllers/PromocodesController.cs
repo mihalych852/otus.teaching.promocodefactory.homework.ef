@@ -53,7 +53,8 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<PromoCodeShortResponse>> GivePromoCodesToCustomersWithPreferenceAsync([Required][FromBody] GivePromoCodeRequest request)
+        public async Task<ActionResult<IEnumerable<PromoCodeShortResponse>>> GivePromoCodesToCustomersWithPreferenceAsync(
+            [Required][FromBody] GivePromoCodeRequest request)
         {
             var preference = (await _preferenceRepository.GetAsync(p => p.Name == request.Preference, 
                     nameof(Preference.Customers)))
@@ -62,22 +63,20 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
             if (preference == null)
                 return NotFound();
 
-            var promoCode = _mapper.Map<PromoCode>(request);
-            promoCode.Preference = preference;
-
-            await _promoCodeRepository.CreateAsync(promoCode);
-
+            var resultCodes = new List<PromoCodeShortResponse>(preference.Customers?.Count ?? 0);
             if (preference.Customers?.Any() ?? false)
             {
                 foreach (var customer in preference.Customers)
                 {
-                    customer.PromoCodes ??= new List<PromoCode>(1);
-                    customer.PromoCodes.Add(promoCode);
-                    await _customerRepository.UpdateAsync(customer);
+                    var promoCode = _mapper.Map<PromoCode>(request);
+                    promoCode.Preference = preference;
+                    promoCode.Customer = customer;
+                    await _promoCodeRepository.CreateAsync(promoCode);
+                    resultCodes.Add(_mapper.Map<PromoCodeShortResponse>(promoCode));
                 }
             }
 
-            return _mapper.Map<PromoCodeShortResponse>(promoCode);
+            return resultCodes;
         }
     }
 }
