@@ -1,7 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Otus.Teaching.PromoCodeFactory.Core.Abstractions.Repositories;
+using Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement;
 using Otus.Teaching.PromoCodeFactory.WebHost.Models;
 
 namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
@@ -14,15 +19,33 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
     public class PromocodesController
         : ControllerBase
     {
+        private readonly IRepository<PromoCode> _promoCodeRepository;
+        private readonly IRepository<Preference> _preferenceRepository;
+        private readonly IRepository<Customer> _customerRepository;
+        private readonly IMapper _mapper;
+
+        public PromocodesController(
+            IRepository<PromoCode> promoCodeRepository, 
+            IRepository<Preference> preferenceRepository, 
+            IRepository<Customer> customerRepository, 
+            IMapper mapper)
+        {
+            _promoCodeRepository = promoCodeRepository ?? throw new ArgumentNullException(nameof(promoCodeRepository));
+            _preferenceRepository = preferenceRepository ?? throw new ArgumentNullException(nameof(preferenceRepository));
+            _customerRepository = customerRepository ?? throw new ArgumentNullException(nameof(customerRepository));
+            _mapper = mapper;
+        }
+        
         /// <summary>
         /// Получить все промокоды
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public Task<ActionResult<List<PromoCodeShortResponse>>> GetPromocodesAsync()
+        public async Task<ActionResult<List<PromoCodeShortResponse>>> GetPromocodesAsync()
         {
-            //TODO: Получить все промокоды 
-            throw new NotImplementedException();
+            return (await _promoCodeRepository.GetAllAsync())
+                .Select(p => _mapper.Map<PromoCodeShortResponse>(p))
+                .ToList();
         }
         
         /// <summary>
@@ -30,10 +53,30 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public Task<IActionResult> GivePromoCodesToCustomersWithPreferenceAsync(GivePromoCodeRequest request)
+        public async Task<ActionResult<IEnumerable<PromoCodeShortResponse>>> GivePromoCodesToCustomersWithPreferenceAsync(
+            [Required][FromBody] GivePromoCodeRequest request)
         {
-            //TODO: Создать промокод и выдать его клиентам с указанным предпочтением
-            throw new NotImplementedException();
+            var preference = (await _preferenceRepository.GetAsync(p => p.Name == request.Preference, 
+                    nameof(Preference.Customers)))
+                .FirstOrDefault();
+
+            if (preference == null)
+                return NotFound();
+
+            var resultCodes = new List<PromoCodeShortResponse>(preference.Customers?.Count ?? 0);
+            if (preference.Customers?.Any() ?? false)
+            {
+                foreach (var customer in preference.Customers)
+                {
+                    var promoCode = _mapper.Map<PromoCode>(request);
+                    promoCode.Preference = preference;
+                    promoCode.Customer = customer;
+                    await _promoCodeRepository.CreateAsync(promoCode);
+                    resultCodes.Add(_mapper.Map<PromoCodeShortResponse>(promoCode));
+                }
+            }
+
+            return resultCodes;
         }
     }
 }
