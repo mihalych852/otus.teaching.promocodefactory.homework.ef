@@ -6,9 +6,9 @@ namespace Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement
 {
     public class CustomerPreference
     {
-        public int CustomerId { get; set; }
+        public Guid CustomerId { get; set; }
         public Customer Customer { get; set; }
-        public int PreferenceId { get; set; }
+        public Guid PreferenceId { get; set; }
         public Preference Preference { get; set; }
     }
 }
