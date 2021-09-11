@@ -19,7 +19,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Repositories.EntityFramework
                 .Include(x => x.PromoCodes)
                 .Include(x => x.CustomerPreferences)
                 .ThenInclude(x => x.Preference)
-                .FirstAsync();
+                .FirstOrDefaultAsync();
 
             return item;
         }

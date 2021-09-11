@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.Administration;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement;
@@ -12,16 +13,6 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Infrastructure.Profiles
         {
             // DTOs
 
-            // Employee controller
-            CreateMap<Employee, EmployeeResponse>();
-            CreateMap<Employee, EmployeeShortResponse>();
-            //CreateMap<Role, EmployeeRoleItemResponse>();
-            //CreateMap<EmployeeCreateRequest, Employee>()
-            //    .ForMember(x => x.Roles, opt => opt.Ignore()); // Set from another entity
-
-            //CreateMap<EmployeeUpdateRequest, Employee>()
-            //    .ForMember(x => x.Roles, opt => opt.Ignore()); // Set from another entity
-
             // Role controller
             CreateMap<Role, RoleItemResponse>();
 
@@ -30,6 +21,13 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Infrastructure.Profiles
             CreateMap<Customer, CustomerResponse>()
                 .ForMember(dest => dest.Preferences,
                     opt => opt.MapFrom(src => src.CustomerPreferences.Select(x => x.Preference)));
+            CreateMap<CreateOrEditCustomerRequest, Customer>()
+                .ForMember(dest => dest.Id,
+                    opt => opt.Ignore()) // Не должно быть при создании и обновлении
+                .ForMember(dest => dest.PromoCodes,
+                    opt => opt.Ignore()) // Ручной мапинг
+                .ForMember(dest => dest.CustomerPreferences,
+                    opt => opt.Ignore()); // Ручной мапинг
 
             // PromoCodes
             CreateMap<PromoCode, PromoCodeShortResponse>();

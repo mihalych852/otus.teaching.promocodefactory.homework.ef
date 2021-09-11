@@ -90,6 +90,20 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                                 CustomerId = customerId,
                                 PreferenceId = Preferences.ElementAt(1).Id
                             }
+                        },
+                        PromoCodes = new List<PromoCode>()
+                        {
+                            new PromoCode()
+                            {
+                                Id = Guid.Parse("433F416D-BF84-488A-AFF1-03FC3EBCBDC1"),
+                                Code = "X5B6C29F",
+                                PreferenceId = Preferences.First().Id,
+                                PartnerName = "ТЕАТР МУЗЫКАЛЬНОЙ КОМЕДИИ",
+                                ServiceInfo = "Скидка 20% на посещение",
+                                PartnerManagerId = Employees.First().Id,
+                                BeginDate = DateTime.Now.Date,
+                                EndDate = DateTime.Now.Date.AddDays(7)
+                            }
                         }
                     }
                 };

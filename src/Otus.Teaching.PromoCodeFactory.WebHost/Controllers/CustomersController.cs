@@ -43,7 +43,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         /// </summary>
         /// <param name="id">id клиента</param>
         /// <returns></returns>
-        [HttpGet("{id}")]
+        [HttpGet("{id:guid}")]
         public async Task<ActionResult<CustomerResponse>> GetCustomerAsync(Guid id)
         {
             var customer = await _customerRepository.GetByIdAsync(id).ConfigureAwait(false);
@@ -51,25 +51,79 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
             return Ok(customerDto);
         }
         
+        /// <summary>
+        /// Создать нового клиента с предпочтениями.
+        /// </summary>
+        /// <param name="request">Информация о клиенте.</param>
+        /// <returns></returns>
         [HttpPost]
-        public Task<IActionResult> CreateCustomerAsync(CreateOrEditCustomerRequest request)
+        public async Task<IActionResult> CreateCustomerAsync(CreateOrEditCustomerRequest request)
         {
-            //TODO: Добавить создание нового клиента вместе с его предпочтениями
-            throw new NotImplementedException();
+            var customer = _mapper.Map<Customer>(request);
+            var preferences = new List<CustomerPreference>();
+            foreach (var preferenceId in request.PreferenceIds)
+            {
+                preferences.Add(new CustomerPreference()
+                {
+                    PreferenceId = preferenceId
+                });
+            }
+                
+            customer.CustomerPreferences = preferences;
+            
+            await _customerRepository.AddAsync(customer).ConfigureAwait(false);
+            return Ok();
         }
         
-        [HttpPut("{id}")]
-        public Task<IActionResult> EditCustomersAsync(Guid id, CreateOrEditCustomerRequest request)
+        /// <summary>
+        /// Обновить информацию о клиенте и его предпочтениях.
+        /// </summary>
+        /// <param name="id">Id клиента</param>
+        /// <param name="request">Информация о клиенте</param>
+        /// <returns></returns>
+        [HttpPut("{id:guid}")]
+        public async Task<IActionResult> EditCustomersAsync(Guid id, CreateOrEditCustomerRequest request)
         {
-            //TODO: Обновить данные клиента вместе с его предпочтениями
-            throw new NotImplementedException();
+            var customer = await _customerRepository.GetByIdAsync(id).ConfigureAwait(false);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+            
+            var preferences = new List<CustomerPreference>();
+            foreach (var preferenceId in request.PreferenceIds)
+            {
+                preferences.Add(new CustomerPreference()
+                {
+                    PreferenceId = preferenceId
+                });
+            }
+
+            customer.CustomerPreferences = preferences;
+            customer.Email = request.Email;
+            customer.FirstName = request.FirstName;
+            customer.LastName = request.LastName;
+
+            await _customerRepository.UpdateAsync(customer).ConfigureAwait(false);
+            return Ok();
         }
         
+        /// <summary>
+        /// Удалить клиента
+        /// </summary>
+        /// <param name="id">Id клиента</param>
+        /// <returns></returns>
         [HttpDelete]
-        public Task<IActionResult> DeleteCustomer(Guid id)
+        public async Task<IActionResult> DeleteCustomer(Guid id)
         {
-            //TODO: Удаление клиента вместе с выданными ему промокодами
-            throw new NotImplementedException();
+            var customer = await _customerRepository.GetByIdAsync(id).ConfigureAwait(false);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+
+            await _customerRepository.DeleteAsync(customer).ConfigureAwait(false);
+            return Ok();
         }
     }
 }

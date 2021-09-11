@@ -16,6 +16,10 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Configuration
 
             builder.Property(x => x.Email)
                 .HasMaxLength(255);
+
+            builder.HasMany(x => x.PromoCodes)
+                .WithOne(x => x.Customer)
+                .IsRequired();
         }
     }
 }

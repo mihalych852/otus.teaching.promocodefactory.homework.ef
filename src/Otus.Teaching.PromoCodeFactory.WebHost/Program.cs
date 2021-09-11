@@ -34,7 +34,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
                 }
             }
 
-            host.Run();
+            await host.RunAsync();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

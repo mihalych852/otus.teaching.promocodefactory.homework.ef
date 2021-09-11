@@ -18,7 +18,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Repositories.EntityFramework
                 .Where(x => x.Id == id)
                 .Include(x => x.CustomerPreferences)
                 .ThenInclude(x => x.Customer)
-                .FirstAsync();
+                .FirstOrDefaultAsync();
 
             return item;
         }
