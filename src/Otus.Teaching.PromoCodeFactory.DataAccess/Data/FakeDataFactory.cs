@@ -16,7 +16,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                 Email = "owner@somemail.ru",
                 FirstName = "Иван",
                 LastName = "Сергеев",
-                Role = Roles.FirstOrDefault(x => x.Name == "Admin"),
+                RoleId = Roles.First(x => x.Name == "Admin").Id,
                 AppliedPromocodesCount = 5
             },
             new Employee()
@@ -25,7 +25,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                 Email = "andreev@somemail.ru",
                 FirstName = "Петр",
                 LastName = "Андреев",
-                Role = Roles.FirstOrDefault(x => x.Name == "PartnerManager"),
+                RoleId = Roles.First(x => x.Name == "PartnerManager").Id,
                 AppliedPromocodesCount = 10
             },
         };
@@ -78,7 +78,19 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                         Email = "ivan_sergeev@mail.ru",
                         FirstName = "Иван",
                         LastName = "Петров",
-                        //TODO: Добавить предзаполненный список предпочтений
+                        CustomerPreferences = new List<CustomerPreference>()
+                        {
+                            new CustomerPreference()
+                            {
+                                CustomerId = customerId,
+                                PreferenceId = Preferences.ElementAt(0).Id
+                            },
+                            new CustomerPreference()
+                            {
+                                CustomerId = customerId,
+                                PreferenceId = Preferences.ElementAt(1).Id
+                            }
+                        }
                     }
                 };
 

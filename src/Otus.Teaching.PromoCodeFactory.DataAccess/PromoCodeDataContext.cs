@@ -7,6 +7,10 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
 {
     public class PromoCodeDataContext : DbContext
     {
+        public PromoCodeDataContext(DbContextOptions<PromoCodeDataContext> options) : base(options)
+        {
+        }
+
         public DbSet<Employee> Employees { get; set; }
 
         public DbSet<Role> Roles { get; set; }

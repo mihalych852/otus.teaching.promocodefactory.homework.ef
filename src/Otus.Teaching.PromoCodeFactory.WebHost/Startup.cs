@@ -33,14 +33,11 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddScoped(typeof(IRepository<Employee>), (x) => 
-                new InMemoryRepository<Employee>(FakeDataFactory.Employees));
-            services.AddScoped(typeof(IRepository<Role>), (x) => 
-                new InMemoryRepository<Role>(FakeDataFactory.Roles));
-            services.AddScoped(typeof(IRepository<Preference>), (x) => 
-                new InMemoryRepository<Preference>(FakeDataFactory.Preferences));
-            services.AddScoped(typeof(IRepository<Customer>), (x) => 
-                new InMemoryRepository<Customer>(FakeDataFactory.Customers));
+
+            services.AddScoped<IRepository<Employee>, EntityFrameworkRepository<Employee>>();
+            services.AddScoped<IRepository<Role>, EntityFrameworkRepository<Role>>();
+            services.AddScoped<IRepository<Preference>, EntityFrameworkRepository<Preference>>();
+            services.AddScoped<IRepository<Customer>, EntityFrameworkRepository<Customer>>();
 
             services.AddOpenApiDocument(options =>
             {
@@ -67,19 +64,13 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
             }
 
             app.UseOpenApi();
-            app.UseSwaggerUi3(x =>
-            {
-                x.DocExpansion = "list";
-            });
-            
+            app.UseSwaggerUi3(x => { x.DocExpansion = "list"; });
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }
