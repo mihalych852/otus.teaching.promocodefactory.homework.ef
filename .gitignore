@@ -341,3 +341,7 @@ ASALocalRun/
 .vscode/
 
 src/Otus.Teaching.PromoCodeFactory.WebHost/PromoCodeDatabase.db
+
+src/Otus.Teaching.PromoCodeFactory.WebHost/PromoCodeDatabase.db-shm
+
+src/Otus.Teaching.PromoCodeFactory.WebHost/PromoCodeDatabase.db-wal
