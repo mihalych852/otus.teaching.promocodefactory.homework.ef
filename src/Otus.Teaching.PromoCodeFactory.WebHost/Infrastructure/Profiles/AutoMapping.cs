@@ -13,8 +13,8 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Infrastructure.Profiles
             // DTOs
 
             // Employee controller
-            //CreateMap<Employee, EmployeeResponse>();
-            //CreateMap<Employee, EmployeeShortResponse>();
+            CreateMap<Employee, EmployeeResponse>();
+            CreateMap<Employee, EmployeeShortResponse>();
             //CreateMap<Role, EmployeeRoleItemResponse>();
             //CreateMap<EmployeeCreateRequest, Employee>()
             //    .ForMember(x => x.Roles, opt => opt.Ignore()); // Set from another entity
@@ -29,10 +29,16 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Infrastructure.Profiles
             CreateMap<Customer, CustomerShortResponse>();
             CreateMap<Customer, CustomerResponse>()
                 .ForMember(dest => dest.Preferences,
-                    opt => opt.MapFrom(src => src.CustomerPreferences.Select(x => x.Preference.Name)));
+                    opt => opt.MapFrom(src => src.CustomerPreferences.Select(x => x.Preference)));
 
             // PromoCodes
             CreateMap<PromoCode, PromoCodeShortResponse>();
+
+            // Preferences
+            CreateMap<Preference, PreferenceShortResponse>();
+            CreateMap<Preference, PreferenceResponse>()
+                .ForMember(dest => dest.Customers,
+                    opt => opt.MapFrom(src => src.CustomerPreferences.Select(x => x.Customer)));
         }
     }
 }

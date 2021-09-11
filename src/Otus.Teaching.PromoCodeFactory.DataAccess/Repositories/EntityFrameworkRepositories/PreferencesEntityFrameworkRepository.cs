@@ -6,19 +6,18 @@ using Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement;
 
 namespace Otus.Teaching.PromoCodeFactory.DataAccess.Repositories.EntityFrameworkRepositories
 {
-    public class CustomersEntityFrameworkRepository : EntityFrameworkRepository<Customer>
+    public class PreferencesEntityFrameworkRepository : EntityFrameworkRepository<Preference>
     {
-        public CustomersEntityFrameworkRepository(PromoCodeDataContext dbContext) : base(dbContext)
+        public PreferencesEntityFrameworkRepository(PromoCodeDataContext dbContext) : base(dbContext)
         {
         }
 
-        public override async Task<Customer> GetByIdAsync(Guid id)
+        public override async Task<Preference> GetByIdAsync(Guid id)
         {
-            var item = await DbContext.Customers
+            var item = await DbContext.Preferences
                 .Where(x => x.Id == id)
-                .Include(x => x.PromoCodes)
                 .Include(x => x.CustomerPreferences)
-                .ThenInclude(x => x.Preference)
+                .ThenInclude(x => x.Customer)
                 .FirstAsync();
 
             return item;

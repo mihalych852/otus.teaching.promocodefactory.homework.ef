@@ -32,7 +32,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
 
             services.AddScoped<IRepository<Employee>, EntityFrameworkRepository<Employee>>();
             services.AddScoped<IRepository<Role>, EntityFrameworkRepository<Role>>();
-            services.AddScoped<IRepository<Preference>, EntityFrameworkRepository<Preference>>();
+            services.AddScoped<IRepository<Preference>, PreferencesEntityFrameworkRepository>();
             services.AddScoped<IRepository<Customer>, CustomersEntityFrameworkRepository>();
 
             services.AddOpenApiDocument(options =>

@@ -11,7 +11,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Models
 
         public string Email { get; set; }
 
-        public List<string> Preferences { get; set; }
+        public List<PreferenceShortResponse> Preferences { get; set; }
 
         public List<PromoCodeShortResponse> PromoCodes { get; set; }
     }
