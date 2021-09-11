@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Otus.Teaching.PromoCodeFactory.Core.Abstractions.Repositories;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement;
@@ -18,34 +18,37 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         : ControllerBase
     {
         private readonly IRepository<Customer> _customerRepository;
+        private readonly IMapper _mapper;
 
-        public CustomersController(IRepository<Customer> customerRepository)
+        public CustomersController(IRepository<Customer> customerRepository, IMapper mapper)
         {
             _customerRepository = customerRepository;
+            _mapper = mapper;
         }
 
+        /// <summary>
+        /// Получить список всех клиентов в кратком представлении.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CustomerShortResponse>>> GetCustomersAsync()
         {
-            //TODO: Добавить получение списка клиентов
-            var customers = await _customerRepository.GetAllAsync();
-
-            var customersDto = customers.Select(customer => new CustomerShortResponse()
-            {
-                Email = customer.Email,
-                FirstName = customer.FirstName,
-                Id = customer.Id,
-                LastName = customer.LastName
-            });
-
+            var customers = await _customerRepository.GetAllAsync().ConfigureAwait(false);
+            var customersDto = _mapper.Map<IEnumerable<CustomerShortResponse>>(customers);
             return Ok(customersDto);
         }
         
+        /// <summary>
+        /// Получить полную информацию по клиенту по его id
+        /// </summary>
+        /// <param name="id">id клиента</param>
+        /// <returns></returns>
         [HttpGet("{id}")]
-        public Task<ActionResult<CustomerResponse>> GetCustomerAsync(Guid id)
+        public async Task<ActionResult<CustomerResponse>> GetCustomerAsync(Guid id)
         {
-            //TODO: Добавить получение клиента вместе с выданными ему промомкодами
-            throw new NotImplementedException();
+            var customer = await _customerRepository.GetByIdAsync(id).ConfigureAwait(false);
+            var customerDto = _mapper.Map<CustomerResponse>(customer);
+            return Ok(customerDto);
         }
         
         [HttpPost]
