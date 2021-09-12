@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -22,8 +23,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
                 try
                 {
                     var promoCodeDataContext = services.GetRequiredService<PromoCodeDataContext>();
-                    await promoCodeDataContext.Database.EnsureDeletedAsync();
-                    await promoCodeDataContext.Database.EnsureCreatedAsync();
+                    await promoCodeDataContext.Database.MigrateAsync();
                     await PromoCodeDataContextSeed.SeedAsync(promoCodeDataContext, loggerFactory);
                 }
                 catch (Exception ex)

@@ -12,11 +12,13 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Configuration
 
             builder.HasOne(bc => bc.Customer)
                 .WithMany(b => b.CustomerPreferences)
-                .HasForeignKey(bc => bc.CustomerId);
+                .HasForeignKey(bc => bc.CustomerId)
+                .IsRequired();
 
             builder.HasOne(bc => bc.Preference)
                 .WithMany(c => c.CustomerPreferences)
-                .HasForeignKey(bc => bc.PreferenceId);
+                .HasForeignKey(bc => bc.PreferenceId)
+                .IsRequired();
         }
     }
 }

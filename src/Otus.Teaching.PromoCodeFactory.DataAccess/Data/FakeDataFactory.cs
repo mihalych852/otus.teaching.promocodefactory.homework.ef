@@ -45,7 +45,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                 Description = "Партнерский менеджер"
             }
         };
-        
+
         public static IEnumerable<Preference> Preferences => new List<Preference>()
         {
             new Preference()

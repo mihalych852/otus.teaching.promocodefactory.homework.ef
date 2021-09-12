@@ -9,13 +9,16 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Configuration
         public void Configure(EntityTypeBuilder<Employee> builder)
         {
             builder.Property(x => x.FirstName)
-                .HasMaxLength(50);
+                .HasMaxLength(50)
+                .IsRequired();
 
             builder.Property(x => x.LastName)
-                .HasMaxLength(50);
+                .HasMaxLength(50)
+                .IsRequired();
 
             builder.Property(x => x.Email)
-                .HasMaxLength(255);
+                .HasMaxLength(255)
+                .IsRequired();
         }
     }
 }
