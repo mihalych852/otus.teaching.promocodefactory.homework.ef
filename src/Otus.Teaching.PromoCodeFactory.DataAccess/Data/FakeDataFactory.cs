@@ -16,7 +16,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                 Email = "owner@somemail.ru",
                 FirstName = "Иван",
                 LastName = "Сергеев",
-                Role = Roles.FirstOrDefault(x => x.Name == "Admin"),
+                RoleId = Roles.First(x => x.Name == "Admin").Id,
                 AppliedPromocodesCount = 5
             },
             new Employee()
@@ -25,7 +25,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                 Email = "andreev@somemail.ru",
                 FirstName = "Петр",
                 LastName = "Андреев",
-                Role = Roles.FirstOrDefault(x => x.Name == "PartnerManager"),
+                RoleId = Roles.First(x => x.Name == "PartnerManager").Id,
                 AppliedPromocodesCount = 10
             },
         };
@@ -45,7 +45,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                 Description = "Партнерский менеджер"
             }
         };
-        
+
         public static IEnumerable<Preference> Preferences => new List<Preference>()
         {
             new Preference()
@@ -78,7 +78,33 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                         Email = "ivan_sergeev@mail.ru",
                         FirstName = "Иван",
                         LastName = "Петров",
-                        //TODO: Добавить предзаполненный список предпочтений
+                        CustomerPreferences = new List<CustomerPreference>()
+                        {
+                            new CustomerPreference()
+                            {
+                                CustomerId = customerId,
+                                PreferenceId = Preferences.ElementAt(0).Id
+                            },
+                            new CustomerPreference()
+                            {
+                                CustomerId = customerId,
+                                PreferenceId = Preferences.ElementAt(1).Id
+                            }
+                        },
+                        PromoCodes = new List<PromoCode>()
+                        {
+                            new PromoCode()
+                            {
+                                Id = Guid.Parse("433F416D-BF84-488A-AFF1-03FC3EBCBDC1"),
+                                Code = "X5B6C29F",
+                                PreferenceId = Preferences.First().Id,
+                                PartnerName = "ТЕАТР МУЗЫКАЛЬНОЙ КОМЕДИИ",
+                                ServiceInfo = "Скидка 20% на посещение",
+                                PartnerManagerId = Employees.First().Id,
+                                BeginDate = DateTime.Now.Date,
+                                EndDate = DateTime.Now.Date.AddDays(7)
+                            }
+                        }
                     }
                 };
 

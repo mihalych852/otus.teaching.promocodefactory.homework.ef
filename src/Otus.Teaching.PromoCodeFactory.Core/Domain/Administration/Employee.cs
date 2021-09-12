@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Otus.Teaching.PromoCodeFactory.Core.Domain.Administration
 {
@@ -12,6 +11,8 @@ namespace Otus.Teaching.PromoCodeFactory.Core.Domain.Administration
         public string FullName => $"{FirstName} {LastName}";
 
         public string Email { get; set; }
+
+        public Guid RoleId { get; set; }
 
         public Role Role { get; set; }
 

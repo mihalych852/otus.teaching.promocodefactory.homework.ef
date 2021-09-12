@@ -11,21 +11,36 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Repositories
         : IRepository<T>
         where T: BaseEntity
     {
-        protected IEnumerable<T> Data { get; set; }
+        protected List<T> Data { get; set; }
 
         public InMemoryRepository(IEnumerable<T> data)
         {
-            Data = data;
+            Data = data.ToList();
         }
         
-        public Task<IEnumerable<T>> GetAllAsync()
+        public Task<IReadOnlyList<T>> GetAllAsync()
         {
-            return Task.FromResult(Data);
+            return Task.FromResult((IReadOnlyList<T>)Data.AsReadOnly());   
         }
 
         public Task<T> GetByIdAsync(Guid id)
         {
             return Task.FromResult(Data.FirstOrDefault(x => x.Id == id));
+        }
+
+        public Task<T> AddAsync(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateAsync(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteAsync(T entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }
