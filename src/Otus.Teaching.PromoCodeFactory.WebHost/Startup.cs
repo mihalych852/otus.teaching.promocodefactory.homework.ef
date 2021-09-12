@@ -8,7 +8,6 @@ using Otus.Teaching.PromoCodeFactory.Core.Abstractions.Repositories;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.Administration;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement;
 using Otus.Teaching.PromoCodeFactory.DataAccess;
-using Otus.Teaching.PromoCodeFactory.DataAccess.Repositories;
 using Otus.Teaching.PromoCodeFactory.DataAccess.Repositories.EntityFrameworkRepositories;
 using Otus.Teaching.PromoCodeFactory.WebHost.Infrastructure.Exceptions;
 
@@ -34,6 +33,10 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
             services.AddScoped<IRepository<Role>, EntityFrameworkRepository<Role>>();
             services.AddScoped<IRepository<Preference>, PreferencesEntityFrameworkRepository>();
             services.AddScoped<IRepository<Customer>, CustomersEntityFrameworkRepository>();
+            services.AddScoped<IRepository<PromoCode>, EntityFrameworkRepository<PromoCode>>();
+            services.AddScoped<ICustomersRepository, CustomersEntityFrameworkRepository>();
+            services.AddScoped<IPreferencesRepository, PreferencesEntityFrameworkRepository>();
+
 
             services.AddOpenApiDocument(options =>
             {

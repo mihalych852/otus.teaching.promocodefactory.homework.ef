@@ -2,11 +2,12 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Otus.Teaching.PromoCodeFactory.Core.Abstractions.Repositories;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement;
 
 namespace Otus.Teaching.PromoCodeFactory.DataAccess.Repositories.EntityFrameworkRepositories
 {
-    public class PreferencesEntityFrameworkRepository : EntityFrameworkRepository<Preference>
+    public class PreferencesEntityFrameworkRepository : EntityFrameworkRepository<Preference>, IPreferencesRepository
     {
         public PreferencesEntityFrameworkRepository(PromoCodeDataContext dbContext) : base(dbContext)
         {
@@ -21,6 +22,12 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Repositories.EntityFramework
                 .FirstOrDefaultAsync();
 
             return item;
+        }
+
+        public Task<Preference> GetPreferenceByName(string preferenceName)
+        {
+            return DbContext.Preferences
+                .FirstOrDefaultAsync(x => x.Name == preferenceName);
         }
     }
 }

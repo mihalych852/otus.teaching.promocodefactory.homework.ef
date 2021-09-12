@@ -16,7 +16,7 @@ namespace Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement
 
         public string PartnerName { get; set; }
 
-        public Guid PartnerManagerId { get; set; }
+        public Guid? PartnerManagerId { get; set; }
 
         public Employee PartnerManager { get; set; }
 

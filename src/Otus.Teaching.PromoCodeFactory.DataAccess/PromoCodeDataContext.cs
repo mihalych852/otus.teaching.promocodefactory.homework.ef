@@ -21,6 +21,8 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
 
         public DbSet<PromoCode> PromoCodes { get; set; }
 
+        public DbSet<CustomerPreference> CustomerPreferences { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

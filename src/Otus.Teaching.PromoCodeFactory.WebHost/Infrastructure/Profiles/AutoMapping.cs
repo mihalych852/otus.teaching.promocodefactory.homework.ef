@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using AutoMapper;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.Administration;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement;
@@ -31,6 +30,28 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Infrastructure.Profiles
 
             // PromoCodes
             CreateMap<PromoCode, PromoCodeShortResponse>();
+            CreateMap<GivePromoCodeRequest, PromoCode>()
+                .ForMember(dest => dest.Code,
+                    opt => opt.MapFrom(src => src.PromoCode))
+                .ForMember(dest => dest.BeginDate,
+                    opt => opt.Ignore()) // Ручной мапинг
+                .ForMember(dest => dest.EndDate,
+                    opt => opt.Ignore()) // Ручной мапинг
+                .ForMember(dest => dest.Customer,
+                    opt => opt.Ignore()) // Ручной мапинг
+                .ForMember(dest => dest.CustomerId,
+                    opt => opt.Ignore()) // Ручной мапинг
+                .ForMember(dest => dest.PreferenceId,
+                    opt => opt.Ignore()) // Ручной мапинг
+                .ForMember(dest => dest.Preference,
+                    opt => opt.Ignore()) // Ручной мапинг
+                .ForMember(dest => dest.PartnerManagerId,
+                    opt => opt.Ignore()) // Игнорируем, заполняется не при выдаче
+                .ForMember(dest => dest.PartnerManager,
+                    opt => opt.Ignore()) // Игнорируем, заполняется не при выдаче
+                .ForMember(dest => dest.Id,
+                    opt => opt.Ignore()); // Автоматическое создание
+
 
             // Preferences
             CreateMap<Preference, PreferenceShortResponse>();

@@ -60,17 +60,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         public async Task<IActionResult> CreateCustomerAsync(CreateOrEditCustomerRequest request)
         {
             var customer = _mapper.Map<Customer>(request);
-            var preferences = new List<CustomerPreference>();
-            foreach (var preferenceId in request.PreferenceIds)
-            {
-                preferences.Add(new CustomerPreference()
-                {
-                    PreferenceId = preferenceId
-                });
-            }
-                
-            customer.CustomerPreferences = preferences;
-            
+            customer.CustomerPreferences = CreateCustomerPreferences(request.PreferenceIds);
             await _customerRepository.AddAsync(customer).ConfigureAwait(false);
             return Ok();
         }
@@ -90,16 +80,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
                 return NotFound();
             }
             
-            var preferences = new List<CustomerPreference>();
-            foreach (var preferenceId in request.PreferenceIds)
-            {
-                preferences.Add(new CustomerPreference()
-                {
-                    PreferenceId = preferenceId
-                });
-            }
-
-            customer.CustomerPreferences = preferences;
+            customer.CustomerPreferences = CreateCustomerPreferences(request.PreferenceIds);
             customer.Email = request.Email;
             customer.FirstName = request.FirstName;
             customer.LastName = request.LastName;
@@ -124,6 +105,20 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
 
             await _customerRepository.DeleteAsync(customer).ConfigureAwait(false);
             return Ok();
+        }
+
+        private static List<CustomerPreference> CreateCustomerPreferences(IEnumerable<Guid> preferencesIds)
+        {
+            var preferences = new List<CustomerPreference>();
+            foreach (var preferenceId in preferencesIds)
+            {
+                preferences.Add(new CustomerPreference()
+                {
+                    PreferenceId = preferenceId
+                });
+            }
+
+            return preferences;
         }
     }
 }
