@@ -9,5 +9,8 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Models
         public string FullName { get; set; }
 
         public string Email { get; set; }
+
+        public int AppliedPromocodesCount { get; set; }
+
     }
 }

@@ -2,16 +2,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Threading.Channels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+
+
 using Otus.Teaching.PromoCodeFactory.Core.Abstractions.Repositories;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.Administration;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement;
 using Otus.Teaching.PromoCodeFactory.DataAccess.Data;
+using Otus.Teaching.PromoCodeFactory.DataAccess.Init;
 using Otus.Teaching.PromoCodeFactory.DataAccess.Repositories;
+using Otus.Teaching.PromoCodeFactory.WebHost.Mapping;
 
 namespace Otus.Teaching.PromoCodeFactory.WebHost
 {
@@ -19,6 +26,14 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
     {
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        private IConfiguration Configuration { get; set; }
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
@@ -30,6 +45,25 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
                 new InMemoryRepository<Preference>(FakeDataFactory.Preferences));
             services.AddScoped(typeof(IRepository<Customer>), (x) => 
                 new InMemoryRepository<Customer>(FakeDataFactory.Customers));
+
+            services.AddDbContext<EFDataContext>(cfg =>
+            {
+                cfg.UseSqlite(Configuration.GetConnectionString("DevCS"));
+            });
+            
+
+            services.AddTransient(typeof(IEFInit), typeof(EFInit));
+
+            services.AddScoped(typeof(IRepository<>),
+                typeof(EfRepository<>));
+
+            
+            services.AddAutoMapper(typeof(PromoCodeMapping));
+
+            services.AddOpenApiDocument(options =>
+            {
+            });
+
 
             services.AddOpenApiDocument(options =>
             {
