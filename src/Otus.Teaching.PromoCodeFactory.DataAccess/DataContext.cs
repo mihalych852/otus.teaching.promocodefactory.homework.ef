@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Proxies;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.Administration;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement;
 
@@ -34,6 +35,22 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
 
         protected override void OnModelCreating (ModelBuilder modelBuilder)
         {
+
+            modelBuilder.Entity<Employee>()
+                .HasOne(e => e.Role);
+            
+            modelBuilder.Entity<Role>()
+                .HasOne<Employee>();
+
+            modelBuilder.Entity<Customer>()
+                .HasMany<Preference>();
+            modelBuilder.Entity<Preference>();
+            modelBuilder.Entity<PromoCode>();
+            modelBuilder.Entity<CustomerPreference>()
+                
+                ;
+
+
 
         }
 
