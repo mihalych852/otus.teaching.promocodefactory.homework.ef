@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Otus.Teaching.PromoCodeFactory.Core.Abstractions.Repositories;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.Administration;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement;
 using Otus.Teaching.PromoCodeFactory.DataAccess.Data;
 using Otus.Teaching.PromoCodeFactory.DataAccess.Repositories;
+using Otus.Teaching.PromoCodeFactory.DataAccess;
 
 namespace Otus.Teaching.PromoCodeFactory.WebHost
 {
@@ -35,6 +37,14 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
             {
                 options.Title = "PromoCode Factory API Doc";
                 options.Version = "1.0";
+            });
+
+            //Подключаем SQLite
+            services.AddDbContext<DataContext>(x =>
+            {
+                x.UseSqlite("Filename=PromoCodeFactoryDb.sqlite");
+
+                x.UseLazyLoadingProxies();
             });
         }
 
