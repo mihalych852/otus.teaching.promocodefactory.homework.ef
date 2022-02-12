@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Proxies;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.Administration;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement;
 
@@ -23,9 +22,9 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
 
         public DataContext(DbContextOptions<DbContext> dbContextOptions): base(dbContextOptions)
         {
-            Database.EnsureDeleted();
+            //Database.EnsureDeleted();
             Database.EnsureCreated();
-            Database.Migrate();
+            //Database.Migrate();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -35,20 +34,24 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
 
         protected override void OnModelCreating (ModelBuilder modelBuilder)
         {
-
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Employee>()
-                .HasOne(e => e.Role);
-            
-            modelBuilder.Entity<Role>()
-                .HasOne<Employee>();
+                .HasOne<Role>()
+                .WithOne()
+                .HasForeignKey<Employee>(e => e.Role);
 
-            modelBuilder.Entity<Customer>()
-                .HasMany<Preference>();
-            modelBuilder.Entity<Preference>();
-            modelBuilder.Entity<PromoCode>();
-            modelBuilder.Entity<CustomerPreference>()
-                
-                ;
+
+
+            modelBuilder.Entity<Preference>()
+                .HasMany<Customer>()
+                .WithMany(c => c.Preferences);
+                //.Map(cp =>
+                //    {
+                //    cp.MapLeftKey("CustomerRefId");
+                //    cp.MapRightKey("PreferenceRefId");
+                //    cp.ToTable("CustomerPreference");
+                //    }
+                //);
 
 
 

@@ -73,9 +73,9 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Repositories
         /// <returns></returns>
         public async Task DeleteAsync(Guid id)
         {
-            ((List<T>)_dataContext).RemoveAll(i => i.Id == id);
-            _dataContext.SaveChanges();
-            return await Task.CompletedTask;
+            //((List<T>)_dataContext).RemoveAll(i => i.Id == id);
+            //_dataContext.SaveChanges();
+            //return await Task.CompletedTask;
         }
 
     }

@@ -65,6 +65,8 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
             }
         };
 
+        
+
         public static IEnumerable<Customer> Customers
         {
             get
@@ -79,11 +81,25 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                         FirstName = "Иван",
                         LastName = "Петров",
                         //TODO: Добавить предзаполненный список предпочтений
+                        Preferences = new List<Preference>()
+                        {
+                            Preferences.FirstOrDefault(x => x.Name =="Дети"),
+                            Preferences.FirstOrDefault(x => x.Name == "Семья")
+                        },
+                        PromoCodes = new List<PromoCode>()
+                        {
+                            
+                        }
                     }
                 };
 
                 return customers;
             }
         }
+
+        public static IEnumerable<PromoCode> PromoCodes => new List<PromoCode>()
+        {
+
+        };
     }
 }
