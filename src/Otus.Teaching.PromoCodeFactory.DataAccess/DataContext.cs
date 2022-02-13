@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Sqlite;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.Administration;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement;
 
@@ -14,12 +13,12 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Customer> Customers { get; set; }
-        public DbSet<Preference> Preferences{ get; set; }
-        public DbSet<PromoCode> PromoCodes{ get; set; }
+        public DbSet<Preference> Preferences { get; set; }
+        public DbSet<PromoCode> PromoCodes { get; set; }
         //public DbSet<CustomerPreference> customerPreferences { get; set; }
 
 
-        public DataContext(DbContextOptions<DbContext> dbContextOptions): base(dbContextOptions)
+        public DataContext(DbContextOptions<DataContext> dbContextOptions): base(dbContextOptions)
         {
             //Database.EnsureDeleted();
             Database.EnsureCreated();
@@ -28,7 +27,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Filename=./Otus.sqlite");
+           
         }
 
         protected override void OnModelCreating (ModelBuilder modelBuilder)
