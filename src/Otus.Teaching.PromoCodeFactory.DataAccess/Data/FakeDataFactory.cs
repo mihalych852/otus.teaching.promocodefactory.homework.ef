@@ -84,11 +84,11 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                         Preferences = new List<Preference>()
                         {
                             Preferences.FirstOrDefault(x => x.Name =="Дети"),
-                            Preferences.FirstOrDefault(x => x.Name == "Семья")
+                            //Preferences.FirstOrDefault(x => x.Name == "Семья")
                         },
                         PromoCodes = new List<PromoCode>()
                         {
-                            
+                            PromoCodes.FirstOrDefault(x => x.Code == "123456")
                         }
                     }
                 };
@@ -99,7 +99,18 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
 
         public static IEnumerable<PromoCode> PromoCodes => new List<PromoCode>()
         {
+            new PromoCode()
+            {
+                Id = Guid.Parse("a6c8c6b1-4119-45b5-ab31-244740a7f0f0"),
+                Code = "123456",
+                ServiceInfo = "good servise",
+                BeginDate= DateTime.Now,
+                EndDate= DateTime.Now.AddDays(10),
+                PartnerName = "Иван",
+                PartnerManager = Employees.FirstOrDefault(x => x.Email == "owner@somemail.ru"),
+                Preference = Preferences.FirstOrDefault(x => x.Name == "Театр")
 
+            }
         };
     }
 }

@@ -45,13 +45,13 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
             });
 
             //Подключаем SQLite
-            services.AddDbContext<DataContext>(x =>
-            {
-                //x.UseSqlite("Filename=PromoCodeFactoryDb.sqlite");
-                x.UseSqlite("DataSource=PromoCodeFactoryDb.db");
+            //services.AddDbContext<DataContext>(x =>
+            //{
+            //    //x.UseSqlite("Filename=PromoCodeFactoryDb.sqlite");
+            //    x.UseSqlite("DataSource=./PromoCodeFactoryDb.db");
 
-                x.UseLazyLoadingProxies();
-            });
+            //    x.UseLazyLoadingProxies();
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
