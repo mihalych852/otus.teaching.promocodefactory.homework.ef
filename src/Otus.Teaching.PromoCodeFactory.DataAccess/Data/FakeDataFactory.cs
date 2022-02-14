@@ -84,7 +84,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                         Preferences = new List<Preference>()
                         {
                             Preferences.FirstOrDefault(x => x.Name =="Дети"),
-                            //Preferences.FirstOrDefault(x => x.Name == "Семья")
+                            Preferences.FirstOrDefault(x => x.Name == "Семья")
                         },
                         PromoCodes = new List<PromoCode>()
                         {
