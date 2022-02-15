@@ -45,14 +45,14 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
             services.AddDbContext<DataContext>(x =>
             {
                 x.UseSqlite("Filename=PromoCodeFactoryDb.sqlite");
-
+                x.EnableSensitiveDataLogging();
                 //x.UseLazyLoadingProxies();
             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        //public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataContext context)
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataContext context)
+        //public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -62,8 +62,9 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
             {
                 app.UseHsts();
             }
-            //create base if first start
-            //if (env.IsDevelopment()) context.Database.EnsureCreated();
+
+            //create base 
+            if (env.IsDevelopment()) context.Database.EnsureCreated();
 
             app.UseOpenApi();
             app.UseSwaggerUi3(x =>
