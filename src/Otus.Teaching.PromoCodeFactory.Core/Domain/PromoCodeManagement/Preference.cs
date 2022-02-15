@@ -7,6 +7,5 @@ namespace Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement
         :BaseEntity
     {
         public string Name { get; set; }
-        //public virtual List<Customer> Customers { get; set; }
     }
 }
