@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Otus.Teaching.PromoCodeFactory.WebHost.Models;
+using Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement;
+using Otus.Teaching.PromoCodeFactory.Core.Domain.Administration;
+using Otus.Teaching.PromoCodeFactory.Core.Abstractions.Repositories;
 
 namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
 {
@@ -14,10 +17,18 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
     public class CustomersController
         : ControllerBase
     {
+        private readonly IRepository<Customer> _customerRepository;
+
+        public CustomersController(IRepository<Customer> customerRepository)
+        {
+            _customerRepository = customerRepository;
+        }
+
         [HttpGet]
         public Task<ActionResult<CustomerShortResponse>> GetCustomersAsync()
         {
             //TODO: Добавить получение списка клиентов
+
             throw new NotImplementedException();
         }
         

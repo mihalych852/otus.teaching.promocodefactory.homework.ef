@@ -15,14 +15,14 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Preference> Preferences { get; set; }
         public DbSet<PromoCode> PromoCodes { get; set; }
-        public DbSet<CustomerPreference> customerPreferences { get; set; }
+        //public DbSet<CustomerPreference> customerPreferences { get; set; }
 
 
         public DataContext(DbContextOptions<DataContext> dbContextOptions): base(dbContextOptions)
         {
             //Database.EnsureDeleted();
             Database.EnsureCreated();
-            //Database.Migrate();
+            Database.Migrate();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

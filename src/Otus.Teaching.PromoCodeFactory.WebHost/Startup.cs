@@ -32,7 +32,9 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
                 new InMemoryRepository<Preference>(FakeDataFactory.Preferences));
             services.AddScoped(typeof(IRepository<Customer>), (x) =>
                 new InMemoryRepository<Customer>(FakeDataFactory.Customers));
-
+            services.AddScoped(typeof(IRepository<PromoCode>), (x) =>
+                new InMemoryRepository<PromoCode>(FakeDataFactory.PromoCodes));
+            
             services.AddOpenApiDocument(options =>
             {
                 options.Title = "PromoCode Factory API Doc";
