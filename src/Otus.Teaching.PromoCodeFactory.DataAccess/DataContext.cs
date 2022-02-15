@@ -29,7 +29,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-           
+
         }
 
         protected override void OnModelCreating (ModelBuilder modelBuilder)
@@ -104,7 +104,6 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
                 e.Property(p => p.PartnerName).HasMaxLength(50);
                 //e.HasData(FakeDataFactory.PromoCodes);
             });
-
 
 
         }

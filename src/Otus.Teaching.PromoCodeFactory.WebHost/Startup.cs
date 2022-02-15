@@ -57,14 +57,14 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                //create base 
+                context.Database.EnsureCreated();
             }
             else
             {
                 app.UseHsts();
             }
-
-            //create base 
-            if (env.IsDevelopment()) context.Database.EnsureCreated();
 
             app.UseOpenApi();
             app.UseSwaggerUi3(x =>
