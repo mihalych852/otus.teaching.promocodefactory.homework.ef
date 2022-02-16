@@ -34,7 +34,9 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
                 new InMemoryRepository<Customer>(FakeDataFactory.Customers));
             services.AddScoped(typeof(IRepository<PromoCode>), (x) =>
                 new InMemoryRepository<PromoCode>(FakeDataFactory.PromoCodes));
-            
+
+            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+
             services.AddOpenApiDocument(options =>
             {
                 options.Title = "PromoCode Factory API Doc";

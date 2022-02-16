@@ -46,9 +46,8 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
             {
                 e.Property(r => r.Name).HasMaxLength(50);
                 e.Property(r => r.Description).HasMaxLength(50);
-                e.HasData(FakeDataFactory.Roles);
+                //e.HasData(FakeDataFactory.Roles);
             });
-            modelBuilder.Entity<Role>().HasData(new InMemoryRepository<Role>(FakeDataFactory.Roles));
 
             //
             // Employee
@@ -59,7 +58,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
                     e.Property(x => x.FirstName).HasMaxLength(50);
                     e.Property(x => x.LastName).HasMaxLength(50);
                     e.Property(x => x.Email).HasMaxLength(50);
-                    e.HasData(FakeDataFactory.Employees);
+                    //e.HasData(FakeDataFactory.Employees);
                 });
 
             //
@@ -89,7 +88,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
             modelBuilder.Entity<Preference>(e =>
             {
                 e.Property(e => e.Name).HasMaxLength(50);
-                e.HasData(FakeDataFactory.Preferences);
+                //e.HasData(FakeDataFactory.Preferences);
             });
 
             //
