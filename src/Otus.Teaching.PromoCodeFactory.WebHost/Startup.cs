@@ -63,9 +63,9 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
                 app.UseDeveloperExceptionPage();
 
                 //create base 
-                context.Database.EnsureDeleted();
+                //context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
-                context.Database.Migrate();
+                //context.Database.Migrate();
             }
             else
             {

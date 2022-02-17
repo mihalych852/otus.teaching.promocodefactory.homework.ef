@@ -23,8 +23,8 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
 
         public DataContext(DbContextOptions<DataContext> dbContextOptions): base(dbContextOptions)
         {
-            //Database.EnsureDeleted();
-            //Database.EnsureCreated();
+            Database.EnsureDeleted();
+            Database.EnsureCreated();
             //Database.Migrate();
         }
 
@@ -55,7 +55,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
             //
             modelBuilder.Entity<Employee>(e =>
                 {
-                    //e.HasOne(x => x.Role);
+                    e.HasOne(x => x.Role).WithOne().HasForeignKey<Employee>("RoleId");
                     e.Property(x => x.FirstName).HasMaxLength(50);
                     e.Property(x => x.LastName).HasMaxLength(50);
                     e.Property(x => x.Email).HasMaxLength(50);
