@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.Administration;
@@ -22,22 +23,22 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
 
         public DataContext(DbContextOptions<DataContext> dbContextOptions): base(dbContextOptions)
         {
-            Database.EnsureDeleted();
-            Database.EnsureCreated();
-            Database.Migrate();
+            //Database.EnsureDeleted();
+            //Database.EnsureCreated();
+            //Database.Migrate();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            //
+            //all string column 
+            //
+            // optionsBuilder.Properties<string>().Configure(p => p.IsMaxLength(50));
 
         }
 
         protected override void OnModelCreating (ModelBuilder modelBuilder)
         {
-            //
-            //all string column 
-            //
-            //modelBuilder.Properties<string>().Configure(p => p.IsMaxLength(50));
 
             //
             // Role
@@ -46,7 +47,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
             {
                 e.Property(r => r.Name).HasMaxLength(50);
                 e.Property(r => r.Description).HasMaxLength(50);
-                //e.HasData(FakeDataFactory.Roles);
+                e.HasData(FakeDataFactory.Roles);
             });
 
             //
@@ -54,11 +55,11 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
             //
             modelBuilder.Entity<Employee>(e =>
                 {
-                    e.HasOne(x => x.Role);
+                    //e.HasOne(x => x.Role);
                     e.Property(x => x.FirstName).HasMaxLength(50);
                     e.Property(x => x.LastName).HasMaxLength(50);
                     e.Property(x => x.Email).HasMaxLength(50);
-                    //e.HasData(FakeDataFactory.Employees);
+                    e.HasData(FakeDataFactory.Employees);
                 });
 
             //
@@ -104,12 +105,8 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
                 //e.HasData(FakeDataFactory.PromoCodes);
             });
 
-
+            base.OnModelCreating(modelBuilder);
         }
-        //public void Dispose()
-        //{
-        //    CloseConnection();
-        //    testDb.Dispose();
-        //}
+
     }
 }
