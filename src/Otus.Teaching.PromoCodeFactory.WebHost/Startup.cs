@@ -35,7 +35,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
             services.AddScoped(typeof(IRepository<PromoCode>), (x) =>
                 new InMemoryRepository<PromoCode>(FakeDataFactory.PromoCodes));
 
-            //services.AddScoped<IDbInitializer, EfDbInitializer>();
+            services.AddScoped<IDbInitializer, EfDbInitializer>();
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 
 
@@ -55,17 +55,15 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataContext context)
-        //public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        //public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataContext context)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IDbInitializer dbInitializer)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
 
                 //create base 
-                //context.Database.EnsureDeleted();
-                context.Database.EnsureCreated();
-                //context.Database.Migrate();
+                //context.Database.EnsureCreated();
             }
             else
             {
@@ -86,6 +84,8 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
             {
                 endpoints.MapControllers();
             });
+
+            dbInitializer.InitializeDB();
         }
     }
 }

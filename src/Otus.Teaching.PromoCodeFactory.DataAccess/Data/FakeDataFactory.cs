@@ -8,28 +8,6 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
 {
     public static class FakeDataFactory
     {
-        public static IEnumerable<Employee> Employees => new List<Employee>()
-        {
-            new Employee()
-            {
-                Id = Guid.Parse("451533d5-d8d5-4a11-9c7b-eb9f14e1a32f"),
-                Email = "owner@somemail.ru",
-                FirstName = "Иван",
-                LastName = "Сергеев",
-                Role = Roles.FirstOrDefault(x => x.Name == "Admin"),
-                AppliedPromocodesCount = 5
-            },
-            new Employee()
-            {
-                Id = Guid.Parse("f766e2bf-340a-46ea-bff3-f1700b435895"),
-                Email = "andreev@somemail.ru",
-                FirstName = "Петр",
-                LastName = "Андреев",
-                Role = Roles.FirstOrDefault(x => x.Name == "PartnerManager"),
-                AppliedPromocodesCount = 10
-            },
-        };
-
         public static IEnumerable<Role> Roles => new List<Role>()
         {
             new Role()
@@ -45,6 +23,31 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                 Description = "Партнерский менеджер"
             }
         };
+
+        public static IEnumerable<Employee> Employees => new List<Employee>()
+        {
+            new Employee()
+            {
+                Id = Guid.Parse("451533d5-d8d5-4a11-9c7b-eb9f14e1a32f"),
+                Email = "owner@somemail.ru",
+                FirstName = "Иван",
+                LastName = "Сергеев",
+                RoleId = Roles.FirstOrDefault(x => x.Name == "Admin").Id,
+                //Role = Roles.FirstOrDefault(x => x.Name == "Admin"),
+                AppliedPromocodesCount = 5
+            },
+            new Employee()
+            {
+                Id = Guid.Parse("f766e2bf-340a-46ea-bff3-f1700b435895"),
+                Email = "andreev@somemail.ru",
+                FirstName = "Петр",
+                LastName = "Андреев",
+                RoleId = Roles.FirstOrDefault(x => x.Name == "PartnerManager").Id,
+                //Role = Roles.FirstOrDefault(x => x.Name == "PartnerManager"),
+                AppliedPromocodesCount = 10
+            },
+        };
+
         
         public static IEnumerable<Preference> Preferences => new List<Preference>()
         {
@@ -65,8 +68,6 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
             }
         };
 
-        
-
         public static IEnumerable<Customer> Customers
         {
             get
@@ -83,13 +84,9 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                         //TODO: Добавить предзаполненный список предпочтений
                         Preferences = new List<Preference>()
                         {
-                            Preferences.FirstOrDefault(x => x.Name =="Дети"),
+                            Preferences.FirstOrDefault(x => x.Name == "Дети"),
                             Preferences.FirstOrDefault(x => x.Name == "Семья")
                         },
-                        PromoCodes = new List<PromoCode>()
-                        {
-                            PromoCodes.FirstOrDefault(x => x.Code == "123456")
-                        }
                     }
                 };
 
@@ -97,20 +94,42 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
             }
         }
 
-        public static IEnumerable<PromoCode> PromoCodes => new List<PromoCode>()
+        public static IEnumerable<PromoCode> PromoCodes
         {
-            new PromoCode()
+            get
             {
-                Id = Guid.Parse("a6c8c6b1-4119-45b5-ab31-244740a7f0f0"),
-                Code = "123456",
-                ServiceInfo = "good servise",
-                BeginDate= DateTime.Now,
-                EndDate= DateTime.Now.AddDays(10),
-                PartnerName = "Иван",
-                PartnerManager = Employees.FirstOrDefault(x => x.Email == "owner@somemail.ru"),
-                Preference = Preferences.FirstOrDefault(x => x.Name == "Театр")
-
+                var date = DateTime.Parse("23-02-2022 11:33Z");
+                var partner = Employees.FirstOrDefault(x => x.Email == "owner@somemail.ru");
+                var owner = Customers.FirstOrDefault(x => x.Email == "ivan_sergeev@mail.ru");
+                var promoCodes = new List<PromoCode>()
+                {
+                    new PromoCode
+                    {
+                        Id =  Guid.Parse("68779ec4-5753-4c22-a268-bd7fb91345a2"),
+                        Code = "123456",
+                        ServiceInfo = "good",
+                        BeginDate= date,
+                        EndDate= date.AddDays(10),
+                        Owner = owner,
+                        PartnerName = partner.FirstName,
+                        //Preference = owner.Preferences.FirstOrDefault()
+                        //Preference = Preferences.FirstOrDefault(x => x.Name == "Дети") 
+                    },
+                    new PromoCode
+                    {
+                        Id =  Guid.Parse("38e2cc99-166c-409b-b193-cc7aa01b708a"),
+                        Code = "654321",
+                        ServiceInfo = "normal",
+                        BeginDate= date.AddDays(-6),
+                        EndDate= date.AddDays(5),
+                        Owner = owner,
+                        PartnerName = partner.FirstName,
+                        //Preference = owner.Preferences.FirstOrDefault()
+                        //Preference = Preferences.FirstOrDefault(x => x.Name == "Семья")
+                    }
+                };
+                return promoCodes;
             }
-        };
+        }
     }
 }

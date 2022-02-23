@@ -15,10 +15,9 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
     {
         public DbSet<Role> Roles { get; set; }
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<PromoCode> PromoCodes { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Preference> Preferences { get; set; }
-        public DbSet<PromoCode> PromoCodes { get; set; }
-        //public DbSet<CustomerPreference> customerPreferences { get; set; }
 
 
         public DataContext(DbContextOptions<DataContext> dbContextOptions): base(dbContextOptions)
@@ -47,7 +46,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
             {
                 e.Property(r => r.Name).HasMaxLength(50);
                 e.Property(r => r.Description).HasMaxLength(50);
-                e.HasData(FakeDataFactory.Roles);
+                //e.HasData(FakeDataFactory.Roles);
             });
 
             //
@@ -55,11 +54,11 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
             //
             modelBuilder.Entity<Employee>(e =>
                 {
-                    e.HasOne(x => x.Role).WithOne().HasForeignKey<Employee>("RoleId");
+                    e.HasOne(x => x.Role);
                     e.Property(x => x.FirstName).HasMaxLength(50);
                     e.Property(x => x.LastName).HasMaxLength(50);
                     e.Property(x => x.Email).HasMaxLength(50);
-                    e.HasData(FakeDataFactory.Employees);
+                    //e.HasData(FakeDataFactory.Employees);
                 });
 
             //
@@ -67,7 +66,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
             //
             modelBuilder.Entity<Customer>(e =>
             {
-                e.HasMany(x => x.PromoCodes).WithOne();
+                //e.HasMany(x => x.PromoCodes).WithOne(x => x.Owner);
                 //e.HasMany(x => x.Preferences).WithOne();
                 e.Property(x => x.FirstName).HasMaxLength(50);
                 e.Property(x => x.LastName).HasMaxLength(50);
@@ -76,12 +75,19 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
             });
 
             //
-            // CustomerPreference
+            //CustomerPreference
             //
-            modelBuilder.Entity<Preference>()
-                .HasMany(p => p.Customers)
-                .WithMany(c => c.Preferences)
-                .UsingEntity(j => j.ToTable("CustomerPreference"));
+
+            //modelBuilder.Entity<Preference>()
+            //    .HasMany(p => p.Customers)
+            //    .WithMany(c => c.Preferences)
+            //    .UsingEntity(
+            //    j =>
+            //    {
+            //        j.ToTable("CustomerPreference");
+            //    });
+
+
 
             //
             // Preference
@@ -97,8 +103,8 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
             //
             modelBuilder.Entity<PromoCode>(e =>
             {
-                e.HasOne(p => p.PartnerManager).WithMany();
-                e.HasOne(p => p.Preference).WithMany();
+                e.HasOne(p => p.PartnerManager).WithMany().HasForeignKey(p => p.PartnerName).HasPrincipalKey(p => p.FirstName);
+                //e.HasOne(p => p.Preference);
                 e.Property(p => p.Code).HasMaxLength(50);
                 e.Property(p => p.ServiceInfo).HasMaxLength(50);
                 e.Property(p => p.PartnerName).HasMaxLength(50);

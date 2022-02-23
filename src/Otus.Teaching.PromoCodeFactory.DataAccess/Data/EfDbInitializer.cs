@@ -23,9 +23,9 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
 
             _dataContext.Roles.AddRange(FakeDataFactory.Roles);
             _dataContext.Employees.AddRange(FakeDataFactory.Employees);
-            _dataContext.Preferences.AddRange(FakeDataFactory.Preferences);
-            _dataContext.Customers.AddRange(FakeDataFactory.Customers);
             _dataContext.PromoCodes.AddRange(FakeDataFactory.PromoCodes);
+            //_dataContext.Preferences.AddRange(FakeDataFactory.Preferences);
+            //_dataContext.Customers.AddRange(FakeDataFactory.Customers);
             _dataContext.SaveChanges();
         }
 
