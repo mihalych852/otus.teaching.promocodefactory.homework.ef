@@ -112,8 +112,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                         EndDate= date.AddDays(10),
                         Owner = owner,
                         PartnerName = partner.FirstName,
-                        //Preference = owner.Preferences.FirstOrDefault()
-                        //Preference = Preferences.FirstOrDefault(x => x.Name == "Дети") 
+                        Preference = owner.Preferences.FirstOrDefault()
                     },
                     new PromoCode
                     {
@@ -124,8 +123,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                         EndDate= date.AddDays(5),
                         Owner = owner,
                         PartnerName = partner.FirstName,
-                        //Preference = owner.Preferences.FirstOrDefault()
-                        //Preference = Preferences.FirstOrDefault(x => x.Name == "Семья")
+                        Preference = owner.Preferences.FirstOrDefault()
                     }
                 };
                 return promoCodes;
