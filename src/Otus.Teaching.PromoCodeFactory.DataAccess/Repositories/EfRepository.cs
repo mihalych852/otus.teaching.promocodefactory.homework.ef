@@ -10,8 +10,8 @@ using Otus.Teaching.PromoCodeFactory.Core.Domain;
 
 namespace Otus.Teaching.PromoCodeFactory.DataAccess.Repositories
 {
-    public class EfRepository<T> : 
-        IRepository<T> 
+    public class EfRepository<T> :
+        IEfRepository<T>
         where T:BaseEntity
     {
         private readonly DataContext _dataContext;
@@ -43,12 +43,12 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Repositories
         /// </summary>
         /// <param name="data"></param>
         /// <returns><T></returns>
-        public async Task<T> CreateAsync(T item)
+        public Task CreateAsync(T item)
         {
             item.Id = Guid.NewGuid();
-            ((IList<T>)_dataContext).Add(item);
-            _dataContext.SaveChanges();
-            return await Task.FromResult(item);
+            _dataContext.AddAsync(item);
+            return _dataContext.SaveChangesAsync();
+            
         }
 
         /// <summary>
@@ -56,14 +56,10 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Repositories
         /// </summary>
         /// <param name="data"></param>
         /// <returns><T></returns>
-        public async Task<T> UpdateAsync(T item)
+        public Task UpdateAsync(T item)
         {
-            //определяем индекс изменяемой записи
-            var index = ((IList<T>)_dataContext).IndexOf(_dataContext.Set<T>().Where(x => x.Id == item.Id).First());
-            ((IList<T>)_dataContext)[index] = item;
-            _dataContext.SaveChanges();
-            return await Task.FromResult(item);
-
+            _dataContext.Update(item);
+            return _dataContext.SaveChangesAsync();
         }
 
         /// <summary>
@@ -71,11 +67,10 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Repositories
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task DeleteAsync(Guid id)
+        public Task DeleteAsync(Guid id)
         {
-            //((List<T>)_dataContext).RemoveAll(i => i.Id == id);
-            //_dataContext.SaveChanges();
-            //return await Task.CompletedTask;
+            _dataContext.Remove(new BaseEntity { Id = id });
+            return _dataContext.SaveChangesAsync();
         }
 
     }

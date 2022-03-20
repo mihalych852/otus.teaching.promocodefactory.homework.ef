@@ -22,8 +22,8 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
 
         public DataContext(DbContextOptions<DataContext> dbContextOptions): base(dbContextOptions)
         {
-            Database.EnsureDeleted();
-            Database.EnsureCreated();
+            //Database.EnsureDeleted();
+            //Database.EnsureCreated();
             //Database.Migrate();
         }
 
@@ -46,7 +46,6 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
             {
                 e.Property(r => r.Name).HasMaxLength(50);
                 e.Property(r => r.Description).HasMaxLength(50);
-                //e.HasData(FakeDataFactory.Roles);
             });
 
             //
@@ -58,7 +57,6 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
                     e.Property(x => x.FirstName).HasMaxLength(50);
                     e.Property(x => x.LastName).HasMaxLength(50);
                     e.Property(x => x.Email).HasMaxLength(50);
-                    //e.HasData(FakeDataFactory.Employees);
                 });
 
             //
@@ -71,7 +69,6 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
                 e.Property(x => x.FirstName).HasMaxLength(50);
                 e.Property(x => x.LastName).HasMaxLength(50);
                 e.Property(x => x.Email).HasMaxLength(50);
-                //e.HasData(FakeDataFactory.Customers);
             });
 
             //
@@ -95,7 +92,6 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
             modelBuilder.Entity<Preference>(e =>
             {
                 e.Property(e => e.Name).HasMaxLength(50);
-                //e.HasData(FakeDataFactory.Preferences);
             });
 
             //
@@ -108,7 +104,6 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
                 e.Property(p => p.Code).HasMaxLength(50);
                 e.Property(p => p.ServiceInfo).HasMaxLength(50);
                 e.Property(p => p.PartnerName).HasMaxLength(50);
-                //e.HasData(FakeDataFactory.PromoCodes);
             });
 
             base.OnModelCreating(modelBuilder);

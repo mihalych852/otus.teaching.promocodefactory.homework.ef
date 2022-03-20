@@ -29,7 +29,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
             new Employee()
             {
                 Id = Guid.Parse("451533d5-d8d5-4a11-9c7b-eb9f14e1a32f"),
-                Email = "owner@somemail.ru",
+                Email = "ivan_sergeev@mail.ru",
                 FirstName = "Иван",
                 LastName = "Сергеев",
                 RoleId = Roles.FirstOrDefault(x => x.Name == "Admin").Id,
@@ -78,7 +78,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                     new Customer()
                     {
                         Id = customerId,
-                        Email = "ivan_sergeev@mail.ru",
+                        Email = "owner@somemail.ru",
                         FirstName = "Иван",
                         LastName = "Петров",
                         //TODO: Добавить предзаполненный список предпочтений
@@ -99,11 +99,11 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
             get
             {
                 var date = DateTime.Parse("23-02-2022 11:33Z");
-                var partner = Employees.FirstOrDefault(x => x.Email == "owner@somemail.ru");
-                var owner = Customers.FirstOrDefault(x => x.Email == "ivan_sergeev@mail.ru");
+                var partner = Employees.FirstOrDefault(x => x.Email == "andreev@somemail.ru");
+                var owner = Customers.FirstOrDefault(x => x.Email == "owner@somemail.ru");
                 var promoCodes = new List<PromoCode>()
                 {
-                    new PromoCode
+                    new PromoCode()
                     {
                         Id =  Guid.Parse("68779ec4-5753-4c22-a268-bd7fb91345a2"),
                         Code = "123456",
@@ -114,7 +114,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                         PartnerName = partner.FirstName,
                         Preference = owner.Preferences.FirstOrDefault()
                     },
-                    new PromoCode
+                    new PromoCode()
                     {
                         Id =  Guid.Parse("38e2cc99-166c-409b-b193-cc7aa01b708a"),
                         Code = "654321",
