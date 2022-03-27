@@ -15,7 +15,7 @@ namespace Otus.Teaching.PromoCodeFactory.Core.Domain.Administration
 
         public Guid RoleId { get; set; }
 
-        public Role Role { get; set; }
+        public virtual Role Role { get; set; }
 
         public int AppliedPromocodesCount { get; set; }
     }

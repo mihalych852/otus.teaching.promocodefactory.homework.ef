@@ -22,9 +22,6 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
 
         public DataContext(DbContextOptions<DataContext> dbContextOptions): base(dbContextOptions)
         {
-            //Database.EnsureDeleted();
-            //Database.EnsureCreated();
-            //Database.Migrate();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -64,8 +61,6 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
             //
             modelBuilder.Entity<Customer>(e =>
             {
-                //e.HasMany(x => x.PromoCodes).WithOne(x => x.Owner);
-                //e.HasMany(x => x.Preferences).WithOne();
                 e.Property(x => x.FirstName).HasMaxLength(50);
                 e.Property(x => x.LastName).HasMaxLength(50);
                 e.Property(x => x.Email).HasMaxLength(50);
@@ -100,7 +95,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
             modelBuilder.Entity<PromoCode>(e =>
             {
                 e.HasOne(p => p.PartnerManager).WithMany().HasForeignKey(p => p.PartnerName).HasPrincipalKey(p => p.FirstName);
-                //e.HasOne(p => p.Preference);
+                e.HasOne(p => p.Owner).WithMany(c => c.PromoCodes).HasForeignKey("OwnerId").HasPrincipalKey(p => p.Id).OnDelete(DeleteBehavior.Cascade);
                 e.Property(p => p.Code).HasMaxLength(50);
                 e.Property(p => p.ServiceInfo).HasMaxLength(50);
                 e.Property(p => p.PartnerName).HasMaxLength(50);

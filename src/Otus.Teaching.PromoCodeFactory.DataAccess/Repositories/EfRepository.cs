@@ -69,7 +69,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Repositories
         /// <returns></returns>
         public Task DeleteAsync(Guid id)
         {
-            _dataContext.Remove(new BaseEntity { Id = id });
+            _dataContext.Remove(_dataContext.Set<T>().Find(id));
             return _dataContext.SaveChangesAsync();
         }
 

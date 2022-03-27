@@ -51,7 +51,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
             {
                 x.UseSqlite("Filename=PromoCodeFactoryDb.sqlite");
                 x.EnableSensitiveDataLogging();
-                //x.UseLazyLoadingProxies();
+                x.UseLazyLoadingProxies();
             });
         }
 

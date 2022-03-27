@@ -8,6 +8,6 @@ namespace Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement
     {
         public string Name { get; set; }
 
-        public ICollection<Customer> Customers { get; set; }
+        public virtual ICollection<Customer> Customers { get; set; }
     }
 }

@@ -47,16 +47,15 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
                 }).ToList();
             return customersModelList;
         }
-        
+
         /// <summary>
-        /// Получение информации о клиенте
+        /// Получение клиента вместе с выданными ему промомкодами
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<CustomerResponse>> GetCustomerAsync(Guid id)
         {
-            //TODO: Добавить получение клиента вместе с выданными ему промомкодами
             var customer = await _customerRepository.GetByIdAsync(id);
             if (customer == null)
                 return NotFound();
@@ -67,14 +66,11 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
                 Email = customer.Email,
                 FirstName = customer.FirstName,
                 LastName = customer.LastName,
-                PromoCodes = customer.PromoCodes.Select(x => new PromoCodeShortResponse()
+                Prefernces = customer.Preferences.Select(x => new PrefernceResponse()
                 {
                     Id = x.Id,
-                    Code = x.Code,
-                    BeginDate = x.BeginDate.ToShortDateString(),
-                    EndDate = x.EndDate.ToShortDateString(),
-                    PartnerName = x.PartnerName,
-                    ServiceInfo = x.ServiceInfo
+                    Name = x.Name,
+                    
                 }).ToList(),
             };
 
@@ -119,17 +115,31 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<Customer>> EditCustomersAsync(Guid id, CreateOrEditCustomerRequest request)
         {
-            var customerModel = await _customerRepository.GetByIdAsync(id);
-            var preferenceModel = await _preferenceRepository.GetAllAsync();
-            var preferences = request.PreferenceIds.ToArray();
 
-            customerModel(x =>
+            var customerModel = await _customerRepository.GetByIdAsync(id);
+            if (customerModel == null)
             {
-                x.Email = request.Email;
-                x.FirstName = request.FirstName;
-                x.LastName = request.LastName;
-                x.Preferences = preferences.ToArray();
-            });
+                return NotFound();
+            }
+
+            var preferenceModel = await _preferenceRepository.GetAllAsync();
+            //var preferences = request.PreferenceIds.ToList();
+            customerModel.Preferences.Clear();
+            foreach (var idis in request.PreferenceIds.ToList())
+            {
+                customerModel.Preferences.Add(preferenceModel.FirstOrDefault(x => x.Id == idis));
+            }
+
+            customerModel.FirstName = request.FirstName;
+            customerModel.LastName = request.LastName;
+            customerModel.Email = request.Email;
+            customerModel.Preferences.Clear();
+            foreach (var idis in request.PreferenceIds.ToList())
+            {
+                customerModel.Preferences.Add(preferenceModel.FirstOrDefault(x => x.Id == idis));
+            }
+
+
             await _customerRepository.UpdateAsync(customerModel);
             return Ok();
         }
@@ -143,7 +153,6 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         public async Task<ActionResult<Customer>> DeleteCustomer(Guid id)
         {
             await _customerRepository.DeleteAsync(id);
-            await _promoCodeRepository.DeleteAsync(x => x.owner.id = id);
             return Ok();
         }
     }

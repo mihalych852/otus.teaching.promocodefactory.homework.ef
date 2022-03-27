@@ -14,8 +14,8 @@ namespace Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement
         public string Email { get; set; }
 
         //TODO: Списки Preferences и Promocodes 
-        public ICollection<Preference> Preferences { get; set; }
-        public ICollection<PromoCode>? PromoCodes { get; set; }
+        public virtual ICollection<Preference> Preferences { get; set; }
+        public virtual ICollection<PromoCode> PromoCodes { get; set; }
 
 
     }
