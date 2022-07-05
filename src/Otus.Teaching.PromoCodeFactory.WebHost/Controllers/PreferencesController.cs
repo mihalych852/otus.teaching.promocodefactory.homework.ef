@@ -12,180 +12,40 @@ using Otus.Teaching.PromoCodeFactory.WebHost.Models;
 namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
 {
     /// <summary>
-    /// Клиенты
+    /// Предпочтения
     /// </summary>
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class CustomersController
+    public class PreferencesController
         : ControllerBase
     {
-        private readonly IRepository<Customer> _customerRepository;
+        private readonly IRepository<Preference> _preferenceRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CustomersController(IRepository<Customer> customerRepository, IUnitOfWork unitOfWork)
+        public PreferencesController(IRepository<Preference> preferenceRepository, IUnitOfWork unitOfWork)
         {
-            _customerRepository = customerRepository ?? throw new ArgumentNullException(nameof(customerRepository));
+            _preferenceRepository = preferenceRepository ?? throw new ArgumentNullException(nameof(preferenceRepository));
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
         /// <summary>
-        /// Выгрузить информацию по всем клиентам
+        /// Выгрузить информацию по всем предпочтениям
         /// </summary>
-        [ProducesResponseType(typeof(IList<CustomerShortResponse>),StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IList<PreferenceResponse>),StatusCodes.Status200OK)]
         [HttpGet]
-        public async Task<ActionResult<IList<CustomerShortResponse>>> GetCustomersAsync()
+        public async Task<ActionResult<IList<PreferenceResponse>>> GetPreferencesAsync()
         {
-            var entities = await _customerRepository.GetAllAsync();
+            var entities = await _preferenceRepository.GetAllAsync();
 
             var result = entities
-                .Select(item => new CustomerShortResponse
+                .Select(item => new PreferenceResponse
                 {
                     Id = item.Id,
-                    FirstName = item.FirstName,
-                    LastName = item.LastName,
-                    Email = item.Email
+                    Name = item.Name,
                 })
                 .ToList();
 
             return Ok(result);
-        }
-        
-        /// <summary>
-        /// Получить информацию о клиенте по его идентификатору
-        /// </summary>
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(CustomerResponse), StatusCodes.Status200OK)]
-        [HttpGet("{id:guid}")]
-        public async Task<ActionResult<CustomerResponse>> GetCustomerAsync(Guid id)
-        {
-            var entity = await _customerRepository.GetByIdAsync(id);
-
-            if (entity == null)
-            {
-                return NotFound();
-            }
-
-            var result = new CustomerResponse
-            {
-                Id = entity.Id,
-                FirstName = entity.FirstName,
-                LastName = entity.LastName,
-                Email = entity.Email,
-                PromoCodes = entity
-                    .Promocodes
-                    .Select(item => new PromoCodeShortResponse
-                    {
-                        BeginDate = item.BeginDate.ToString(),
-                        Code = item.Code,
-                        EndDate = item.EndDate.ToString(),
-                        Id = item.Id,
-                        PartnerName = item.PartnerName,
-                        ServiceInfo = item.ServiceInfo
-                    })
-                    .ToList(),
-                Preferences = entity
-                    .CustomerPreferences
-                    .Select(item => new PreferenceResponse
-                    {
-                        Id = item.Preference.Id,
-                        Name = item.Preference.Name
-                    })
-                    .ToList()
-            };
-
-            return Ok(result);
-        }
-        
-        /// <summary>
-        /// Создать нового клиента
-        /// </summary>
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [HttpPost]
-        public async Task<IActionResult> CreateCustomerAsync([FromBody] CreateOrEditCustomerRequest request)
-        {
-            var customerId = Guid.NewGuid();
-            
-            var entity = new Customer
-            {
-                Id = customerId,
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                Email = request.Email,
-                CustomerPreferences = request
-                    .PreferenceIds
-                    .Select(item => new CustomerPreference
-                    {
-                        CustomerId = customerId,
-                        PreferenceId = item
-                    })
-                    .ToList()
-            };
-            
-            _customerRepository.Add(entity);
-            await _unitOfWork.SaveAsync();
-            
-            return NoContent();
-        }
-
-        /// <summary>
-        /// Обновить информацию о клиенте
-        /// </summary>
-        /// <param name="id">Идентификатор клиента</param>
-        /// <param name="request">Данные, которые надо обновить</param>
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [HttpPut("{id:guid}")]
-        public async Task<IActionResult> EditCustomersAsync(Guid id, [FromBody] CreateOrEditCustomerRequest request)
-        {
-            var entity = await _customerRepository.GetByIdAsync(id);
-
-            if (entity == null)
-            {
-                return NotFound();
-            }
-
-            entity.FirstName = request.FirstName;
-            entity.LastName = request.LastName;
-            entity.Email = request.Email;
-            entity.CustomerPreferences = request
-                .PreferenceIds
-                .Select(item => new CustomerPreference
-                {
-                    CustomerId = id,
-                    PreferenceId = item
-                })
-                .ToList();
-
-            _customerRepository.Update(entity);
-            await _unitOfWork.SaveAsync();
-
-            return NoContent();
-        }
-
-        /// <summary>
-        /// Удалить клиента по идентификатору
-        /// </summary>
-        /// <param name="id">Идентификатор клиента</param>
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [HttpDelete("{id:guid}")]
-        public async Task<IActionResult> DeleteCustomer(Guid id)
-        {
-            var entityToDelete = await _customerRepository.GetByIdAsync(id);
-
-            if (entityToDelete == null)
-            {
-                return NotFound();
-            }
-            
-            _customerRepository.Remove(entityToDelete);
-            await _unitOfWork.SaveAsync();
-            
-            return NoContent();
         }
     }
 }
