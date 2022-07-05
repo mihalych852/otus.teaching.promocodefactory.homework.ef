@@ -5,7 +5,36 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Migrations\20220705170703_AddDataCustomersAndPreferences.cs" />
+      <Compile Remove="Migrations\20220705170703_AddDataCustomersAndPreferences.Designer.cs" />
+      <Compile Remove="Migrations\20220705170722_AddDataCustomerPreferences.cs" />
+      <Compile Remove="Migrations\20220705170722_AddDataCustomerPreferences.Designer.cs" />
+      <Compile Remove="Migrations\20220705173046_ChangeDeleteBehavior.cs" />
+      <Compile Remove="Migrations\20220705173046_ChangeDeleteBehavior.Designer.cs" />
+      <Compile Remove="Migrations\20220705174141_CustomerEmailUnique.cs" />
+      <Compile Remove="Migrations\20220705174141_CustomerEmailUnique.Designer.cs" />
+      <Compile Remove="Migrations\20220705174552_CustomerEmailUnique.cs" />
+      <Compile Remove="Migrations\20220705174552_CustomerEmailUnique.Designer.cs" />
+      <Compile Remove="Migrations\20220705174617_AddDataCustomersAndPreferences.cs" />
+      <Compile Remove="Migrations\20220705174617_AddDataCustomersAndPreferences.Designer.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\Otus.Teaching.PromoCodeFactory.Core\Otus.Teaching.PromoCodeFactory.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.26" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.26">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.26" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.26" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.26">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
     </ItemGroup>
 
 </Project>
