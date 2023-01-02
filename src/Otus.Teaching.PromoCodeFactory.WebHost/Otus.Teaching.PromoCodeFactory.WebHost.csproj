@@ -7,10 +7,20 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Otus.Teaching.PromoCodeFactory.Core\Otus.Teaching.PromoCodeFactory.Core.csproj" />
+      <ProjectReference Include="..\Otus.Teaching.PromoCodeFactory.DataAccess.Sqlite\Otus.Teaching.PromoCodeFactory.DataAccess.Sqlite.csproj" />
       <ProjectReference Include="..\Otus.Teaching.PromoCodeFactory.DataAccess\Otus.Teaching.PromoCodeFactory.DataAccess.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.1">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="7.0.1" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.1">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
       <PackageReference Include="NSwag.AspNetCore" Version="13.5.0" />
     </ItemGroup>
 
