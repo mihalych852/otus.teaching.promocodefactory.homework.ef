@@ -65,11 +65,42 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
             }
         };
 
+        public static IEnumerable<PromoCode> Promocodes
+        {
+            get
+            {
+                var promocodes = new List<PromoCode>()
+                {
+                    new PromoCode()
+                    {
+                        Code = Guid.NewGuid().ToString(),
+                        PartnerManager = Employees.ToArray()[0],
+                        Preference = Preferences.ToArray()[0],
+                    },
+                    new PromoCode()
+                    {
+                        Code = Guid.NewGuid().ToString(),
+                        PartnerManager = Employees.ToArray()[1],
+                        Preference = Preferences.ToArray()[1],
+                    },
+                    new PromoCode()
+                    {
+                        Code = Guid.NewGuid().ToString(),
+                        PartnerManager = Employees.ToArray()[2],
+                        Preference = Preferences.ToArray()[2],
+                    }
+                };
+
+                return promocodes;
+            }
+        }
+
         public static IEnumerable<Customer> Customers
         {
             get
             {
                 var customerId = Guid.Parse("a6c8c6b1-4349-45b0-ab31-244740aaf0f0");
+                IEnumerable<Preference> preferences = new List<Preference>() { Preferences.ToList()[0], Preferences.ToList()[1] };
                 var customers = new List<Customer>()
                 {
                     new Customer()
@@ -78,8 +109,8 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                         Email = "ivan_sergeev@mail.ru",
                         FirstName = "Иван",
                         LastName = "Петров",
-                        //TODO: Добавить предзаполненный список предпочтений
-                    }
+                        Preferences = preferences.ToList(),
+                    },
                 };
 
                 return customers;
