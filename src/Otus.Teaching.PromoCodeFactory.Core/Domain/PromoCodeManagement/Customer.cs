@@ -19,8 +19,8 @@ namespace Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement
         [Required, MaxLength(30)]
         public string Email { get; set; }
 
-        public List<Preference> Preferences { get; set; }
+        public ICollection<Preference> Preferences { get; set; }
 
-        public List<PromoCode> PromoCodes { get; set; }
+        public ICollection<PromoCode> PromoCodes { get; set; }
     }
 }
