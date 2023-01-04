@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.Administration;
@@ -8,7 +9,9 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
 {
     public static class FakeDataFactory
     {
-        public static IEnumerable<Employee> Employees => new List<Employee>()
+        private static IEnumerable<Employee> _employees;
+
+        public static IEnumerable<Employee> Employees => _employees ??= new List<Employee>()
         {
             new Employee()
             {
@@ -30,7 +33,8 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
             },
         };
 
-        public static IEnumerable<Role> Roles => new List<Role>()
+        private static IEnumerable<Role> _role;
+        public static IEnumerable<Role> Roles => _role ??= new List<Role>()
         {
             new Role()
             {
@@ -45,13 +49,15 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                 Description = "Партнерский менеджер"
             }
         };
-        
-        public static IEnumerable<Preference> Preferences => new List<Preference>()
+
+        private static IEnumerable<Preference> _preferences;
+        public static IEnumerable<Preference> Preferences => _preferences ??= new List<Preference>()
         {
             new Preference()
             {
                 Id = Guid.Parse("ef7f299f-92d7-459f-896e-078ed53ef99c"),
-                Name = "Театр",
+                Name = "Театр", 
+                Customers = Customers.ToList(),
             },
             new Preference()
             {
@@ -62,59 +68,45 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
             {
                 Id = Guid.Parse("76324c47-68d2-472d-abb8-33cfa8cc0c84"),
                 Name = "Дети",
+                Customers = Customers.ToList(),
             }
         };
 
-        public static IEnumerable<PromoCode> Promocodes
+        private static IEnumerable<PromoCode> _promoCode;
+
+        public static IEnumerable<PromoCode> Promocodes => _promoCode ??= new List<PromoCode>()
         {
-            get
+            new PromoCode()
             {
-                var promocodes = new List<PromoCode>()
-                {
-                    new PromoCode()
-                    {
-                        Code = Guid.NewGuid().ToString(),
-                        PartnerManager = Employees.ToArray()[0],
-                        Preference = Preferences.ToArray()[0],
-                    },
-                    new PromoCode()
-                    {
-                        Code = Guid.NewGuid().ToString(),
-                        PartnerManager = Employees.ToArray()[1],
-                        Preference = Preferences.ToArray()[1],
-                    },
-                    new PromoCode()
-                    {
-                        Code = Guid.NewGuid().ToString(),
-                        PartnerManager = Employees.ToArray()[2],
-                        Preference = Preferences.ToArray()[2],
-                    }
-                };
-
-                return promocodes;
+                Code = Guid.NewGuid().ToString(),
+                PartnerManager = Employees.ToArray()[0],
+                Preference = Preferences.ToArray()[0],
+            },
+            new PromoCode()
+            {
+                Code = Guid.NewGuid().ToString(),
+                PartnerManager = Employees.ToArray()[1],
+                Preference = Preferences.ToArray()[1],
+            },
+            new PromoCode()
+            {
+                Code = Guid.NewGuid().ToString(),
+                PartnerManager = Employees.ToArray()[2],
+                Preference = Preferences.ToArray()[2],
             }
-        }
+        };
 
-        public static IEnumerable<Customer> Customers
+        private static IEnumerable<Customer> _customer;
+
+        public static IEnumerable<Customer> Customers => _customer ??= new List<Customer>()
         {
-            get
+            new Customer()
             {
-                var customerId = Guid.Parse("a6c8c6b1-4349-45b0-ab31-244740aaf0f0");
-                IEnumerable<Preference> preferences = new List<Preference>() { Preferences.ToList()[0], Preferences.ToList()[1] };
-                var customers = new List<Customer>()
-                {
-                    new Customer()
-                    {
-                        Id = customerId,
-                        Email = "ivan_sergeev@mail.ru",
-                        FirstName = "Иван",
-                        LastName = "Петров",
-                        Preferences = preferences.ToList(),
-                    },
-                };
-
-                return customers;
-            }
-        }
+                Id = Guid.Parse("a6c8c6b1-4349-45b0-ab31-244740aaf0f0"),
+                Email = "ivan_sergeev@mail.ru",
+                FirstName = "Иван",
+                LastName = "Петров",
+            },
+        };
     }
 }
