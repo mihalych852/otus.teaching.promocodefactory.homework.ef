@@ -7,6 +7,7 @@ using Otus.Teaching.PromoCodeFactory.Core.Abstractions.Repositories;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement;
 using Otus.Teaching.PromoCodeFactory.DataAccess.Context;
 using Otus.Teaching.PromoCodeFactory.DataAccess.Repositories;
+using Otus.Teaching.PromoCodeFactory.WebHost.Mapping;
 
 namespace Otus.Teaching.PromoCodeFactory.WebHost
 {
@@ -25,9 +26,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
                 options.UseSqlite("Data Source=PromocodeFactory.db",
                     x => x.MigrationsAssembly("Otus.Teaching.PromoCodeFactory.DataAccess.Sqlite"));
             });
-
-
-
+            services.AddAutoMapper(typeof(MappingProfile));
             services.AddControllers();
             services.AddScoped<IRepository<Customer>, CustomerRepository>();
 
