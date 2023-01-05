@@ -19,8 +19,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                 Email = "owner@somemail.ru",
                 FirstName = "Иван",
                 LastName = "Сергеев",
-                Role = Roles.FirstOrDefault(x => x.Name == "Admin"),
-                AppliedPromocodesCount = 5
+                AppliedPromocodesCount = 5,
             },
             new Employee()
             {
@@ -28,7 +27,6 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                 Email = "andreev@somemail.ru",
                 FirstName = "Петр",
                 LastName = "Андреев",
-                Role = Roles.FirstOrDefault(x => x.Name == "PartnerManager"),
                 AppliedPromocodesCount = 10
             },
         };
@@ -56,8 +54,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
             new Preference()
             {
                 Id = Guid.Parse("ef7f299f-92d7-459f-896e-078ed53ef99c"),
-                Name = "Театр", 
-                Customers = Customers.ToList(),
+                Name = "Театр",
             },
             new Preference()
             {
@@ -68,7 +65,6 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
             {
                 Id = Guid.Parse("76324c47-68d2-472d-abb8-33cfa8cc0c84"),
                 Name = "Дети",
-                Customers = Customers.ToList(),
             }
         };
 
@@ -79,21 +75,12 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
             new PromoCode()
             {
                 Code = Guid.NewGuid().ToString(),
-                PartnerManager = Employees.ToArray()[0],
-                Preference = Preferences.ToArray()[0],
+
             },
             new PromoCode()
             {
                 Code = Guid.NewGuid().ToString(),
-                PartnerManager = Employees.ToArray()[1],
-                Preference = Preferences.ToArray()[1],
             },
-            new PromoCode()
-            {
-                Code = Guid.NewGuid().ToString(),
-                PartnerManager = Employees.ToArray()[2],
-                Preference = Preferences.ToArray()[2],
-            }
         };
 
         private static IEnumerable<Customer> _customer;

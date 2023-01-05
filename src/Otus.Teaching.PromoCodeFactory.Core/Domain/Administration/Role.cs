@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Otus.Teaching.PromoCodeFactory.Core.Domain.Administration
 {
@@ -10,5 +11,7 @@ namespace Otus.Teaching.PromoCodeFactory.Core.Domain.Administration
 
         [MaxLength(50)]
         public string Description { get; set; }
+
+        public ICollection<Employee> Employee { get; set; }
     }
 }

@@ -17,8 +17,7 @@ namespace Otus.Teaching.PromoCodeFactory.Core.Domain.Administration
 
         [Required, MaxLength(30)]
         public string Email { get; set; }
-
-        [Required]
+        
         public Role Role { get; set; }
 
         public int AppliedPromocodesCount { get; set; }

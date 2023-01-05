@@ -13,19 +13,15 @@ namespace Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement
         [MaxLength(20)]
         public string ServiceInfo { get; set; }
 
-        [Required]
         public DateTime BeginDate { get; set; }
 
-        [Required]
         public DateTime EndDate { get; set; }
 
-        [Required, MaxLength(20)]
+        [MaxLength(20)]
         public string PartnerName { get; set; }
 
-        [Required]
         public Employee PartnerManager { get; set; }
 
-        [Required]
         public Preference Preference { get; set; }
     }
 }
