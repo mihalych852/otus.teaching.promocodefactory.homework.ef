@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Otus.Teaching.PromoCodeFactory.DataAccess.Context;
 using Otus.Teaching.PromoCodeFactory.DataAccess.Data;
 
@@ -24,7 +25,14 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+                .ConfigureLogging((context, logging) =>
+                {
+                    logging.AddConsole();
+                })
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
 
         private static void CreateDbIfNotExists(IHost host)
         {
