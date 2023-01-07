@@ -25,7 +25,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Repositories
         public Task<IEnumerable<T>> GetAllAsync()
         {
             _logger.LogInformation($"Getting all entities of {TypeName}");
-            return Task.FromResult<IEnumerable<T>>(_db.Set<T>());
+            return Task.FromResult<IEnumerable<T>>(_db.Set<T>().AsSplitQuery());
         }
 
         public async Task<T> GetByIdAsync(Guid id)
