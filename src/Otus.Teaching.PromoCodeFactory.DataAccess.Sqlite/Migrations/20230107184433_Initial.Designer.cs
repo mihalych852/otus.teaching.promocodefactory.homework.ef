@@ -11,7 +11,7 @@ using Otus.Teaching.PromoCodeFactory.DataAccess.Context;
 namespace Otus.Teaching.PromoCodeFactory.DataAccess.Sqlite.Migrations
 {
     [DbContext(typeof(PromocodeFactoryDb))]
-    [Migration("20230105102235_Initial")]
+    [Migration("20230107184433_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
