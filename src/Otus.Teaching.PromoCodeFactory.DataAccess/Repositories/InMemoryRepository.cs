@@ -28,6 +28,11 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Repositories
             return Task.FromResult(Data.FirstOrDefault(x => x.Id == id));
         }
 
+        public Task<IEnumerable<T>> GetByIdAsync(Guid[] ids)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<T> CreateAsync(T entity)
         {
             throw new NotImplementedException();
