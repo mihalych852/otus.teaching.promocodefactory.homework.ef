@@ -20,7 +20,10 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
         public static async Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
-            await CreateDbIfNotExists(host);
+
+            ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+            ILogger<PromocodeFactoryDb> logger = loggerFactory.CreateLogger<PromocodeFactoryDb>();
+            await CreateDbIfNotExists(host, logger);
             await host.RunAsync();
         }
 
@@ -40,12 +43,12 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
                     webBuilder.UseStartup<Startup>();
                 });
 
-        private static async Task CreateDbIfNotExists(IHost host)
+        private static async Task CreateDbIfNotExists(IHost host, ILogger<PromocodeFactoryDb> logger)
         {
             using var scope = host.Services.CreateScope();
             var services = scope.ServiceProvider;
             var context = services.GetRequiredService<PromocodeFactoryDb>();
-            await DbInitializer.InitializeAsync(context, true);
+            await DbInitializer.InitializeAsync(context, logger, true);
         }
     }
 }
