@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Otus.Teaching.PromoCodeFactory.Core.Abstractions.Repositories;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement;
-using Otus.Teaching.PromoCodeFactory.DataAccess.Repositories;
 using Otus.Teaching.PromoCodeFactory.WebHost.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
 {
@@ -24,7 +23,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         private readonly IMapper _mapper;
 
         /// <summary>
-        /// CustomersController Construction
+        /// CustomersController Constructor
         /// </summary>
         /// <param name="db"></param>
         public CustomersController(IRepository<Customer> dbCustomers, IRepository<Preference> dbPreference, IMapper mapper)

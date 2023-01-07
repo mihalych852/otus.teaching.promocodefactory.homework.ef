@@ -11,6 +11,9 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Mapping
     /// </summary>
     public class MappingProfile : Profile
     {
+        /// <summary>
+        /// MappingProfile
+        /// </summary>
         public MappingProfile()
         {
             CreateMap<Customer, CustomerShortResponse>();
