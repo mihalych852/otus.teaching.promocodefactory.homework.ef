@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,16 +14,21 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
     public class Program
     {
         /// <summary>
-        /// 
+        /// Entry point
         /// </summary>
         /// <param name="args"></param>
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
-            CreateDbIfNotExists(host);
-            host.Run();
+            await CreateDbIfNotExists(host);
+            await host.RunAsync();
         }
 
+        /// <summary>
+        /// CreateHostBuilder
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureLogging((context, logging) =>
@@ -34,12 +40,12 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
                     webBuilder.UseStartup<Startup>();
                 });
 
-        private static void CreateDbIfNotExists(IHost host)
+        private static async Task CreateDbIfNotExists(IHost host)
         {
             using var scope = host.Services.CreateScope();
             var services = scope.ServiceProvider;
             var context = services.GetRequiredService<PromocodeFactoryDb>();
-            DbInitializer.Initialize(context, true);
+            await DbInitializer.InitializeAsync(context, true);
         }
     }
 }
