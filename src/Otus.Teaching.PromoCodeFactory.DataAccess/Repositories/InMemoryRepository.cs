@@ -43,7 +43,17 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Repositories
             throw new NotImplementedException();
         }
 
+        public Task UpdateAsync(T[] entities)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<bool> DeleteAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<T> LoadSpecificNavigationPropertyOfEntityAsync(string propertyName, Guid id)
         {
             throw new NotImplementedException();
         }

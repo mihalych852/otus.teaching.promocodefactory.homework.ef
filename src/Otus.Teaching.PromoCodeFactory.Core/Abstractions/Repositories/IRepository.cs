@@ -12,6 +12,8 @@ namespace Otus.Teaching.PromoCodeFactory.Core.Abstractions.Repositories
         Task<IEnumerable<T>> GetByIdAsync(Guid[] ids);
         Task<T> CreateAsync(T entity);
         Task UpdateAsync(T entity);
+        Task UpdateAsync(T[] entities);
         Task<bool> DeleteAsync(Guid id);
+        Task<T> LoadSpecificNavigationPropertyOfEntityAsync(string propertyName, Guid id);
     }
 }

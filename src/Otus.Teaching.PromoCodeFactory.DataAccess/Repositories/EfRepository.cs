@@ -77,6 +77,26 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Repositories
             _logger.LogInformation($"Success");
         }
 
+        public async Task UpdateAsync(T[] entities)
+        {
+            _logger.LogInformation($"Updating array of entities of {TypeName} ...");
+            _logger.LogInformation($"Checking for null ...");
+            if (entities is null) throw new ArgumentException(nameof(entities));
+
+            var listEntities = entities.ToList();
+
+            for (int i = 0; i < entities.Length; i++)
+            {
+                var oldEntity = await GetByIdAsync(listEntities[i].Id);
+                _logger.LogInformation($"Setting the value: number - {i + 1}; id - {listEntities[i].Id} ...");
+                _db.Entry(oldEntity).CurrentValues.SetValues(listEntities[i]);
+            }
+
+            _logger.LogInformation($"Save changes ...");
+            await _db.SaveChangesAsync();
+            _logger.LogInformation($"Success");
+        }
+
         public async Task<bool> DeleteAsync(Guid id)
         {
             _logger.LogInformation($"Deleting of entity ...");
@@ -93,5 +113,32 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Repositories
                 _logger.LogWarning("Failed");
             return result;
         }
+
+        /// <summary>
+        /// Load specific navigation property like include for Generic.
+        /// </summary>
+        /// <param name="propertyName"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<T> LoadSpecificNavigationPropertyOfEntityAsync(string propertyName, Guid id)
+        {
+            _logger.LogInformation($"Loading navigation property '{propertyName}' for '{typeof(T)}' Id - {id} ...");
+            var ent = await GetByIdAsync(id);
+            _logger.LogInformation("Check entity for null ...");
+            if (ent is null) throw new ArgumentException(nameof(id));
+            _logger.LogInformation("Check navigation property of entity for null ...");
+            if (_db?.Set<T>().Entry(ent).Navigation(propertyName) is null)
+                throw new NullReferenceException(propertyName);
+            if (_db.Set<T>().Entry(ent).Navigation(propertyName).IsLoaded)
+            {
+                _logger.LogInformation("Navigation property already is Loaded");
+                return ent;
+            }
+
+            await _db.Set<T>().Entry(ent).Navigation(propertyName).LoadAsync();
+            _logger.LogInformation("Success");
+            return ent;
+        }
+
     }
 }
