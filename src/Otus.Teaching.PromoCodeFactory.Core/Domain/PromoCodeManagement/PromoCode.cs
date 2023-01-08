@@ -1,5 +1,6 @@
 ﻿using Otus.Teaching.PromoCodeFactory.Core.Domain.Administration;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement
@@ -23,5 +24,7 @@ namespace Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement
         public Employee PartnerManager { get; set; }
 
         public Preference Preference { get; set; }
+
+        public ICollection<Customer> Customers { get; set; }
     }
 }

@@ -32,6 +32,21 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Sqlite.Migrations
                     b.ToTable("CustomerPreference");
                 });
 
+            modelBuilder.Entity("CustomerPromoCode", b =>
+                {
+                    b.Property<Guid>("CustomersId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("PromoCodesId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CustomersId", "PromoCodesId");
+
+                    b.HasIndex("PromoCodesId");
+
+                    b.ToTable("CustomerPromoCode");
+                });
+
             modelBuilder.Entity("Otus.Teaching.PromoCodeFactory.Core.Domain.Administration.Employee", b =>
                 {
                     b.Property<Guid>("Id")
@@ -142,9 +157,6 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Sqlite.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("CustomerId")
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("TEXT");
 
@@ -163,8 +175,6 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Sqlite.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
 
                     b.HasIndex("PartnerManagerId");
 
@@ -188,6 +198,21 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Sqlite.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("CustomerPromoCode", b =>
+                {
+                    b.HasOne("Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement.Customer", null)
+                        .WithMany()
+                        .HasForeignKey("CustomersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement.PromoCode", null)
+                        .WithMany()
+                        .HasForeignKey("PromoCodesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Otus.Teaching.PromoCodeFactory.Core.Domain.Administration.Employee", b =>
                 {
                     b.HasOne("Otus.Teaching.PromoCodeFactory.Core.Domain.Administration.Role", "Role")
@@ -199,10 +224,6 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Sqlite.Migrations
 
             modelBuilder.Entity("Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement.PromoCode", b =>
                 {
-                    b.HasOne("Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement.Customer", null)
-                        .WithMany("PromoCodes")
-                        .HasForeignKey("CustomerId");
-
                     b.HasOne("Otus.Teaching.PromoCodeFactory.Core.Domain.Administration.Employee", "PartnerManager")
                         .WithMany()
                         .HasForeignKey("PartnerManagerId");
@@ -219,11 +240,6 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Sqlite.Migrations
             modelBuilder.Entity("Otus.Teaching.PromoCodeFactory.Core.Domain.Administration.Role", b =>
                 {
                     b.Navigation("Employee");
-                });
-
-            modelBuilder.Entity("Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement.Customer", b =>
-                {
-                    b.Navigation("PromoCodes");
                 });
 #pragma warning restore 612, 618
         }

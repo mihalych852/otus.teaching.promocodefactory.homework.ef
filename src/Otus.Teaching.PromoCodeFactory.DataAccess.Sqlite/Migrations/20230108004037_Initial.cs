@@ -106,17 +106,11 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Sqlite.Migrations
                     EndDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     PartnerName = table.Column<string>(type: "TEXT", maxLength: 20, nullable: true),
                     PartnerManagerId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    PreferenceId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    CustomerId = table.Column<Guid>(type: "TEXT", nullable: true)
+                    PreferenceId = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PromoCodes", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PromoCodes_Customers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customers",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_PromoCodes_Employees_PartnerManagerId",
                         column: x => x.PartnerManagerId,
@@ -129,20 +123,44 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Sqlite.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "CustomerPromoCode",
+                columns: table => new
+                {
+                    CustomersId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    PromoCodesId = table.Column<Guid>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CustomerPromoCode", x => new { x.CustomersId, x.PromoCodesId });
+                    table.ForeignKey(
+                        name: "FK_CustomerPromoCode_Customers_CustomersId",
+                        column: x => x.CustomersId,
+                        principalTable: "Customers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CustomerPromoCode_PromoCodes_PromoCodesId",
+                        column: x => x.PromoCodesId,
+                        principalTable: "PromoCodes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_CustomerPreference_PreferencesId",
                 table: "CustomerPreference",
                 column: "PreferencesId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CustomerPromoCode_PromoCodesId",
+                table: "CustomerPromoCode",
+                column: "PromoCodesId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Employees_RoleId",
                 table: "Employees",
                 column: "RoleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PromoCodes_CustomerId",
-                table: "PromoCodes",
-                column: "CustomerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PromoCodes_PartnerManagerId",
@@ -162,10 +180,13 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Sqlite.Migrations
                 name: "CustomerPreference");
 
             migrationBuilder.DropTable(
-                name: "PromoCodes");
+                name: "CustomerPromoCode");
 
             migrationBuilder.DropTable(
                 name: "Customers");
+
+            migrationBuilder.DropTable(
+                name: "PromoCodes");
 
             migrationBuilder.DropTable(
                 name: "Employees");
