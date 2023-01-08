@@ -68,7 +68,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         {
             var newCustomer = _mapper.Map<Customer>(request);
 
-            if (newCustomer.Preferences.Count > 1)
+            if (newCustomer.Preferences.Count > 0)
             {
                 var preferenceIds = newCustomer.Preferences.Select(p => p.Id).ToArray();
                 var preferences = await _dbPreference.GetByIdAsync(preferenceIds);
