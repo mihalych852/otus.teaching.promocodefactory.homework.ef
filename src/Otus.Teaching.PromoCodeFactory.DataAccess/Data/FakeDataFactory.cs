@@ -75,11 +75,13 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
             new PromoCode()
             {
                 Code = Guid.NewGuid().ToString(),
+                PartnerName = "Company1",
 
             },
             new PromoCode()
             {
                 Code = Guid.NewGuid().ToString(),
+                PartnerName = "Company2",
             },
         };
 
