@@ -48,7 +48,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
             using var scope = host.Services.CreateScope();
             var services = scope.ServiceProvider;
             var context = services.GetRequiredService<PromocodeFactoryDb>();
-            await DbInitializer.InitializeAsync(context, logger, true);
+            await DbInitializer.InitializeAsync(context, logger, false);
         }
     }
 }
