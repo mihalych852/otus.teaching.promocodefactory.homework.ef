@@ -94,6 +94,20 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                 FirstName = "Иван",
                 LastName = "Петров",
             },
+            new Customer()
+            {
+                Id = Guid.Parse("73BF1CC8-2B29-4430-89BF-1C0E07378B9A"),
+                Email = "sidr@mail.ru",
+                FirstName = "Сидр",
+                LastName = "Сидоров",
+            },
+            new Customer()
+            {
+                Id = Guid.Parse("E123BBC1-4AA0-477E-93FF-29E413F3F809"),
+                Email = "lutic@mail.ru",
+                FirstName = "Лютик",
+                LastName = "Лютикович",
+            },
         };
     }
 }

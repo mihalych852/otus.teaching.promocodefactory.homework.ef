@@ -111,23 +111,24 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
             var cust = await _db.Customers.AsSplitQuery().ToListAsync();
 
             #region Employees
-            _logger.LogInformation("Filling employee's Role ...");
+            _logger.LogInformation("Filling employee's Roles ...");
             emp[0].Role = roles[0];
             emp[1].Role = roles[1];
             _logger.LogInformation("Success");
             #endregion
 
             #region Promocodes
-            _logger.LogInformation("Filling promocode's Preference");
+            _logger.LogInformation("Filling promocode's Preferences");
             promo[0].Preference = pref[0];
             promo[1].Preference = pref[2];
             _logger.LogInformation("Success");
             #endregion
 
             #region Customers
-            _logger.LogInformation("Filling customer's Preference and Promocodes ...");
-            cust[0].Preferences = new List<Preference>() { pref[0], pref[2] };
-            cust[0].PromoCodes = new List<PromoCode>() { promo[1] };
+            _logger.LogInformation("Filling customer's Preferences ...");
+            cust[0].Preferences = new List<Preference>() { pref[0] };
+            cust[1].Preferences = new List<Preference>() { pref[2] };
+            cust[2].Preferences = new List<Preference>() { pref[2] };
             _logger.LogInformation("Success");
             #endregion
 
