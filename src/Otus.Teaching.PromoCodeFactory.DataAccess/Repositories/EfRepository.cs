@@ -120,7 +120,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Repositories
         /// <param name="propertyName"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<T> LoadSpecificNavigationPropertyOfEntityAsync(string propertyName, Guid id)
+        public async Task<T> GetEntityWithLoadedSpecificNavigationProperty(string propertyName, Guid id)
         {
             _logger.LogInformation($"Loading navigation property '{propertyName}' for '{typeof(T)}' Id - {id} ...");
             var ent = await GetByIdAsync(id);

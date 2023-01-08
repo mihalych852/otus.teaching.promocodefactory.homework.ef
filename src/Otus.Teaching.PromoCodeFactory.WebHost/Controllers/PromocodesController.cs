@@ -58,7 +58,14 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         /// <summary>
         /// Создать промокод и выдать его клиентам с указанным предпочтением
         /// </summary>
-        /// <returns></returns>
+        /// <returns>IActionResult</returns>
+        /// <remarks>
+        /// Так как Preferecne содержит ссылку на коллекцию Customer, невозможно
+        /// сделать AutoInclude во FluentAPI для него, а метод Include не доступен т.к.
+        /// здесь мы не работаем с DbContext. Репазиторий у нас generic и там применить
+        /// Include тоже невозможно, т.к. мы не знаем какой тип прийдёт.
+        /// Для решения этой задачи я сделал метод GetEntityWithLoadedSpecificNavigationProperty 
+        /// </remarks>
         [HttpPost]
         public async Task<IActionResult> GivePromoCodesToCustomersWithPreferenceAsync(GivePromoCodeRequest request)
         {
@@ -67,11 +74,13 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
             var promoCode = _mapper.Map<PromoCode>(request);
 
             //TODO Избавиться от захардкоженой строки.
-            promoCode.Preference = await _dbPreferecnes.LoadSpecificNavigationPropertyOfEntityAsync("Customers", promoCode.Preference.Id);
+            promoCode.Preference = await _dbPreferecnes.GetEntityWithLoadedSpecificNavigationProperty("Customers", promoCode.Preference.Id);
             
             _logger.LogInformation($"Promocode have the Preference {promoCode.Preference.Id}");
 
             promoCode.BeginDate = DateTime.Now.Date;
+
+            //TODO Избавить от захаркоженного инта
             promoCode.EndDate = DateTime.Now.Date.AddDays(30);
 
             _logger.LogInformation($"Promocode BeginDate - {promoCode.BeginDate} EndDate - {promoCode.EndDate}");

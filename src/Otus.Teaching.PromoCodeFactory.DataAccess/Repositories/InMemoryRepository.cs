@@ -53,7 +53,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<T> LoadSpecificNavigationPropertyOfEntityAsync(string propertyName, Guid id)
+        public Task<T> GetEntityWithLoadedSpecificNavigationProperty(string propertyName, Guid id)
         {
             throw new NotImplementedException();
         }

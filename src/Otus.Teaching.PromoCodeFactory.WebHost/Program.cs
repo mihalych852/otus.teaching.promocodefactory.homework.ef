@@ -43,6 +43,12 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
                     webBuilder.UseStartup<Startup>();
                 });
 
+        /// <summary>
+        /// Creates a database if it doesn't exist
+        /// </summary>
+        /// <param name="host"></param>
+        /// <param name="logger"></param>
+        /// <returns></returns>
         private static async Task CreateDbIfNotExists(IHost host, ILogger<PromocodeFactoryDb> logger)
         {
             using var scope = host.Services.CreateScope();
