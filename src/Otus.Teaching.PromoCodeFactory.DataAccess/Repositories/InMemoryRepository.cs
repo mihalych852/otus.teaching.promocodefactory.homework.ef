@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Otus.Teaching.PromoCodeFactory.Core.Abstractions.Repositories;
 using Otus.Teaching.PromoCodeFactory.Core.Domain;
@@ -13,7 +14,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Repositories
     {
         protected IEnumerable<T> Data { get; set; }
 
-        public InMemoryRepository(IEnumerable<T> data)
+        public InMemoryRepository(IEnumerable<T> data, CancellationToken cancel = default)
         {
             Data = data;
         }
@@ -23,37 +24,37 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Repositories
             return Task.FromResult(Data);
         }
 
-        public Task<T> GetByIdAsync(Guid id)
+        public Task<T> GetByIdAsync(Guid id, CancellationToken cancel = default)
         {
             return Task.FromResult(Data.FirstOrDefault(x => x.Id == id));
         }
 
-        public Task<IEnumerable<T>> GetByIdAsync(Guid[] ids)
+        public Task<IEnumerable<T>> GetByIdAsync(Guid[] ids, CancellationToken cancel = default)
         {
             throw new NotImplementedException();
         }
 
-        public Task<T> CreateAsync(T entity)
+        public Task<T> CreateAsync(T entity, CancellationToken cancel = default)
         {
             throw new NotImplementedException();
         }
 
-        public Task UpdateAsync(T entity)
+        public Task UpdateAsync(T entity, CancellationToken cancel = default)
         {
             throw new NotImplementedException();
         }
 
-        public Task UpdateAsync(T[] entities)
+        public Task UpdateAsync(T[] entities, CancellationToken cancel = default)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteAsync(Guid id)
+        public Task<bool> DeleteAsync(Guid id, CancellationToken cancel = default)
         {
             throw new NotImplementedException();
         }
 
-        public Task<T> GetEntityWithLoadedSpecificNavigationProperty(string propertyName, Guid id)
+        public Task<T> GetEntityWithLoadedSpecificNavigationProperty(string propertyName, Guid id, CancellationToken cancel = default)
         {
             throw new NotImplementedException();
         }
