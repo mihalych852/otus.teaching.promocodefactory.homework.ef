@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.Administration;
@@ -8,7 +9,9 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
 {
     public static class FakeDataFactory
     {
-        public static IEnumerable<Employee> Employees => new List<Employee>()
+        private static IEnumerable<Employee> _employees;
+
+        public static IEnumerable<Employee> Employees => _employees ??= new List<Employee>()
         {
             new Employee()
             {
@@ -16,8 +19,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                 Email = "owner@somemail.ru",
                 FirstName = "Иван",
                 LastName = "Сергеев",
-                Role = Roles.FirstOrDefault(x => x.Name == "Admin"),
-                AppliedPromocodesCount = 5
+                AppliedPromocodesCount = 5,
             },
             new Employee()
             {
@@ -25,12 +27,12 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                 Email = "andreev@somemail.ru",
                 FirstName = "Петр",
                 LastName = "Андреев",
-                Role = Roles.FirstOrDefault(x => x.Name == "PartnerManager"),
                 AppliedPromocodesCount = 10
             },
         };
 
-        public static IEnumerable<Role> Roles => new List<Role>()
+        private static IEnumerable<Role> _role;
+        public static IEnumerable<Role> Roles => _role ??= new List<Role>()
         {
             new Role()
             {
@@ -45,8 +47,9 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                 Description = "Партнерский менеджер"
             }
         };
-        
-        public static IEnumerable<Preference> Preferences => new List<Preference>()
+
+        private static IEnumerable<Preference> _preferences;
+        public static IEnumerable<Preference> Preferences => _preferences ??= new List<Preference>()
         {
             new Preference()
             {
@@ -65,25 +68,48 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
             }
         };
 
-        public static IEnumerable<Customer> Customers
-        {
-            get
-            {
-                var customerId = Guid.Parse("a6c8c6b1-4349-45b0-ab31-244740aaf0f0");
-                var customers = new List<Customer>()
-                {
-                    new Customer()
-                    {
-                        Id = customerId,
-                        Email = "ivan_sergeev@mail.ru",
-                        FirstName = "Иван",
-                        LastName = "Петров",
-                        //TODO: Добавить предзаполненный список предпочтений
-                    }
-                };
+        private static IEnumerable<PromoCode> _promoCode;
 
-                return customers;
-            }
-        }
+        public static IEnumerable<PromoCode> Promocodes => _promoCode ??= new List<PromoCode>()
+        {
+            new PromoCode()
+            {
+                Code = Guid.NewGuid().ToString(),
+                PartnerName = "Company1",
+
+            },
+            new PromoCode()
+            {
+                Code = Guid.NewGuid().ToString(),
+                PartnerName = "Company2",
+            },
+        };
+
+        private static IEnumerable<Customer> _customer;
+
+        public static IEnumerable<Customer> Customers => _customer ??= new List<Customer>()
+        {
+            new Customer()
+            {
+                Id = Guid.Parse("a6c8c6b1-4349-45b0-ab31-244740aaf0f0"),
+                Email = "ivan_sergeev@mail.ru",
+                FirstName = "Иван",
+                LastName = "Петров",
+            },
+            new Customer()
+            {
+                Id = Guid.Parse("73BF1CC8-2B29-4430-89BF-1C0E07378B9A"),
+                Email = "sidr@mail.ru",
+                FirstName = "Сидр",
+                LastName = "Сидоров",
+            },
+            new Customer()
+            {
+                Id = Guid.Parse("E123BBC1-4AA0-477E-93FF-29E413F3F809"),
+                Email = "lutic@mail.ru",
+                FirstName = "Лютик",
+                LastName = "Лютикович",
+            },
+        };
     }
 }
