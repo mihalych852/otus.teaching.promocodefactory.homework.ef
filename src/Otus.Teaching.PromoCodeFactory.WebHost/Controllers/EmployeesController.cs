@@ -23,7 +23,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         {
             _employeeRepository = employeeRepository;
         }
-        
+
         /// <summary>
         /// Получить данные всех сотрудников
         /// </summary>
@@ -33,17 +33,17 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         {
             var employees = await _employeeRepository.GetAllAsync();
 
-            var employeesModelList = employees.Select(x => 
+            var employeesModelList = employees.Select(x =>
                 new EmployeeShortResponse()
-                    {
-                        Id = x.Id,
-                        Email = x.Email,
-                        FullName = x.FullName,
-                    }).ToList();
+                {
+                    Id = x.Id,
+                    Email = x.Email,
+                    FullName = x.FullName,
+                }).ToList();
 
             return employeesModelList;
         }
-        
+
         /// <summary>
         /// Получить данные сотрудника по id
         /// </summary>
