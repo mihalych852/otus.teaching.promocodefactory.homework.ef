@@ -49,5 +49,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
             var result = await _repo.CreateAsync(model);
             return Ok(result);
         }
+
+
     }
 }
