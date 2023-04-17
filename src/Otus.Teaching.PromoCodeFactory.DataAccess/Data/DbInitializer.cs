@@ -45,6 +45,12 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                 await _db.SaveChangesAsync();
             }
 
+            if (!await _db.CustomerPreferences.AnyAsync())
+            {
+                await _db.CustomerPreferences.AddRangeAsync(FakeDataFactory.CustomerPreferences);
+                await _db.SaveChangesAsync();
+            }
+
             await AddRelationsAsync();
         }
 

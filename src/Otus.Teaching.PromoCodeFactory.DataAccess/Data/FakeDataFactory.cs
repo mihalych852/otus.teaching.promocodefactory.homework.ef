@@ -48,6 +48,21 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
             }
         };
 
+        private static IEnumerable<CustomerPreference> _customerPreference;
+        public static IEnumerable<CustomerPreference> CustomerPreferences => _customerPreference ??= new List<CustomerPreference>()
+        {
+            new CustomerPreference()
+            {
+                PreferenceId = Guid.Parse("ef7f299f-92d7-459f-896e-078ed53ef99c"),
+                CustomerId = Guid.Parse("a6c8c6b1-4349-45b0-ab31-244740aaf0f0")
+            },
+            new CustomerPreference()
+            {
+                PreferenceId =Guid.Parse("c4bda62e-fc74-4256-a956-4760b3858cbd"),
+                CustomerId = Guid.Parse("73BF1CC8-2B29-4430-89BF-1C0E07378B9A")
+            }
+        };
+
         private static IEnumerable<Preference> _preferences;
         public static IEnumerable<Preference> Preferences => _preferences ??= new List<Preference>()
         {

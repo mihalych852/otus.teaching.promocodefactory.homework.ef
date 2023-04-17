@@ -11,12 +11,15 @@ namespace tus.Teaching.PromoCodeFactory.DataAccess
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<Preference> Preferences { get; set; }
         public virtual DbSet<PromoCode> PromoCodes { get; set; }
+        public virtual DbSet<CustomerPreference> CustomerPreferences { get; set; }
+
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Customer>().Navigation(e => e.Preferences).AutoInclude();
             modelBuilder.Entity<Customer>().Navigation(e => e.PromoCodes).AutoInclude();
+            modelBuilder.Entity<CustomerPreference>().HasKey(nameof(CustomerPreference.PreferenceId), nameof(CustomerPreference.CustomerId));
         }
     }
 }

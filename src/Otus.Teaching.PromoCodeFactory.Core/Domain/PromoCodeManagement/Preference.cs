@@ -17,5 +17,7 @@ namespace Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement
         public ICollection<CustomerPreference> CustomerPreferences { get; set; }
         [NotMapped]
         public PromoCode PromoCodes { get; set; }
+
+        public ICollection<Customer> Customers { get; set; }
     }
 }
