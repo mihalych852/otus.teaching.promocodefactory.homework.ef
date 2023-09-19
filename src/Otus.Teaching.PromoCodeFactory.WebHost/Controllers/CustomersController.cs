@@ -25,6 +25,10 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers {
             _preferenceRepository = preferenceRepository;
         }
 
+        /// <summary>
+        /// Получить всех клиентов
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<CustomerShortResponse>> GetCustomersAsync() {
             var customers = await _customerRepository.GetAllAsync();
@@ -35,6 +39,10 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers {
             return Ok(response);
         }
 
+        /// <summary>
+        /// Получить клиента по ID
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<CustomerResponse>> GetCustomerAsync(Guid id) {
             var customer = await _customerRepository.GetByIdAsync(id);
@@ -44,6 +52,10 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers {
             return Ok(response);
         }
 
+        /// <summary>
+        /// Создать пользвоателя
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> CreateCustomerAsync(CreateOrEditCustomerRequest request) {
             var preferences = await GetPreferencesAsync(request.PreferenceIds);
@@ -55,6 +67,10 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers {
             return Ok();
         }
 
+        /// <summary>
+        /// Отредактировать пользователя по Id с подстановкой новых значений полей
+        /// </summary>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> EditCustomersAsync(Guid id, CreateOrEditCustomerRequest request) {
             var customer = await _customerRepository.GetByIdAsync(id);
@@ -70,7 +86,11 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers {
 
             return NoContent();
         }
-
+        
+        /// <summary>
+        /// Удалить пользователя по Id
+        /// </summary>
+        /// <returns></returns>
         [HttpDelete]
         public async Task<IActionResult> DeleteCustomer(Guid id) {
             var customer = await _customerRepository.GetByIdAsync(id);
@@ -83,6 +103,10 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers {
             return NoContent();
         }
 
+        /// <summary>
+        /// Получить группу пользователей по Id
+        /// </summary>
+        /// <returns></returns>
         private Task<IEnumerable<Preference>> GetPreferencesAsync(IEnumerable<Guid> ids) {
             IEnumerable<Preference> preferences = new List<Preference>();
             if (ids != null && ids.Any()) {
