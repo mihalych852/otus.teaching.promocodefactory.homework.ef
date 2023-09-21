@@ -1,52 +1,121 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Otus.Teaching.PromoCodeFactory.Core.Abstractions.Repositories;
+using Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement;
+using Otus.Teaching.PromoCodeFactory.WebHost.Mappers;
 using Otus.Teaching.PromoCodeFactory.WebHost.Models;
 
-namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
-{
+namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers {
     /// <summary>
     /// Клиенты
     /// </summary>
     [ApiController]
     [Route("api/v1/[controller]")]
     public class CustomersController
-        : ControllerBase
-    {
+        : ControllerBase {
+        private readonly IRepository<Customer> _customerRepository;
+        private readonly IRepository<Preference> _preferenceRepository;
+
+        public CustomersController(IRepository<Customer> customerRepository,
+            IRepository<Preference> preferenceRepository) {
+            _customerRepository = customerRepository;
+            _preferenceRepository = preferenceRepository;
+        }
+
+        /// <summary>
+        /// Получить всех клиентов
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public Task<ActionResult<CustomerShortResponse>> GetCustomersAsync()
-        {
-            //TODO: Добавить получение списка клиентов
-            throw new NotImplementedException();
+        public async Task<ActionResult<CustomerShortResponse>> GetCustomersAsync() {
+            var customers = await _customerRepository.GetAllAsync();
+
+            var response = customers
+                .Select(x => new CustomerShortResponse(x)).ToList();
+
+            return Ok(response);
         }
-        
+
+        /// <summary>
+        /// Получить клиента по ID
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("{id}")]
-        public Task<ActionResult<CustomerResponse>> GetCustomerAsync(Guid id)
-        {
-            //TODO: Добавить получение клиента вместе с выданными ему промомкодами
-            throw new NotImplementedException();
+        public async Task<ActionResult<CustomerResponse>> GetCustomerAsync(Guid id) {
+            var customer = await _customerRepository.GetByIdAsync(id);
+
+            var response = new CustomerResponse(customer);
+
+            return Ok(response);
         }
-        
+
+        /// <summary>
+        /// Создать пользвоателя
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
-        public Task<IActionResult> CreateCustomerAsync(CreateOrEditCustomerRequest request)
-        {
-            //TODO: Добавить создание нового клиента вместе с его предпочтениями
-            throw new NotImplementedException();
+        public async Task<IActionResult> CreateCustomerAsync(CreateOrEditCustomerRequest request) {
+            var preferences = await GetPreferencesAsync(request.PreferenceIds);
+
+            var customer = CustomerMapper.MapFromModel(request, preferences);
+
+            await _customerRepository.AddAsync(customer);
+
+            return Ok();
         }
-        
+
+        /// <summary>
+        /// Отредактировать пользователя по Id с подстановкой новых значений полей
+        /// </summary>
+        /// <returns></returns>
         [HttpPut("{id}")]
-        public Task<IActionResult> EditCustomersAsync(Guid id, CreateOrEditCustomerRequest request)
-        {
-            //TODO: Обновить данные клиента вместе с его предпочтениями
-            throw new NotImplementedException();
+        public async Task<IActionResult> EditCustomersAsync(Guid id, CreateOrEditCustomerRequest request) {
+            var customer = await _customerRepository.GetByIdAsync(id);
+
+            if (customer == null)
+                return NotFound();
+
+            var preferences = await GetPreferencesAsync(request.PreferenceIds);
+
+            CustomerMapper.MapFromModel(request, preferences, customer);
+
+            await _customerRepository.UpdateAsync(customer);
+
+            return NoContent();
         }
         
+        /// <summary>
+        /// Удалить пользователя по Id
+        /// </summary>
+        /// <returns></returns>
         [HttpDelete]
-        public Task<IActionResult> DeleteCustomer(Guid id)
-        {
-            //TODO: Удаление клиента вместе с выданными ему промокодами
-            throw new NotImplementedException();
+        public async Task<IActionResult> DeleteCustomer(Guid id) {
+            var customer = await _customerRepository.GetByIdAsync(id);
+
+            if (customer == null)
+                return NotFound();
+
+            await _customerRepository.DeleteAsync(customer);
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Получить группу пользователей по Id
+        /// </summary>
+        /// <returns></returns>
+        private Task<IEnumerable<Preference>> GetPreferencesAsync(IEnumerable<Guid> ids) {
+            IEnumerable<Preference> preferences = new List<Preference>();
+            if (ids != null && ids.Any()) {
+                //Получаем предпочтения из бд и сохраняем большой объект
+                return _preferenceRepository
+                    .GetRangeByIdsAsync(ids.ToList());
+            }
+
+            return Task.FromResult(preferences);
         }
     }
 }
