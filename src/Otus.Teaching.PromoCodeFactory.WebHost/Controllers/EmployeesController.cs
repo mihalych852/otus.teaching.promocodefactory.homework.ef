@@ -66,7 +66,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
                     Description = employee.Role.Description
                 },
                 FullName = employee.FullName,
-                AppliedPromocodesCount = employee.AppliedPromocodesCount
+                AppliedPromoCodesCount = employee.AppliedPromoCodesCount
             };
 
             return employeeModel;

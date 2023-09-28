@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Otus.Teaching.PromoCodeFactory.DataAccess;
 
@@ -10,9 +11,11 @@ using Otus.Teaching.PromoCodeFactory.DataAccess;
 namespace Otus.Teaching.PromoCodeFactory.DataAccess.Migrations
 {
     [DbContext(typeof(LessonDatabaseContext))]
-    partial class LessonDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230928055352_Employee_AddPhoneNumber")]
+    partial class Employee_AddPhoneNumber
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
@@ -23,23 +26,19 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("AppliedPromoCodesCount")
+                    b.Property<int>("AppliedPromocodesCount")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Email")
-                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("FirstName")
-                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LastName")
-                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PhoneNumber")
-                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("RoleId")

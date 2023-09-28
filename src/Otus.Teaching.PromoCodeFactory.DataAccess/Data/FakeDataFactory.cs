@@ -18,7 +18,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                 FirstName = "Иван",
                 LastName = "Сергеев",
                 Role = Roles.FirstOrDefault(x => x.Name == "Admin"),
-                AppliedPromocodesCount = 5
+                AppliedPromoCodesCount = 5
             },
             new Employee()
             {
@@ -27,7 +27,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                 FirstName = "Петр",
                 LastName = "Андреев",
                 Role = Roles.FirstOrDefault(x => x.Name == "PartnerManager"),
-                AppliedPromocodesCount = 10
+                AppliedPromoCodesCount = 10
             },
         };
 
