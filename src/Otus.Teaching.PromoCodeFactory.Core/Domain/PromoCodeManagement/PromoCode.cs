@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Runtime;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.Administration;
 
-namespace Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement
-{
+namespace Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement {
+    [Table("promo_code")]
+    [PrimaryKey(nameof(Id))]
     public class PromoCode
-        : BaseEntity
-    {
+        : BaseEntity {
         public string Code { get; set; }
 
         public string ServiceInfo { get; set; }
@@ -17,8 +18,11 @@ namespace Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement
 
         public string PartnerName { get; set; }
 
-        public Employee PartnerManager { get; set; }
+        public Guid PreferenceId { get; set; }
+        public Guid CustomerId { get; }
 
-        public Preference Preference { get; set; }
+        public virtual Preference Preference { get; }
+        public virtual Employee PartnerManager { get; }
+        public virtual Customer Customer { get; }
     }
 }

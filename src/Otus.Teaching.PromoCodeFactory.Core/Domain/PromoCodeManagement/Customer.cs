@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
-namespace Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement
-{
+namespace Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement {
+    [Table("customer")]
+    [PrimaryKey(nameof(Id))]
     public class Customer
-        :BaseEntity
-    {
+        : BaseEntity {
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
@@ -13,6 +14,7 @@ namespace Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement
 
         public string Email { get; set; }
 
-        //TODO: Списки Preferences и Promocodes 
+        public virtual ICollection<Preference> Preferences { get; }
+        public virtual ICollection<PromoCode> PromoCodes { get; }
     }
 }
