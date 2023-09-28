@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
-namespace Otus.Teaching.PromoCodeFactory.Core.Domain.Administration
-{
+namespace Otus.Teaching.PromoCodeFactory.Core.Domain.Administration {
+    [Table("employee")]
+    [PrimaryKey(nameof(Id))]
     public class Employee
-        : BaseEntity
-    {
+        : BaseEntity {
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
@@ -16,5 +18,7 @@ namespace Otus.Teaching.PromoCodeFactory.Core.Domain.Administration
         public Role Role { get; set; }
 
         public int AppliedPromocodesCount { get; set; }
+        public Guid RoleId { get; set; }
+
     }
 }
