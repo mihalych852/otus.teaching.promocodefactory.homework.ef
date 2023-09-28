@@ -13,6 +13,8 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Models
 
         public RoleItemResponse Role { get; set; }
 
-        public int AppliedPromocodesCount { get; set; }
+        public int AppliedPromoCodesCount { get; set; }
+
+        public string PhoneNumber { get; set; }
     }
 }

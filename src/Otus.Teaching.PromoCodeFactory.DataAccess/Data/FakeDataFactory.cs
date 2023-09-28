@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.Administration;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement;
 
@@ -17,7 +18,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                 FirstName = "Иван",
                 LastName = "Сергеев",
                 Role = Roles.FirstOrDefault(x => x.Name == "Admin"),
-                AppliedPromocodesCount = 5
+                AppliedPromoCodesCount = 5
             },
             new Employee()
             {
@@ -26,7 +27,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                 FirstName = "Петр",
                 LastName = "Андреев",
                 Role = Roles.FirstOrDefault(x => x.Name == "PartnerManager"),
-                AppliedPromocodesCount = 10
+                AppliedPromoCodesCount = 10
             },
         };
 
@@ -84,6 +85,25 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
 
                 return customers;
             }
+        }
+
+        public static void Execute(IServiceProvider scopeServiceProvider)
+        {
+            var dbContext = scopeServiceProvider.GetRequiredService<LessonDatabaseContext>();
+            dbContext.RemoveRange(dbContext.Employees);
+            dbContext.RemoveRange(dbContext.Customers);
+            dbContext.RemoveRange(dbContext.Roles);
+            dbContext.RemoveRange(dbContext.CustomerPreferences);
+            dbContext.RemoveRange(dbContext.Preferences);
+            dbContext.RemoveRange(dbContext.PromoCodes);
+            dbContext.SaveChanges();
+
+            
+            dbContext.Roles.AddRange(Roles);
+            dbContext.Employees.AddRange(Employees);
+            dbContext.Preferences.AddRange(Preferences);
+            dbContext.Customers.AddRange(Customers);
+            dbContext.SaveChanges();
         }
     }
 }
