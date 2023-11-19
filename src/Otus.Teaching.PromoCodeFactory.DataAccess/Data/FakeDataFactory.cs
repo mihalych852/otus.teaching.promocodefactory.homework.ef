@@ -8,7 +8,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
 {
     public static class FakeDataFactory
     {
-        public static IEnumerable<Employee> Employees => new List<Employee>()
+        public static List<Employee> Employees => new List<Employee>()
         {
             new Employee()
             {
@@ -79,6 +79,13 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                         FirstName = "Иван",
                         LastName = "Петров",
                         //TODO: Добавить предзаполненный список предпочтений
+                        Preferences = new List<CustomerPreference> {
+                            new CustomerPreference
+                            { 
+                                PreferenceId = new Guid("76324c47-68d2-472d-abb8-33cfa8cc0c84"),
+                                CustomerId = customerId
+                            }
+                        }
                     }
                 };
 
