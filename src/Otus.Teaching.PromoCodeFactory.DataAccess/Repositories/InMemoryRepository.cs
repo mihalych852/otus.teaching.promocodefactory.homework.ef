@@ -13,6 +13,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Repositories
     {
         protected IEnumerable<T> Data { get; set; }
 
+
         public InMemoryRepository(IEnumerable<T> data)
         {
             Data = data;
@@ -26,6 +27,26 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Repositories
         public Task<T> GetByIdAsync(Guid id)
         {
             return Task.FromResult(Data.FirstOrDefault(x => x.Id == id));
+        }
+
+        public async Task<IEnumerable<T>> GetRangeByIdsAsync(List<Guid> ids)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task AddAsync(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task UpdateAsync(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task DeleteAsync(T entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }
