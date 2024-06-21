@@ -18,14 +18,34 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Repositories
             Data = data;
         }
         
-        public Task<IEnumerable<T>> GetAllAsync()
+        public Task UpdateAsync(T entity)
         {
-            return Task.FromResult(Data);
+            throw new NotImplementedException();
         }
 
-        public Task<T> GetByIdAsync(Guid id)
+        public Task SaveEntitiesAsync()
         {
-            return Task.FromResult(Data.FirstOrDefault(x => x.Id == id));
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<T> GetAll()
+        {
+            return Data.AsQueryable();
+        }
+
+        public IQueryable<T> GetById(Guid id)
+        {
+            return Data.Where(x => x.Id == id).AsQueryable();
+        }
+
+        Task IRepository<T>.AddAsync(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteAsync(T entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -65,6 +65,19 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
             }
         };
 
+        public static IEnumerable<PromoCode> PromoCodes => new List<PromoCode>()
+        {
+            new PromoCode()
+            {
+                Id = new Guid(),
+                ServiceInfo = "ServiceInfo",
+                BeginDate = DateTime.Now.AddDays(-5),
+                EndDate = DateTime.Now.AddDays(5),
+                PartnerName = "PartnerName",
+                PreferenceId = Preferences.FirstOrDefault().Id
+            },
+        };
+
         public static IEnumerable<Customer> Customers
         {
             get
@@ -78,7 +91,8 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
                         Email = "ivan_sergeev@mail.ru",
                         FirstName = "Иван",
                         LastName = "Петров",
-                        //TODO: Добавить предзаполненный список предпочтений
+                        Preferences = Preferences,
+                        PromoCodes = PromoCodes
                     }
                 };
 

@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
-using System;
+﻿using System;
+using System.Collections.Generic;
 
-namespace Otus.Teaching.PromoCodeFactory.WebHost.Models
+
+namespace Otus.Teaching.PromoCodeFactory.Core.Dtos
 {
-    public class CreateOrEditCustomerRequest
+    public class CreateOrEditCustomerDto
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
