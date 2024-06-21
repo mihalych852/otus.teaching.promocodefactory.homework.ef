@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-
 namespace Otus.Teaching.PromoCodeFactory.Core.Dtos
 {
     public class CreateOrEditCustomerDto

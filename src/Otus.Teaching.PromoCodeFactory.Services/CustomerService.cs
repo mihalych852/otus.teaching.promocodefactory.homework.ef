@@ -76,7 +76,7 @@ namespace Otus.Teaching.PromoCodeFactory.Services
 
             currentCustomer.FirstName = customer.FirstName;
             currentCustomer.LastName = customer.LastName;
-            customer.Email = customer.Email;
+            currentCustomer.Email = customer.Email;
             await _unitOfWork.CustomerRepository.UpdateAsync(currentCustomer);
             await _unitOfWork.SaveChangesAsync();
             return true;

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-
 namespace Otus.Teaching.PromoCodeFactory.Core.Domain.Administration
 {
     public class Employee
@@ -16,6 +15,8 @@ namespace Otus.Teaching.PromoCodeFactory.Core.Domain.Administration
 
         [EmailAddress]
         public string Email { get; set; }
+
+        public string? Skills { get; set; }
 
         public int AppliedPromocodesCount { get; set; }
 

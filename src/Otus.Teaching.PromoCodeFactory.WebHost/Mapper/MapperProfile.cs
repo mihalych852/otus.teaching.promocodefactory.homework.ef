@@ -22,7 +22,8 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Mapper
                 .ForMember(dest => dest.BeginDate, opt => opt.MapFrom(src => src.BeginDate.ToString("dd.MM.yyyy")))
                 .ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => src.EndDate.ToString("dd.MM.yyyy")));
             CreateMap<PromoCodeForCreateDto, PromoCode>();
-            CreateMap<GivePromoCodeRequest, PromoCodeForCreateDto>();
+            CreateMap<GivePromoCodeRequest, PromoCodeForCreateDto>()
+                .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.PromoCode));
         }
     }
 }

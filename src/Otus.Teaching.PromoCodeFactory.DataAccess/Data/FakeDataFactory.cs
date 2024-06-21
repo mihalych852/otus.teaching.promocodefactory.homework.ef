@@ -71,6 +71,7 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess.Data
             {
                 Id = new Guid(),
                 ServiceInfo = "ServiceInfo",
+                Code = "Code",
                 BeginDate = DateTime.Now.AddDays(-5),
                 EndDate = DateTime.Now.AddDays(5),
                 PartnerName = "PartnerName",

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime;
-using System.Text.Json.Serialization;
-using Otus.Teaching.PromoCodeFactory.Core.Domain.Administration;
 
 namespace Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement
 {

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Otus.Teaching.PromoCodeFactory.Core.Abstractions.Repositories;
 using Otus.Teaching.PromoCodeFactory.Core.Abstractions.Services;
-using Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement;
 using Otus.Teaching.PromoCodeFactory.Core.Dtos;
 using Otus.Teaching.PromoCodeFactory.WebHost.Models;
 
