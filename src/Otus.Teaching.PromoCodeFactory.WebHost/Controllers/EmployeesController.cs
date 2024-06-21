@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Otus.Teaching.PromoCodeFactory.Core.Abstractions.Repositories;
 using Otus.Teaching.PromoCodeFactory.Core.Domain.Administration;
 using Otus.Teaching.PromoCodeFactory.WebHost.Models;
@@ -31,7 +32,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         [HttpGet]
         public async Task<List<EmployeeShortResponse>> GetEmployeesAsync()
         {
-            var employees = await _employeeRepository.GetAllAsync();
+            var employees = _employeeRepository.GetAll();
 
             var employeesModelList = employees.Select(x => 
                 new EmployeeShortResponse()
@@ -51,7 +52,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<EmployeeResponse>> GetEmployeeByIdAsync(Guid id)
         {
-            var employee = await _employeeRepository.GetByIdAsync(id);
+            var employee = await _employeeRepository.GetById(id).FirstOrDefaultAsync();
 
             if (employee == null)
                 return NotFound();
