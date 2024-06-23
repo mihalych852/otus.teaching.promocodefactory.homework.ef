@@ -46,8 +46,8 @@ namespace Otus.Teaching.PromoCodeFactory.Services
                         {
                             Code = promoCodeForCreate.Code,
                             ServiceInfo = promoCodeForCreate.ServiceInfo,
-                            BeginDate = promoCodeForCreate.BeginDate,
-                            EndDate = promoCodeForCreate.EndDate,
+                            BeginDate = DateTime.Now,
+                            EndDate = DateTime.Now.AddDays(10),
                             PartnerName = promoCodeForCreate.PartnerName,
                             CustomerId = customer.Id,
                             PreferenceId = promoCodeForCreate.PreferenceId,
