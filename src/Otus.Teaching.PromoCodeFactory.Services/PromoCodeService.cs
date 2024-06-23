@@ -18,29 +18,44 @@ namespace Otus.Teaching.PromoCodeFactory.Services
             _mapper = mapper;
         }
 
-        public async Task<Guid> AddPromoCodeToCustomerViaPreference(PromoCodeForCreateDto newPromoCode)
+        public async Task<bool> AddPromoCodeToCustomerViaPreference(PromoCodeForCreateDto newPromoCode)
         {
             var promoCodeForCreate = _mapper.Map<PromoCode>(newPromoCode);
-
-            await _unitOfWork.PromoCodeRepository.AddAsync(promoCodeForCreate);
-            await _unitOfWork.SaveChangesAsync();
 
             var promoCodePreference = await _unitOfWork.PreferencesRepository
                                                             .GetAll()
                                                             .Where(x => x.Name == newPromoCode.PreferenceName)
-                                                            .ToListAsync();
+                                                            .Include(x => x.PromoCodes)
+                                                            .FirstOrDefaultAsync();
 
-            promoCodePreference.ForEach(x => x.PromoCode = promoCodeForCreate);
+            if (promoCodePreference is null)
+                return false;
+
+            promoCodeForCreate.PreferenceId = promoCodePreference.Id;
+
             var customers = await _unitOfWork
                                     .CustomerRepository
                                     .GetAll()
                                     .Where(x => x.Preferences.Any(y => y.Name == newPromoCode.PreferenceName))
+                                    .Include(x => x.PromoCodes)
                                     .ToListAsync();
 
-            customers.ForEach(x => x.PromoCodes.Append(promoCodeForCreate));
+            foreach (var customer in customers)
+            {
+                await _unitOfWork.PromoCodeRepository.AddAsync(new PromoCode
+                        {
+                            Code = promoCodeForCreate.Code,
+                            ServiceInfo = promoCodeForCreate.ServiceInfo,
+                            BeginDate = promoCodeForCreate.BeginDate,
+                            EndDate = promoCodeForCreate.EndDate,
+                            PartnerName = promoCodeForCreate.PartnerName,
+                            CustomerId = customer.Id,
+                            PreferenceId = promoCodeForCreate.PreferenceId,
+                        });
+            }
+            
             await _unitOfWork.SaveChangesAsync();
-
-            return promoCodeForCreate.Id;
+            return true;
         }
 
         public async Task<List<PromoCode>> GetAll()

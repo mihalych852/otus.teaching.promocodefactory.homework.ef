@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement
@@ -12,7 +11,6 @@ namespace Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement
 
         public IEnumerable<Customer> Customers { get; set; }
 
-        public Guid PromoCodeId { get; set; }
-        public PromoCode PromoCode { get; set; }
+        public IEnumerable<PromoCode> PromoCodes { get; set; }
     }
 }

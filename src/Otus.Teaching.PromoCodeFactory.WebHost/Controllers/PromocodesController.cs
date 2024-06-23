@@ -35,16 +35,22 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost.Controllers
             var result = await _service.GetAll();
             return Ok(_mapper.Map<List<PromoCodeShortResponse>>(result));
         }
-        
+
         /// <summary>
-        ///     Создать промокод и выдать его клиентам с указанным предпочтением
+        ///     Создать промокоды и выдать его клиентам с указанным предпочтением
         /// </summary>
-        /// <returns></returns>
+        /// <param name="request">Модель нового промокода, который нужно отдать покупателям</param>
+        /// <returns>
+        ///     200 - если удалось добавить новый промокод,
+        ///     404 - не удалось найти либо предпочтение, либо покупателей, у которых есть предпочтение
+        /// </returns>
         [HttpPost]
         public async Task<IActionResult> GivePromoCodesToCustomersWithPreferenceAsync(GivePromoCodeRequest request)
         {
             var result = await _service.AddPromoCodeToCustomerViaPreference(_mapper.Map<PromoCodeForCreateDto>(request));
-            return Ok(result);
+            if (result)
+                return Ok();
+            return NotFound();
         }
     }
 }

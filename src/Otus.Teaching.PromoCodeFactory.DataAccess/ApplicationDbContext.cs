@@ -23,11 +23,11 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
                 .HasForeignKey<Employee>(x => x.RoleId)
                 .IsRequired(true);
 
-            modelBuilder.Entity<PromoCode>()
-                .HasOne(x => x.Preference)
-                .WithOne(x => x.PromoCode)
-                .HasForeignKey<PromoCode>(x => x.PreferenceId)
-                .IsRequired(true);
+            modelBuilder.Entity<Preference>()
+                .HasMany(x => x.PromoCodes)
+                .WithOne(x => x.Preference)
+                .HasForeignKey(x => x.PreferenceId)
+                .IsRequired(false);
 
             modelBuilder.Entity<Customer>()
                 .HasMany(x => x.PromoCodes)

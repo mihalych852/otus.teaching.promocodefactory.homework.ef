@@ -9,6 +9,6 @@ namespace Otus.Teaching.PromoCodeFactory.Core.Abstractions.Services
     public interface IPromoCodeService
     {
         Task<List<PromoCode>> GetAll();
-        Task<Guid> AddPromoCodeToCustomerViaPreference(PromoCodeForCreateDto newPromoCode);
+        Task<bool> AddPromoCodeToCustomerViaPreference(PromoCodeForCreateDto newPromoCode);
     }
 }
