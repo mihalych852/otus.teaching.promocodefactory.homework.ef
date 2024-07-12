@@ -38,6 +38,8 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
             services.AddControllers();
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 
+            //services.AddScoped(typeof(IRepository<Customer>), typeof(EfRepository<Customer>));
+
             services//.AddSingleton(applicationSettings)
                     .AddSingleton((IConfigurationRoot)Configuration)
                     .AddDbContext<DatabaseContext>(optionsBuilder 
@@ -47,6 +49,8 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
 
             services.AddScoped<DbContext, DatabaseContext>();
             services.AddScoped(typeof(IFillDbWithInitialData), typeof(FillDbWithInitialData));
+
+            //services.AddSingleton<Customer>();
 
             //services.AddScoped(typeof(IRepository<Employee>), (x) => 
             //    new InMemoryRepository<Employee>(FakeDataFactory.Employees));
@@ -77,7 +81,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
             }
 
             app.UseOpenApi();
-            app.UseSwaggerUi3(x =>
+            app.UseSwaggerUi(x =>
             {
                 x.DocExpansion = "list";
             });
