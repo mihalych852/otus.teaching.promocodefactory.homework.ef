@@ -20,6 +20,8 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
             {
                 var db = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
                 //db.Database.Migrate();
+                db.Database.EnsureDeleted();
+                db.Database.EnsureCreated();
             }
             host.Run();
             //CreateHostBuilder(args).Build().Run();
