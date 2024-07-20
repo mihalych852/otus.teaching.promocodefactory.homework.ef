@@ -22,5 +22,7 @@ namespace Otus.Teaching.PromoCodeFactory.Core.Domain.PromoCodeManagement
         public Preference Preference { get; set; }
 
         public virtual Customer Customer { get; set; }
+
+        public int Discount { get; set; }
     }
 }
