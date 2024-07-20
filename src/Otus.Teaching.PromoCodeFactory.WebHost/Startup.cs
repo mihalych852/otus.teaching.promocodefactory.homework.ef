@@ -95,7 +95,7 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
                 endpoints.MapControllers();
             });
 
-            fillDb.Fill();
+            //fillDb.Fill();
         }
     }
 }

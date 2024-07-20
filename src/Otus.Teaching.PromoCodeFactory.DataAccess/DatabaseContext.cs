@@ -13,8 +13,6 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
-            //Database.EnsureDeleted();
-            //Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -50,11 +48,6 @@ namespace Otus.Teaching.PromoCodeFactory.DataAccess
             modelBuilder.Entity<Employee>().Property(e => e.Email).HasMaxLength(100);
             modelBuilder.Entity<Employee>().Property(e => e.LastName).HasMaxLength(100);
             modelBuilder.Entity<Employee>().Property(e => e.FirstName).HasMaxLength(100);
-
-            //modelBuilder.Entity<Role>().HasData(FakeDataFactory.Roles);
-            //modelBuilder.Entity<Employee>().HasData(FakeDataFactory.Employees);
-            //modelBuilder.Entity<Preference>().HasData(FakeDataFactory.Preferences); 
-            //modelBuilder.Entity<Customer>().HasData(FakeDataFactory.Customers);
         }
 
         public DbSet<Employee> Employees { get; set; }

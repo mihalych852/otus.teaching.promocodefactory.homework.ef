@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Otus.Teaching.PromoCodeFactory.DataAccess;
 
@@ -19,9 +20,9 @@ namespace Otus.Teaching.PromoCodeFactory.WebHost
             using (var scope = host.Services.CreateScope())
             {
                 var db = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
-                //db.Database.Migrate();
-                db.Database.EnsureDeleted();
-                db.Database.EnsureCreated();
+                db.Database.Migrate();
+                //db.Database.EnsureDeleted();
+                //db.Database.EnsureCreated();
             }
             host.Run();
             //CreateHostBuilder(args).Build().Run();
